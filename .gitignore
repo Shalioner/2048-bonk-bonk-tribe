@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*.dylib
+*.log
+.DS_Store
+.venv/
+STOP
+bot.lock
+running.json
+failed-observation.bin
+latest.png
+goal.png
+recognition-error.png
+benchmark.json
