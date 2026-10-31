@@ -142,7 +142,7 @@ void init_tables() {
             if (rank == 0) {
                 empty++;
             } else {
-                if (prev == rank && rank != CAP_RANK) { // CAP_RANK pairs never merge
+                if (prev == rank && rank < CAP_RANK) { // Ranks at or above CAP_RANK never merge
                     counter++;
                 } else if (counter > 0) {
                     merges += 1 + counter;
@@ -183,7 +183,7 @@ void init_tables() {
                 line[i] = line[j];
                 line[j] = 0;
                 i--; // retry this entry
-            } else if (line[i] == line[j] && line[i] != (unsigned)CAP_RANK) {
+            } else if (line[i] == line[j] && line[i] < (unsigned)CAP_RANK) {
                 if(line[i] != 0xf) {
                     /* Pretend that 32768 + 32768 = 32768 (representational limit). */
                     line[i]++;
@@ -325,7 +325,12 @@ static float score_helper(board_t board, const float* table) {
            table[(board >> 48) & ROW_MASK];
 }
 
-static int count_cap(board_t b) { int n=0; for(int i=0;i<16;i++,b>>=4) n+=(int)(b&15)==CAP_RANK; return n; }
+static inline int count_cap(board_t b) {
+    // Compare all sixteen packed ranks at once; each matching nibble contributes one bit.
+    const board_t x = b ^ (0x1111111111111111ULL * CAP_RANK);
+    const board_t matches = ~(x | (x >> 1) | (x >> 2) | (x >> 3)) & 0x1111111111111111ULL;
+    return __builtin_popcountll(matches);
+}
 static bool goal(board_t b) { return count_cap(b)>=GOAL_COUNT; }
 static float score_heur_board(board_t board) {
     if(goal(board)) return 1e9f;
@@ -605,7 +610,7 @@ extern "C" float score_levels_thresh(board_t board,int move,int depth,float thre
  *    first, is aborted at start+budget_s-margin and then discarded. A pass after the first
  *    is not started when previous_pass_time*growth would not fit before the deadline.
  * 3. The move of the last completed full pass is returned (the fallback move if none).
- * margin = min(1 s, 10% of the budget) leaves time to free the transposition tables of an
+ * margin = min(1 s, 25% of the budget) leaves time to free the transposition tables of an
  * aborted pass (measured up to ~0.6 s for 10-second passes).
  * info[0] completed full passes, [1] threshold of the last completed full pass (0 if none),
  * [2] positions evaluated (all passes), [3] total seconds, [4] 1 if a pass was cut by the
@@ -616,7 +621,7 @@ extern "C" int solve_budget(board_t board, int allowed, int depth, const float *
     typedef std::chrono::steady_clock clock_t_;
     clock_t_::time_point start = clock_t_::now();
     budget_s = std::max(0.0, std::min(budget_s, 1e6));
-    double margin = std::min(1.0, 0.1 * budget_s);
+    double margin = std::min(1.0, 0.25 * budget_s);
     clock_t_::time_point deadline = start + std::chrono::duration_cast<clock_t_::duration>(
         std::chrono::duration<double>(budget_s - margin));
     int best_move = -1;
