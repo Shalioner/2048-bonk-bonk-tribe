@@ -6,6 +6,10 @@
 #include <string.h>
 #include <time.h>
 #include <algorithm>
+#include <atomic>
+#include <chrono>
+#include <thread>
+#include <vector>
 
 #include "2048.h"
 
@@ -78,6 +82,16 @@ static board_t col_down_table[65536];
 static float heur_score_table[65536];
 static float score_table[65536];
 
+// Rules of the "Звёздное провидение" merge mode: tiles of CAP_RANK (2048 in classic
+// terms) never merge with each other; the goal is GOAL_COUNT such tiles at once.
+static const int CAP_RANK = 11;
+static const int GOAL_COUNT = 3;
+
+// Spawn model: spawn_table[max rank on the board after the move][rank-1] = probability.
+// Filled from Python (set_spawn_table); classic 90/10 until then.
+static float spawn_table[16][15];
+static bool spawn_table_set = false;
+
 // Heuristic scoring settings
 static const float SCORE_LOST_PENALTY = 200000.0f;
 static const float SCORE_MONOTONICITY_POWER = 4.0f;
@@ -88,6 +102,13 @@ static const float SCORE_MERGES_WEIGHT = 700.0f;
 static const float SCORE_EMPTY_WEIGHT = 270.0f;
 
 void init_tables() {
+    if (!spawn_table_set) {
+        for (int s = 0; s < 16; ++s) {
+            for (int r = 0; r < 15; ++r) spawn_table[s][r] = 0.0f;
+            spawn_table[s][0] = 0.9f;
+            spawn_table[s][1] = 0.1f;
+        }
+    }
     for (unsigned row = 0; row < 65536; ++row) {
         unsigned line[4] = {
                 (row >>  0) & 0xf,
@@ -121,7 +142,7 @@ void init_tables() {
             if (rank == 0) {
                 empty++;
             } else {
-                if (prev == rank) {
+                if (prev == rank && rank != CAP_RANK) { // CAP_RANK pairs never merge
                     counter++;
                 } else if (counter > 0) {
                     merges += 1 + counter;
@@ -162,7 +183,7 @@ void init_tables() {
                 line[i] = line[j];
                 line[j] = 0;
                 i--; // retry this entry
-            } else if (line[i] == line[j]) {
+            } else if (line[i] == line[j] && line[i] != (unsigned)CAP_RANK) {
                 if(line[i] != 0xf) {
                     /* Pretend that 32768 + 32768 = 32768 (representational limit). */
                     line[i]++;
@@ -275,8 +296,15 @@ struct eval_state {
     int cachehits;
     unsigned long moves_evaled;
     int depth_limit;
+    float cprob_thresh;              // branches with cumulative probability below this are cut
+    bool has_deadline;               // abort the search once deadline has passed
+    std::chrono::steady_clock::time_point deadline;
+    std::atomic<bool> *stop;         // shared between the threads of one pass
+    bool aborted;
+    unsigned long checks;
 
-    eval_state() : maxdepth(0), curdepth(0), cachehits(0), moves_evaled(0), depth_limit(0) {
+    eval_state() : maxdepth(0), curdepth(0), cachehits(0), moves_evaled(0), depth_limit(0),
+                   cprob_thresh(0.0001f), has_deadline(false), stop(NULL), aborted(false), checks(0) {
     }
 };
 
@@ -297,8 +325,8 @@ static float score_helper(board_t board, const float* table) {
            table[(board >> 48) & ROW_MASK];
 }
 
-static int count_thirteen(board_t b) { int n=0; for(int i=0;i<16;i++,b>>=4) n+=(b&15)==13; return n; }
-static bool goal(board_t b) { int n=0; for(int i=0;i<16;i++,b>>=4) { int r=b&15; n+=r==13; } return n>=3; }
+static int count_cap(board_t b) { int n=0; for(int i=0;i<16;i++,b>>=4) n+=(int)(b&15)==CAP_RANK; return n; }
+static bool goal(board_t b) { return count_cap(b)>=GOAL_COUNT; }
 static float score_heur_board(board_t board) {
     if(goal(board)) return 1e9f;
     return score_helper(          board , heur_score_table) +
@@ -311,14 +339,19 @@ static float score_board(board_t board) {
 
 // Statistics and controls
 // cprob: cumulative probability
-// don't recurse into a node with a cprob less than this threshold
-static const float CPROB_THRESH_BASE = 0.0001f;
-static float spawn_probs[15] = {0.85f, 0.10f, 0.05f, 0.01f};
+// don't recurse into a node with a cprob less than state.cprob_thresh (default 1e-4)
 static const int CACHE_DEPTH_LIMIT  = 15;
 
 static float score_tilechoose_node(eval_state &state, board_t board, float cprob) {
     if(goal(board)) return 1e9f;
-    if (cprob < CPROB_THRESH_BASE || state.curdepth >= state.depth_limit) {
+    if (state.has_deadline && !state.aborted && (++state.checks & 0xfff) == 0) {
+        if ((state.stop && state.stop->load()) || std::chrono::steady_clock::now() >= state.deadline) {
+            state.aborted = true;
+            if (state.stop) state.stop->store(true);
+        }
+    }
+    if (state.aborted) return 0.0f; // result of an aborted pass is discarded
+    if (cprob < state.cprob_thresh || state.curdepth >= state.depth_limit) {
         state.maxdepth = std::max(state.curdepth, state.maxdepth);
         return score_heur_board(board);
     }
@@ -346,6 +379,7 @@ static float score_tilechoose_node(eval_state &state, board_t board, float cprob
     float res = 0.0f;
     board_t tmp = board;
     board_t tile_2 = 1;
+    const float *spawn_probs = spawn_table[get_max_rank(board)];
     while (tile_2) {
         if ((tmp & 0xf) == 0) {
             for(int rank=1;rank<=15;rank++) {
@@ -369,13 +403,11 @@ static float score_tilechoose_node(eval_state &state, board_t board, float cprob
 static float score_move_node(eval_state &state, board_t board, float cprob) {
     float best = 0.0f;
     state.curdepth++;
-    int thirteens=count_thirteen(board); bool preserve=false;
-    for(int d=0;d<4;d++) { auto a=execute_move(d,board); if(a!=board && count_thirteen(a)>=thirteens)preserve=true; }
     for (int move = 0; move < 4; ++move) {
         board_t newboard = execute_move(move, board);
         state.moves_evaled++;
 
-        if (board != newboard && (!preserve || count_thirteen(newboard)>=thirteens)) {
+        if (board != newboard) {
             best = std::max(best, score_tilechoose_node(state, newboard, cprob));
         }
     }
@@ -538,6 +570,11 @@ int upstream_main() {
     return 0;
 }
 
+extern "C" int get_cap_rank() { return CAP_RANK; }
+extern "C" int get_goal_count() { return GOAL_COUNT; }
+extern "C" int goal_levels(board_t board) { return goal(board); }
+
+// Fixed-depth search with the default pruning threshold (single thread).
 extern "C" int solve_levels(board_t board, int allowed, int depth) {
     float best=-1; int result=-1;
     for(int d=0;d<4;d++) if(allowed&(1<<d)) {
@@ -548,23 +585,110 @@ extern "C" int solve_levels(board_t board, int allowed, int depth) {
     return result;
 }
 
-extern "C" int goal_levels(board_t board) { return goal(board); }
-
-extern "C" void set_spawn_probs(float p1,float p2,float p3) {
-    float sum=p1+p2+p3;
-    if(sum<=0 || p1<0 || p2<0 || p3<0) return;
-    for(int i=0;i<15;i++)spawn_probs[i]=0;
-    spawn_probs[0]=p1/sum;spawn_probs[1]=p2/sum;spawn_probs[2]=p3/sum;
-}
 extern "C" float score_levels(board_t board,int move,int depth) {
     eval_state state;state.depth_limit=depth;
     return _score_toplevel_move(state,board,move);
 }
 
+extern "C" float score_levels_thresh(board_t board,int move,int depth,float thresh) {
+    eval_state state;state.depth_limit=depth;state.cprob_thresh=thresh;
+    return _score_toplevel_move(state,board,move);
+}
+
+/* Time-budgeted search.
+ * Runs passes with decreasing pruning thresholds (thresholds[0] > thresholds[1] > ...).
+ * In every pass the allowed first moves are evaluated in parallel threads.
+ * The first pass always completes; later passes stop at start+budget_s-margin and are
+ * discarded if cut. A pass is not started when previous_pass_time*growth would exceed the budget.
+ * The move of the last completed pass is returned.
+ * info[0] completed passes, [1] threshold of the last completed pass, [2] positions
+ * evaluated (all passes), [3] total seconds, [4] 1 if a pass was cut by the deadline,
+ * [5] 1 if a pass was skipped by the estimate, [6] seconds of the last completed pass. */
+extern "C" int solve_budget(board_t board, int allowed, int depth, const float *thresholds,
+                            int n_thresholds, double budget_s, double growth, double *info) {
+    typedef std::chrono::steady_clock clock_t_;
+    clock_t_::time_point start = clock_t_::now();
+    // A cut pass still has to free its transposition tables (measured up to ~0.6 s),
+    // so the deadline keeps a margin inside the budget.
+    double margin = std::min(1.0, 0.1 * budget_s);
+    clock_t_::time_point deadline = start + std::chrono::duration_cast<clock_t_::duration>(
+        std::chrono::duration<double>(budget_s - margin));
+    int best_move = -1;
+    double positions = 0, last_pass = 0, last_thresh = 0;
+    int completed = 0, cut = 0, skipped = 0;
+    for (int k = 0; k < n_thresholds; ++k) {
+        clock_t_::time_point pass_start = clock_t_::now();
+        std::atomic<bool> stop(false);
+        float scores[4] = {0, 0, 0, 0};
+        unsigned long evaled[4] = {0, 0, 0, 0};
+        bool aborted[4] = {false, false, false, false};
+        std::vector<std::thread> workers;
+        for (int d = 0; d < 4; ++d) {
+            if (!(allowed & (1 << d))) continue;
+            workers.push_back(std::thread([&, d, k]() {
+                eval_state st;
+                st.depth_limit = depth;
+                st.cprob_thresh = thresholds[k];
+                if (k > 0) { st.has_deadline = true; st.deadline = deadline; st.stop = &stop; }
+                scores[d] = _score_toplevel_move(st, board, d);
+                evaled[d] = st.moves_evaled;
+                aborted[d] = st.aborted;
+            }));
+        }
+        for (size_t w = 0; w < workers.size(); ++w) workers[w].join();
+        bool any_abort = false;
+        for (int d = 0; d < 4; ++d) { positions += evaled[d]; any_abort = any_abort || aborted[d]; }
+        if (any_abort) { cut = 1; break; }
+        float best = -1;
+        int move = -1;
+        for (int d = 0; d < 4; ++d)
+            if ((allowed & (1 << d)) && scores[d] > best) { best = scores[d]; move = d; }
+        best_move = move;
+        completed++;
+        last_thresh = thresholds[k];
+        clock_t_::time_point now = clock_t_::now();
+        last_pass = std::chrono::duration<double>(now - pass_start).count();
+        double elapsed = std::chrono::duration<double>(now - start).count();
+        if (k + 1 < n_thresholds && elapsed + last_pass * growth > budget_s - margin) { skipped = 1; break; }
+    }
+    if (info) {
+        info[0] = completed; info[1] = last_thresh; info[2] = positions;
+        info[3] = std::chrono::duration<double>(clock_t_::now() - start).count();
+        info[4] = cut; info[5] = skipped; info[6] = last_pass;
+    }
+    return best_move;
+}
+
+// probs: stages x levels row-major; row s is used when the maximum rank after the move is s.
+// Rows are normalized. Returns 0 on success, -1 on invalid input (table unchanged).
+extern "C" int set_spawn_table(const float *probs, int stages, int levels) {
+    if (stages != 16 || levels < 1 || levels > 15) return -1;
+    float tmp[16][15];
+    for (int s = 0; s < 16; ++s) {
+        float sum = 0;
+        for (int r = 0; r < levels; ++r) { if (probs[s*levels+r] < 0) return -1; sum += probs[s*levels+r]; }
+        if (sum <= 0) return -1;
+        for (int r = 0; r < 15; ++r) tmp[s][r] = r < levels ? probs[s*levels+r] / sum : 0.0f;
+    }
+    memcpy(spawn_table, tmp, sizeof(tmp));
+    spawn_table_set = true;
+    return 0;
+}
+
+extern "C" float get_spawn_prob(int stage, int level) {
+    if (stage < 0 || stage > 15 || level < 1 || level > 15) return -1;
+    return spawn_table[stage][level-1];
+}
+
+// Same vector for every stage (kept for tests and experiments).
 extern "C" void set_spawn_vector(const float *weights,int count) {
     if(count<1 || count>15)return;
-    float sum=0;
-    for(int i=0;i<count;i++) {if(weights[i]<0)return;sum+=weights[i];}
-    if(sum<=0)return;
-    for(int i=0;i<15;i++)spawn_probs[i]=i<count?weights[i]/sum:0;
+    float table[16*15];
+    for(int s=0;s<16;s++) for(int r=0;r<15;r++) table[s*15+r] = r<count?weights[r]:0;
+    set_spawn_table(table,16,15);
+}
+
+extern "C" void set_spawn_probs(float p1,float p2,float p3) {
+    float w[3]={p1,p2,p3};
+    set_spawn_vector(w,3);
 }

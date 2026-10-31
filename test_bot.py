@@ -11,13 +11,17 @@ class BotTests(unittest.TestCase):
         import random
         rng=random.Random(123)
         for _ in range(500):
-            board=tuple(rng.randrange(14) if rng.random()<.7 else 0 for _ in range(16))
+            board=tuple(rng.randrange(1,bot.CAP+1) if rng.random()<.7 else 0 for _ in range(16))
             for d in range(4):
                 self.assertEqual(bot.NATIVE.execute_move(bot.DIRECTIONS[d],bot.pack(board)),bot.pack(bot.move(board,d)))
-    def test_native_preserves_thirteens(self):
-        board=(13,13,1,0)+(0,)*12
-        d=bot.choose(board)
-        self.assertGreaterEqual(bot.move(board,d).count(13),2)
+    def test_cap_tiles_never_merge(self):
+        board=(11,11,1,0, 10,10,0,0)+(0,)*8
+        self.assertEqual(bot.move(board,0),(11,11,1,0, 11,0,0,0)+(0,)*8)
+        self.assertEqual(bot.NATIVE.execute_move(bot.DIRECTIONS[0],bot.pack(board)),bot.pack(bot.move(board,0)))
+        column=(11,0,0,0, 11,0,0,0, 11,0,0,0, 11,0,0,0)
+        for d in range(4):
+            self.assertEqual(bot.move(column,d).count(11),4)
+            self.assertEqual(bot.NATIVE.execute_move(bot.DIRECTIONS[d],bot.pack(column)),bot.pack(bot.move(column,d)))
     def test_crop_decode(self):
         from PIL import Image
         im=bot.decode_screen((bot.ROOT/'calibration.png').read_bytes())
@@ -45,7 +49,7 @@ class BotTests(unittest.TestCase):
             bot.NATIVE.set_spawn_probs(0,0,1)
             threes=bot.NATIVE.score_levels(board,0,2)
             self.assertNotEqual(ones,threes)
-        finally:bot.NATIVE.set_spawn_probs(85,10,5)
+        finally:bot.apply_spawn_model(bot.default_spawn_model())
     def test_reject_unexplained_change(self):
         expected=(2,)+(0,)*15
         self.assertFalse(bot.valid_successor(expected,(2,5)+(0,)*14))
@@ -106,18 +110,85 @@ class BotTests(unittest.TestCase):
         import ctypes
         native=bot.NATIVE.goal_levels
         native.argtypes=[ctypes.c_uint64];native.restype=ctypes.c_int
-        cases=[((13,13,13)+(0,)*13,True),((13,)+(0,)*15,False),
-               ((13,13,12)+(0,)*13,False),((11,11,11)+(0,)*13,False),
-               ((14,13,13)+(0,)*13,False)]
+        cases=[((11,11,11)+(0,)*13,True),((11,)+(0,)*15,False),
+               ((11,11,10)+(0,)*13,False),((10,10,10)+(0,)*13,False),
+               ((11,11,11,11)+(0,)*12,True),((11,0,11,0,0,11)+(0,)*10,True)]
         for board,expected in cases:
             self.assertEqual(bot.reached_goal(board),expected)
             self.assertEqual(bool(native(bot.pack(board))),expected)
-    def test_elevens_can_merge(self):
+    def test_elevens_do_not_merge(self):
         board=(11,11,1,0)+(0,)*12
-        self.assertIn(0,[d for d,_ in bot.legal_moves(board)])
-    def test_preserves_thirteens_when_possible(self):
-        board=(13,13,1,0)+(0,)*12
-        self.assertTrue(all(a.count(13)>=2 for _,a in bot.legal_moves(board)))
+        legal=bot.legal_moves(board)
+        self.assertNotIn(0,[d for d,_ in legal]) # влево поле не меняется: 11+11 не сливаются
+        self.assertTrue(all(a.count(11)==2 for _,a in legal))
+    def test_cap_count_never_decreases(self):
+        import random
+        rng=random.Random(7)
+        for _ in range(300):
+            board=tuple(rng.choice((0,0,1,2,9,10,11,11)) for _ in range(16))
+            for d,after in bot.legal_moves(board):
+                self.assertGreaterEqual(after.count(bot.CAP),board.count(bot.CAP))
+    def test_default_spawn_stages(self):
+        p=bot.NATIVE.get_spawn_prob
+        for stage in range(0,8):
+            self.assertGreater(p(stage,1),.85);self.assertGreater(p(stage,2),0);self.assertEqual(p(stage,3),0)
+        self.assertGreater(p(8,3),0);self.assertEqual(p(8,4),0)
+        self.assertGreater(p(9,4),0);self.assertEqual(p(9,5),0)
+        for stage in (10,11):
+            self.assertGreater(p(stage,5),0);self.assertEqual(p(stage,6),0)
+            self.assertAlmostEqual(sum(p(stage,r) for r in range(1,16)),1,places=5)
+    def test_engine_uses_stage_of_node(self):
+        model=bot.default_spawn_model()
+        low=bot.pack((7,6,5,0, 4,3,2,0, 1,1,0,0)+(0,)*4)
+        high=bot.pack((10,6,5,0, 4,3,2,0, 1,1,0,0)+(0,)*4)
+        try:
+            left=bot.DIRECTIONS[0] # сливает 1+1 в третьей строке
+            before=(bot.NATIVE.score_levels(low,left,2),bot.NATIVE.score_levels(high,left,2))
+            model["stages"]["10"]=[0,0,0,0,1]+[0]*10 # на стадии 10 падают только 32
+            bot.apply_spawn_model(model)
+            after=(bot.NATIVE.score_levels(low,left,2),bot.NATIVE.score_levels(high,left,2))
+        finally:bot.apply_spawn_model(bot.default_spawn_model())
+        self.assertGreater(before[0],0)
+        self.assertEqual(before[0],after[0])    # стадия 7 не затронута
+        self.assertNotEqual(before[1],after[1]) # стадия 10 берёт свою строку
+    def test_record_spawn_per_stage(self):
+        import json
+        model=bot.default_spawn_model()
+        ten=list(model["stages"]["10"])
+        bot.record_spawn(model,11,6)
+        self.assertEqual(model["stages"]["10"],ten)
+        self.assertEqual(model["stages"]["11"][5],1)
+        self.assertEqual(model["stages"]["11"][:5],ten[:5])
+        self.assertEqual(json.loads(bot.format_spawn_model(model)),model)
+    def test_old_spawn_model_ignored(self):
+        import tempfile,json
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'spawn-model.json'
+            path.write_text(json.dumps({"weights":[667,63,26,13,5]}))
+            with patch.object(bot,'SPAWN_LEARNED',path):
+                self.assertEqual(bot.load_spawn_model(),bot.default_spawn_model())
+    def test_budget_first_pass_matches_sequential(self):
+        board=(10,7,6,4, 4,3,1,2, 3,2,1,0, 2,1,0,1)
+        info={}
+        d=bot.choose(board,depth=5,think=0,info=info)
+        self.assertEqual((info['passes'],info['threshold'],info['skipped']),(1,1e-4,True))
+        scores={m:bot.NATIVE.score_levels_thresh(bot.pack(board),bot.DIRECTIONS[m],5,1e-4) for m,_ in bot.legal_moves(board)}
+        self.assertEqual(d,max(scores,key=scores.get))
+    def test_budget_deadline(self):
+        import time
+        from unittest.mock import patch
+        board=(10,7,6,4, 4,3,1,2, 3,2,1,0, 2,1,0,1) # реальная позиция из play.log, 2 пустые клетки
+        first={};bot.choose(board,depth=8,think=0,info=first)
+        self.assertEqual(first['passes'],1)
+        info={};started=time.monotonic()
+        think=first['search_s']*1.5+.3 # первый проход успевает, второй — нет
+        with patch.object(bot,'GROWTH',0.0): # заставляем начать следующий проход
+            d=bot.choose(board,depth=8,think=think,info=info)
+        elapsed=time.monotonic()-started
+        self.assertIn(d,[m for m,_ in bot.legal_moves(board)])
+        self.assertEqual((info['passes'],info['cut']),(1,True)) # второй проход прерван дедлайном
+        self.assertLess(elapsed,think+.5)
     def test_merge_once(self):
         self.assertEqual(bot.move((1,1,1,1)+(0,)*12,0),(2,2,0,0)+(0,)*12)
     def test_calibration(self):
