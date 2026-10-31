@@ -1,0 +1,1339 @@
+<!doctype html>
+<!--
+  Шкатулка украшений — браузерный тренажёр режима слияния (механика 2048) из «Звёздного провидения».
+  Неофициальный. Один файл без зависимостей: откройте simulator/index.html в браузере
+  (из интернета подгружаются только шрифты Google Fonts; без сети используются запасные).
+
+  Правила, как в боте (bot.py, vendor/engine_adapted.cpp):
+    • уровень 1 = плитка 2 обычной 2048, уровень 11 = 2048; две плитки уровня 11 НЕ сливаются;
+    • цель — три плитки уровня 11 одновременно;
+    • новая плитка падает в случайную пустую клетку, уровень — по стадии (максимум на поле
+      после хода) из таблицы STAGE_COUNTS; это те же счётчики, что в spawn-model.default.json
+      (702 появления из play.log + prior 9:1 для уровней 1 и 2).
+
+  Предположения (в игре не проверены):
+    • ход стоит 1 энергию, запас 200, восстановление по таймеру (интервал задаётся в настройках);
+    • очки за слияние в уровень k — 2^k, как в классической 2048;
+    • инструменты: молот убирает предмет, зажим меняет местами два предмета, золотая пыль
+      повышает предмет на 1 уровень.
+
+  Подсказка и автоигра используют тот же алгоритм, что C++-движок бота (expectimax с эвристикой
+  nneonneo/2048-ai, порог отсечения 1e-4), с итеративным углублением в пределах времени.
+  На 20 позициях выбранный ход совпал с движком бота в 18 случаях; два расхождения — позиции,
+  где все ходы проигрышные и оценки равны.
+
+  Рисунки предметов нарисованы заново (SVG в buildDefs) и не являются графикой игры.
+-->
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Шкатулка украшений</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Philosopher:wght@400;700&display=swap">
+<style>
+/* Layout: one game column styled as the mobile screen (dusk header → reward track → energy → lacquered board → tools),
+   with the reference panels beside it on wide screens and below it on phones. Single deliberate look: night lacquer. */
+:root {
+  color-scheme: dark;
+  --ground: #241012;        /* page: dark lacquer behind the screen */
+  --screen: #3a1715;        /* game screen background below the header */
+  --lacquer: #9a2f25;       /* frame red */
+  --lacquer-hi: #c85a44;
+  --lacquer-lo: #5e1812;
+  --wood: #3b1d1b;          /* board cells */
+  --wood-line: #55302b;
+  --dusk: #4a3f78;          /* header sky */
+  --dusk-hi: #b9addf;
+  --gold: #e9bd5d;
+  --gold-hi: #fff0b8;
+  --jade: #4f9a74;
+  --paper: #f6e9d3;         /* text on dark */
+  --paper-dim: #cdb8a0;
+  --ink: #2a1214;
+  --panel: #2f1517;
+  --panel-line: #57302b;
+  --danger: #e2685a;
+  --font-display: "Prata", "Georgia", "Times New Roman", serif;
+  --font-body: "Philosopher", "Trebuchet MS", "Segoe UI", sans-serif;
+  --slide: 120ms;
+}
+@media (prefers-reduced-motion: reduce) { :root { --slide: 0ms; } }
+@media (max-width: 440px) {
+  .sky { height: 186px; }
+  .sky-content { flex-direction: column; gap: 8px; }
+  .scorecard { margin-top: 0; align-self: flex-end; }
+  .title h1 { font-size: 21px; }
+  .title p { max-width: none; }
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { background: var(--ground); color: var(--paper); }
+body {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 40px;
+}
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+.layout {
+  display: grid;
+  gap: 28px;
+  max-width: 1060px;
+  margin: 0 auto;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+}
+@media (min-width: 960px) {
+  .layout { grid-template-columns: 470px minmax(0, 1fr); align-items: start; justify-items: stretch; }
+}
+
+/* ---------- the phone-like game column ---------- */
+.game {
+  width: 100%;
+  max-width: 470px;
+  background: var(--screen);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgba(0,0,0,.45), inset 0 0 0 1px #5a2622;
+}
+.sky {
+  position: relative;
+  height: 168px;
+  background: linear-gradient(180deg, #2f2a52 0%, var(--dusk) 45%, #8f82c0 100%);
+  overflow: hidden;
+}
+.sky canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sky-content {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px 0;
+  height: 100%;
+}
+.title { min-width: 0; padding: 4px 8px 6px 0; border-radius: 8px; background: radial-gradient(ellipse at 30% 50%, rgba(40,32,80,.55), rgba(40,32,80,0) 75%); }
+.title h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 23px;
+  line-height: 1.15;
+  color: #fffaf0;
+  text-shadow: 0 2px 0 #2b2350, 0 0 12px rgba(40,30,80,.8);
+  text-wrap: balance;
+}
+.title p { margin: 6px 0 0; font-size: 12.5px; color: #e9e2ff; text-shadow: 0 1px 2px #2b2350; max-width: 22ch; }
+.scorecard {
+  flex: none;
+  margin-top: 40px;
+  min-width: 150px;
+  background: linear-gradient(180deg, rgba(44,36,84,.92), rgba(32,26,64,.92));
+  border: 1px solid #a99be0;
+  border-radius: 8px;
+  padding: 6px 12px 7px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.scorecard .big { font-family: var(--font-display); font-size: 16px; color: #fffaf0; }
+.scorecard .small { font-size: 12.5px; color: #ddd5ff; }
+
+.track {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 3px;
+  padding: 10px 10px 16px;
+  background: linear-gradient(180deg, #8f82c0, #6f62a4 60%, #4b3f7a);
+}
+.track::before {
+  content: "";
+  position: absolute;
+  left: 22px; right: 22px; bottom: 9px;
+  height: 3px;
+  background: #2c2448;
+  border-radius: 2px;
+}
+.ms { position: relative; display: grid; justify-items: center; }
+.ms .disc {
+  width: 100%; max-width: 46px; height: auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #fbf5ff, #d9cff3 60%, #a596d6);
+  border: 2px solid #f4efff;
+  display: grid; place-items: center;
+  box-shadow: 0 2px 6px rgba(20,10,50,.5);
+}
+.ms .disc svg { width: 78%; height: 78%; }
+.ms .x { position: absolute; right: -2px; bottom: 6px; font-family: var(--font-display); font-size: 13px; color: var(--gold-hi); text-shadow: 0 1px 2px #3a1d10, 0 0 4px #3a1d10; }
+.ms .dot { position: absolute; bottom: -12px; width: 9px; height: 9px; border-radius: 50%; background: #2c2448; border: 2px solid #e8e0ff; }
+.ms.done .dot { background: #f4efff; }
+.ms.done .disc { filter: saturate(.55) brightness(.92); }
+.ms .check {
+  position: absolute; inset: 0; margin: auto;
+  width: 30px; height: 30px;
+  display: none;
+}
+.ms.done .check { display: block; }
+.ms.goal .disc { border-color: var(--gold-hi); box-shadow: 0 0 0 2px #b6852c, 0 2px 8px rgba(255,200,100,.45); }
+
+.energy-row {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  padding: 10px 12px 8px;
+  background: linear-gradient(180deg, #4a1c18, var(--screen));
+  font-variant-numeric: tabular-nums;
+}
+.energy {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #2b0f12;
+  border: 1px solid #6a2a2a;
+  border-radius: 999px;
+  padding: 3px 4px 3px 8px;
+  color: #ffd9e4;
+}
+.energy svg { width: 16px; height: 16px; }
+.energy .plus {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 0; background: linear-gradient(#ffe6a3, #e0a43c); color: #5a2a0a;
+  font-weight: 700; line-height: 1; display: grid; place-items: center;
+}
+.regen { color: #b7e3a6; font-size: 14px; }
+.energy.empty { color: var(--danger); border-color: var(--danger); }
+
+/* board */
+.frame {
+  position: relative;
+  margin: 4px 8px 0;
+  padding: 16px 16px 18px;
+  background:
+    linear-gradient(90deg, var(--lacquer-lo) 0 10px, transparent 10px calc(100% - 10px), var(--lacquer-lo) calc(100% - 10px)),
+    linear-gradient(180deg, var(--lacquer-hi), var(--lacquer) 18%, #7d241c 82%, var(--lacquer-lo));
+  border-radius: 6px;
+  box-shadow: inset 0 2px 0 rgba(255,210,180,.25), inset 0 -3px 0 rgba(0,0,0,.35), 0 6px 14px rgba(0,0,0,.4);
+}
+.frame::before, .frame::after {
+  content: "";
+  position: absolute;
+  top: 6px; bottom: 6px; width: 16px;
+  background: linear-gradient(90deg, #6a1b14, #a8382b 45%, #6a1b14);
+  border-radius: 8px 8px 3px 3px;
+  box-shadow: 0 0 0 1px #3e0e0a;
+}
+.frame::before { left: -6px; }
+.frame::after { right: -6px; }
+.board {
+  position: relative;
+  aspect-ratio: 1;
+  width: 100%;
+  background: var(--wood);
+  border: 3px solid #2a0d0b;
+  border-radius: 3px;
+  box-shadow: inset 0 0 18px rgba(0,0,0,.55);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  container-type: inline-size;
+}
+.cells { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); }
+.cells span { border-right: 1px solid var(--wood-line); border-bottom: 1px solid var(--wood-line); box-shadow: inset 0 0 10px rgba(0,0,0,.25); }
+.cells span:nth-child(4n) { border-right: 0; }
+.cells span:nth-last-child(-n+4) { border-bottom: 0; }
+.tiles { position: absolute; inset: 0; }
+.tile {
+  position: absolute; left: 0; top: 0;
+  width: 25%; height: 25%;
+  transform: translate(calc(var(--c) * 100%), calc(var(--r) * 100%));
+  transition: transform var(--slide) ease-out;
+  cursor: default;
+}
+.tool-on .tile { cursor: crosshair; }
+.tile .in { position: absolute; inset: 0; }
+.tile .glow { position: absolute; inset: 6%; border-radius: 50%; opacity: 0; }
+.tile.t3 .glow, .tile.t4 .glow, .tile.t5 .glow { opacity: 1; background: radial-gradient(circle, rgba(170,255,190,.42), rgba(170,255,190,0) 62%); }
+.tile.t9 .glow, .tile.t10 .glow { opacity: 1; background: radial-gradient(circle, rgba(255,200,120,.6), rgba(255,200,120,0) 64%); }
+.tile.t11 .glow { opacity: 1; background: radial-gradient(circle, rgba(255,232,150,.85), rgba(255,220,120,0) 66%); animation: shimmer 2.4s ease-in-out infinite; }
+@keyframes shimmer { 50% { opacity: .65; } }
+.tile svg.ic { position: absolute; left: 13%; top: 17%; width: 74%; height: 74%; overflow: visible; filter: drop-shadow(0 2px 2px rgba(0,0,0,.45)); }
+.badge {
+  position: absolute; top: 5%; right: 6%;
+  width: 29%; aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-weight: 700;
+  font-size: 14px;
+  font-size: 4.3cqw;
+  color: #fff;
+  border: 2px solid rgba(255,255,255,.88);
+  box-shadow: 0 1px 2px rgba(0,0,0,.5);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+}
+.b-grey { background: radial-gradient(circle at 40% 35%, #b9bbbe, #85878b); }
+.b-jade { background: radial-gradient(circle at 40% 35%, #7fd0a5, #3f8f69); }
+.b-blue { background: radial-gradient(circle at 40% 35%, #8db8ea, #3f6fa8); }
+.b-violet { background: radial-gradient(circle at 40% 35%, #d2b3f1, #8a5fc0); }
+.b-amber { background: radial-gradient(circle at 40% 35%, #ffc27a, #d9762a); }
+.b-gold { background: radial-gradient(circle at 40% 35%, #fff2b0, #d9a332); color: #5a330a; border-color: #fff6d0; }
+.tile.selected .in { outline: 3px solid var(--gold); outline-offset: -5px; border-radius: 6px; }
+.in.spawn { animation: appear 180ms ease-out; }
+.in.pop { animation: pop 200ms ease-out; }
+@keyframes appear { from { transform: scale(.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes pop { 0% { transform: scale(1); } 45% { transform: scale(1.18); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .in.spawn, .in.pop, .tile.t11 .glow { animation: none; } }
+.shake { animation: shake 260ms ease-in-out; }
+@keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+.hint-arrow {
+  position: absolute; inset: 0; margin: auto;
+  width: 46%; height: 46%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+.hint-arrow.on { opacity: .9; }
+
+.overlay {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  background: rgba(30,10,10,.72);
+  backdrop-filter: blur(2px);
+  text-align: center;
+  padding: 16px;
+  z-index: 3;
+}
+.overlay h2 { margin: 0 0 6px; font-family: var(--font-display); font-weight: 400; font-size: 24px; color: var(--gold-hi); text-wrap: balance; }
+.overlay p { margin: 0 0 14px; color: var(--paper); }
+.overlay .row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+
+.status {
+  min-height: 42px;
+  margin: 8px 14px 0;
+  font-size: 13.5px;
+  color: var(--paper-dim);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.status strong { color: var(--paper); font-weight: 700; }
+
+.tools {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 6px 14px 4px;
+}
+.tool {
+  position: relative;
+  display: grid; justify-items: center; gap: 2px;
+  background: none; border: 0; padding: 4px 0;
+  color: var(--paper);
+  font-size: 13px;
+}
+.tool .pot {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: radial-gradient(circle at 40% 35%, #f3ead8, #c9b393 70%, #8f7656);
+  border: 2px solid #f6ead2;
+  box-shadow: 0 3px 6px rgba(0,0,0,.4);
+}
+.tool .pot svg { width: 70%; height: 70%; }
+.tool .count {
+  position: absolute; top: 2px; right: calc(50% - 38px);
+  min-width: 20px; height: 20px; padding: 0 5px;
+  border-radius: 10px;
+  background: #2b0f12; border: 1px solid #c79a62;
+  font-size: 12px; line-height: 18px;
+  font-variant-numeric: tabular-nums;
+}
+.tool[aria-pressed="true"] .pot { border-color: var(--gold); box-shadow: 0 0 0 3px #b6852c, 0 0 14px rgba(255,200,100,.55); }
+.tool:disabled { opacity: .45; cursor: not-allowed; }
+
+.controls {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  padding: 10px 14px 18px;
+}
+.btn {
+  border: 1px solid #c79a62;
+  background: linear-gradient(180deg, #7c2a22, #5a1914);
+  color: #fff4e0;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 14px;
+  box-shadow: inset 0 1px 0 rgba(255,220,190,.25);
+}
+.btn:hover { background: linear-gradient(180deg, #8f342a, #681f19); }
+.btn.gold { background: linear-gradient(180deg, #ffe7a6, #d9a03c); color: #4a2408; border-color: #fff0c4; }
+.btn.gold:hover { background: linear-gradient(180deg, #fff0bf, #e6ae4c); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn.warn { border-color: var(--danger); }
+
+/* ---------- reference column ---------- */
+.side { width: 100%; max-width: 640px; display: grid; gap: 22px; min-width: 0; }
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: 12px;
+  padding: 16px 18px;
+  min-width: 0;
+}
+.panel h2 {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 19px;
+  color: var(--gold-hi);
+  text-wrap: balance;
+}
+.panel .lede { margin: 0 0 12px; color: var(--paper-dim); font-size: 13.5px; max-width: 62ch; }
+.ladder { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
+.rung {
+  display: grid; justify-items: center; gap: 2px;
+  padding: 8px 4px 6px;
+  background: #3a1c1b;
+  border: 1px solid #4f2a26;
+  border-radius: 8px;
+  text-align: center;
+}
+.rung svg { width: 46px; height: 46px; overflow: visible; }
+.rung .lv { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--paper-dim); }
+.rung .nm { font-size: 13px; line-height: 1.2; }
+.rung .val { font-size: 12px; color: var(--gold); font-variant-numeric: tabular-nums; }
+.rung.cap { border-color: #b6852c; background: #4a2a17; }
+
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 14px; }
+th, td { padding: 6px 6px; text-align: right; border-bottom: 1px solid #4a2724; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { font-weight: 700; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--paper-dim); }
+tr.now td { background: #4a2a17; color: var(--gold-hi); }
+tr.now td:first-child::after { content: " · сейчас"; font-size: 12px; color: var(--gold); }
+td.zero { color: #6f4b44; }
+.note { margin: 10px 0 0; font-size: 13px; color: var(--paper-dim); max-width: 66ch; }
+
+.rules { margin: 0; padding-left: 18px; display: grid; gap: 6px; max-width: 66ch; }
+.rules li::marker { color: var(--gold); }
+.keys { color: var(--paper-dim); font-size: 13px; margin: 10px 0 0; }
+kbd { font: inherit; font-size: 12px; padding: 1px 6px; border: 1px solid #6a3a33; border-bottom-width: 2px; border-radius: 4px; background: #2a1213; color: var(--paper); }
+
+details.panel summary { cursor: pointer; font-family: var(--font-display); font-size: 19px; color: var(--gold-hi); list-style: none; }
+details.panel summary::-webkit-details-marker { display: none; }
+details.panel summary::before { content: "▸ "; color: var(--gold); }
+details.panel[open] summary::before { content: "▾ "; }
+.settings { display: grid; gap: 12px; margin-top: 12px; }
+.settings label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.settings input[type="number"] { width: 72px; padding: 4px 6px; background: #2a1213; border: 1px solid #6a3a33; border-radius: 6px; }
+.settings input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--gold); }
+.settings small { color: var(--paper-dim); flex-basis: 100%; }
+footer { max-width: 1060px; margin: 26px auto 0; color: var(--paper-dim); font-size: 12.5px; text-align: center; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<!-- Общие градиенты и символы предметов (ic-1 … ic-11, ic-check); заполняются в buildDefs(). -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="defs"></defs></svg>
+
+<!-- Левая колонка — игровой экран как в мобильной игре; правая — справка (на телефоне уходит вниз). -->
+<div class="layout">
+  <section class="game" aria-label="Игровой экран">
+    <div class="sky">
+      <canvas id="sky" aria-hidden="true"></canvas>
+      <div class="sky-content">
+        <div class="title">
+          <h1>Шкатулка украшений</h1>
+          <p>Соберите три золотые диадемы одновременно</p>
+        </div>
+        <div class="scorecard" aria-live="polite">
+          <div class="big">Текущий счёт: <span id="score">0</span></div>
+          <div class="small">Лучший результат: <span id="best">0</span></div>
+          <div class="small">Ход: <span id="moves">0</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="track" id="track" aria-label="Шкала наград"></div>
+
+    <div class="energy-row">
+      <span class="energy" id="energyPill">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9.5 1 3 9h4l-1 6 6.5-8H8.5z" fill="#ff5fa2"/></svg>
+        <span id="energy">200/200</span>
+        <button class="plus" id="refill" type="button" aria-label="Пополнить энергию до 200" title="Пополнить энергию">+</button>
+      </span>
+      <span class="regen" id="regen">Запас полон</span>
+    </div>
+
+    <div class="frame">
+      <div class="board" id="board" tabindex="0" aria-label="Поле 4 на 4. Стрелки или свайп — сдвиг предметов">
+        <div class="cells" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="tiles" id="tiles"></div>
+        <svg class="hint-arrow" id="hintArrow" viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M50 8 82 44H62v48H38V44H18z" fill="rgba(255,236,170,.92)" stroke="#8a5a14" stroke-width="3" stroke-linejoin="round"/>
+        </svg>
+        <div class="overlay" id="overlay" hidden></div>
+      </div>
+    </div>
+
+    <p class="status" id="status" aria-live="polite">Стрелки, WASD или свайп по полю. Предметы одного уровня сливаются в следующий.</p>
+
+    <div class="tools" role="group" aria-label="Инструменты">
+      <button class="tool" type="button" id="tool-hammer" data-tool="hammer" aria-pressed="false">
+        <span class="pot"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="21" y="18" width="6" height="26" rx="2" fill="#9a6a3a"/><rect x="10" y="8" width="28" height="13" rx="3" fill="#bfe3df" stroke="#5f9a94" stroke-width="1.5"/><rect x="10" y="8" width="7" height="13" rx="2" fill="#9ccfca"/></svg></span>
+        <span>Нефритовый молот</span><span class="count" id="cnt-hammer">0</span>
+      </button>
+      <button class="tool" type="button" id="tool-clamp" data-tool="clamp" aria-pressed="false">
+        <span class="pot"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 6l9 32M34 6l-9 32" stroke="#8b939c" stroke-width="4" stroke-linecap="round"/><path d="M14 6l9 32M34 6l-9 32" stroke="#e8eef3" stroke-width="1.6" stroke-linecap="round"/><circle cx="24" cy="38" r="4" fill="#c79a62"/></svg></span>
+        <span>Серебряный зажим</span><span class="count" id="cnt-clamp">0</span>
+      </button>
+      <button class="tool" type="button" id="tool-dust" data-tool="dust" aria-pressed="false">
+        <span class="pot"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 22c0-4 24-4 24 0l-3 18c-1 4-17 4-18 0z" fill="#b07a3c" stroke="#6e4720" stroke-width="1.5"/><ellipse cx="24" cy="21" rx="12" ry="4" fill="#ffd96a"/><circle cx="19" cy="15" r="1.6" fill="#ffe9a0"/><circle cx="27" cy="12" r="1.3" fill="#ffe9a0"/><circle cx="24" cy="17" r="1.1" fill="#fff4c8"/></svg></span>
+        <span>Золотая пыль</span><span class="count" id="cnt-dust">0</span>
+      </button>
+    </div>
+
+    <div class="controls">
+      <button class="btn" type="button" id="newGame">Новая партия</button>
+      <button class="btn" type="button" id="undo">Отменить ход</button>
+      <button class="btn gold" type="button" id="hint">Подсказка</button>
+      <button class="btn" type="button" id="auto" aria-pressed="false">Автоигра</button>
+    </div>
+  </section>
+
+  <aside class="side">
+    <section class="panel" aria-labelledby="h-ladder">
+      <h2 id="h-ladder">Лестница предметов</h2>
+      <p class="lede">Уровень 1 соответствует плитке 2 в обычной 2048, уровень 11 — плитке 2048. Две диадемы одиннадцатого уровня не сливаются: это потолок.</p>
+      <div class="ladder" id="ladder"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="h-spawn">
+      <h2 id="h-spawn">Что выпадает после хода</h2>
+      <p class="lede">После каждого хода в случайную пустую клетку падает новый предмет. Чем крупнее предмет на поле, тем крупнее может быть новый: самый старший возможный уровень равен максимуму на поле минус пять.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Максимум</th><th>2</th><th>4</th><th>8</th><th>16</th><th>32</th></tr></thead>
+          <tbody id="spawnRows"></tbody>
+        </table>
+      </div>
+      <p class="note">Столбцы — новый предмет в значениях обычной 2048 (2 — уровень 1, 32 — уровень 5). Частоты по журналу бота: 702 появления из реальных партий, к ним добавлены 9 двоек и 1 четвёрка на каждую стадию как классическая основа. Клетка выбирается равномерно среди пустых.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="h-rules">
+      <h2 id="h-rules">Правила тренажёра</h2>
+      <ul class="rules">
+        <li>Свайп сдвигает все предметы к стене; два одинаковых соседа сливаются в предмет следующего уровня, каждый предмет — не больше одного раза за ход.</li>
+        <li>Слияние в уровень <i>k</i> приносит 2<sup><i>k</i></sup> очков, как в классической 2048.</li>
+        <li>Ход стоит 1 энергию, запас — 200, восстановление по таймеру. Кнопка «+» пополняет запас бесплатно.</li>
+        <li>Цель — три предмета уровня 11 на поле одновременно. Шкала наверху отмечает первые 6–11 уровни и вторую, третью диадему.</li>
+        <li>Инструменты не тратят энергию: молот убирает предмет, зажим меняет местами два предмета, золотая пыль повышает предмет на уровень.</li>
+        <li>Подсказка и автоигра считают ход тем же способом, что бот: перебор будущих ходов и выпадений с оценкой позиции, углубляясь, пока не кончится время.</li>
+      </ul>
+      <p class="keys"><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> или <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> — ход · <kbd>H</kbd> — подсказка · <kbd>U</kbd> — отмена · <kbd>Esc</kbd> — выйти из режима инструмента</p>
+    </section>
+
+    <details class="panel" id="settingsPanel">
+      <summary>Настройки</summary>
+      <div class="settings">
+        <label for="optEnergy"><input type="checkbox" id="optEnergy" checked> Учитывать энергию</label>
+        <label for="optRegen">Восстановление: 1 энергия каждые <input type="number" id="optRegen" min="0.1" max="60" step="0.1" value="3"> мин
+          <small>Точный интервал в игре неизвестен; на скриншотах таймер показывает меньше минуты до следующей единицы.</small></label>
+        <label for="optTools">Инструментов каждого вида в новой партии: <input type="number" id="optTools" min="0" max="99" step="1" value="3"></label>
+        <label for="optDepth">Подсказка: глубина до <input type="number" id="optDepth" min="1" max="8" step="1" value="6"> ходов</label>
+        <label for="optTime">Время на подсказку: <input type="number" id="optTime" min="0.2" max="10" step="0.1" value="1.5"> с</label>
+        <label for="optSpeed">Пауза автоигры между ходами: <input type="number" id="optSpeed" min="0" max="2000" step="50" value="250"> мс</label>
+      </div>
+    </details>
+  </aside>
+</div>
+
+<footer>Неофициальный тренажёр по мотивам режима слияния из «Звёздного провидения». Рисунки предметов нарисованы заново; частоты выпадений взяты из журнала бота. Действие инструментов и скорость восстановления энергии — предположения.</footer>
+
+<script>
+(() => {
+"use strict";
+const CAP = 11, GOAL = 3, ENERGY_MAX = 200;
+const NAMES = ["", "Коралловые бусины", "Гребень", "Шпилька с цветком", "Саше", "Шёлковый платок",
+  "Нефритовый браслет", "Расписной веер", "Пудреница", "Агатовая подвеска", "Шпилька-феникс", "Золотая диадема"];
+const DIRS = ["влево", "вправо", "вверх", "вниз"];
+const ARROWS = ["←", "→", "↑", "↓"];
+const ROT = [-90, 90, 0, 180];
+
+/* ---------- модель появления новых плиток ----------
+   Ключ — стадия: максимальный уровень на поле ПОСЛЕ хода (до появления новой плитки).
+   Стадия без своей строки берёт ближайшую меньшую (0 → уровни 1–7, 8, 9, 10 → 10 и 11).
+   Значения — счётчики уровней 1, 2, 3, … (2, 4, 8, 16, 32 в терминах обычной 2048);
+   из них получаются вероятности SPAWN[стадия][уровень-1]. Правило «старший возможный
+   уровень = максимум − 5» следует из этих данных: 8 с 256, 16 с 512, 32 с 1024. */
+const STAGE_COUNTS = { 0: [35, 3], 8: [74, 8, 1], 9: [143, 14, 4, 1], 10: [391, 36, 16, 11, 5] };
+function stageCounts(stage) {
+  const keys = Object.keys(STAGE_COUNTS).map(Number).sort((a, b) => a - b);
+  let key = keys[0];
+  for (const k of keys) if (k <= stage) key = k;
+  const row = STAGE_COUNTS[key].slice();
+  while (row.length < 15) row.push(0);
+  return row;
+}
+const SPAWN = Array.from({ length: 16 }, (_, s) => {
+  const row = stageCounts(s), total = row.reduce((a, b) => a + b, 0);
+  return row.map(v => v / total);
+});
+function pickLevel(stage) {
+  const row = SPAWN[Math.min(stage, 15)];
+  let r = Math.random();
+  for (let i = 0; i < row.length; i++) { r -= row[i]; if (r < 0) return i + 1; }
+  return 1;
+}
+
+/* ---------- рисунки предметов ----------
+   Каждый уровень — <symbol id="ic-N"> в viewBox 64×64; плитки ссылаются на него через <use>,
+   поэтому SVG-разметка строится один раз. Градиенты общие (g-*). */
+function petals(cx, cy, n, rx, ry, dist, fill) {
+  let s = "";
+  for (let k = 0; k < n; k++) s += `<ellipse cx="${cx}" cy="${cy - dist}" rx="${rx}" ry="${ry}" fill="${fill}" transform="rotate(${k * 360 / n} ${cx} ${cy})"/>`;
+  return s;
+}
+function buildDefs() {
+  const grads = `
+  <radialGradient id="g-bead" cx=".35" cy=".32" r=".7"><stop offset="0" stop-color="#ff9b8a"/><stop offset=".5" stop-color="#d42a2a"/><stop offset="1" stop-color="#6d0a10"/></radialGradient>
+  <linearGradient id="g-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1c58a"/><stop offset="1" stop-color="#b8743a"/></linearGradient>
+  <linearGradient id="g-gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff4c2"/><stop offset=".45" stop-color="#f0c150"/><stop offset="1" stop-color="#a8721f"/></linearGradient>
+  <radialGradient id="g-petal" cx=".5" cy=".7" r=".8"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#f8bccd"/><stop offset="1" stop-color="#e2789a"/></radialGradient>
+  <radialGradient id="g-sachet" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#f5ffe0"/><stop offset=".6" stop-color="#c9e7a5"/><stop offset="1" stop-color="#86b764"/></radialGradient>
+  <linearGradient id="g-silk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#d8edff"/><stop offset="1" stop-color="#97c1e8"/></linearGradient>
+  <linearGradient id="g-jade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c4f5d8"/><stop offset=".5" stop-color="#4fae7f"/><stop offset="1" stop-color="#1d6545"/></linearGradient>
+  <linearGradient id="g-fan" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff7e6"/><stop offset="1" stop-color="#efcc98"/></linearGradient>
+  <radialGradient id="g-rouge" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#f6eeff"/><stop offset=".6" stop-color="#cdb0f0"/><stop offset="1" stop-color="#8a64c4"/></radialGradient>
+  <radialGradient id="g-agate" cx=".38" cy=".3" r=".85"><stop offset="0" stop-color="#ffe2bd"/><stop offset=".45" stop-color="#f08a4b"/><stop offset="1" stop-color="#a8331a"/></radialGradient>
+  <linearGradient id="g-phoenix" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe08a"/><stop offset=".5" stop-color="#f07b2c"/><stop offset="1" stop-color="#c42d1e"/></linearGradient>`;
+  const S = {};
+  // 1 coral beads
+  {
+    const pos = [[22, 36], [30, 31], [38, 35], [26, 43], [35, 42], [43, 41], [31, 37]];
+    S[1] = pos.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5.2" fill="url(#g-bead)"/><circle cx="${x - 1.7}" cy="${y - 1.9}" r="1.3" fill="#fff" opacity=".75"/>`).join("");
+  }
+  // 2 wooden comb
+  {
+    let teeth = "";
+    for (let x = 14.5; x <= 48.5; x += 3) teeth += `<rect x="${x}" y="33" width="1.9" height="13" rx=".9" fill="#c98b4d"/>`;
+    S[2] = `<g transform="rotate(-14 32 36)">${teeth}<path d="M12 34 C18 17 46 17 52 34 Z" fill="url(#g-wood)" stroke="#8a5226" stroke-width="1"/><path d="M18 30 C24 22 40 22 46 30" stroke="#fbe0b0" stroke-width="1.1" fill="none" opacity=".75"/></g>`;
+  }
+  // 3 flower hairpin
+  S[3] = `<line x1="13" y1="55" x2="44" y2="19" stroke="url(#g-gold)" stroke-width="3.2" stroke-linecap="round"/>
+    <circle cx="13" cy="55" r="2.4" fill="#e8b84a"/>
+    <ellipse cx="33" cy="32" rx="6.5" ry="2.6" fill="#6fbf73" transform="rotate(-40 33 32)"/>
+    ${petals(43, 21, 5, 4, 6, 6.5, "url(#g-petal)")}<circle cx="43" cy="21" r="2.8" fill="#f4c430"/>
+    <line x1="43" y1="28" x2="45" y2="38" stroke="#e7c46a" stroke-width="1"/><circle cx="45" cy="40" r="2" fill="#e64b5a"/>`;
+  // 4 sachet
+  S[4] = `<path d="M18 32 C16 46 22 54 32 54 C42 54 48 46 46 32 C40 29 24 29 18 32 Z" fill="url(#g-sachet)" stroke="#7ea65c" stroke-width="1"/>
+    <path d="M22 25 C26 16 38 16 42 25 C38 22 26 22 22 25Z" fill="#dcf2bd" stroke="#7ea65c" stroke-width=".8"/>
+    <path d="M24 31 C26 24 38 24 40 31" fill="#bcdf96" stroke="#7ea65c" stroke-width=".8"/>
+    <ellipse cx="32" cy="29" rx="9.5" ry="2.3" fill="#e2b34a"/>
+    <path d="M40 30 C46 34 48 40 50 46" stroke="#e2b34a" stroke-width="1.4" fill="none"/><rect x="48" y="45" width="4" height="7" rx="1.5" fill="#d0574b"/>
+    ${petals(32, 42, 5, 1.7, 2.6, 2.6, "#f29bb4")}<circle cx="32" cy="42" r="1.2" fill="#f7d25a"/>`;
+  // 5 silk handkerchief
+  S[5] = `<path d="M11 30 L36 17 L55 34 L30 51 Z" fill="url(#g-silk)" stroke="#8fb6dc" stroke-width="1"/>
+    <path d="M36 17 C38 26 37 33 41 37 C36 42 33 46 30 51" stroke="#a9cbe9" stroke-width="1.2" fill="none"/>
+    <path d="M55 34 L44 41 L46 30 Z" fill="#f2f9ff" stroke="#a9cbe9" stroke-width=".8"/>
+    <path d="M16 31 L34 22" stroke="#ffffff" stroke-width="1" opacity=".8"/>`;
+  // 6 jade bracelet
+  S[6] = `<ellipse cx="32" cy="36" rx="18" ry="12" fill="none" stroke="#164a33" stroke-width="8.5" opacity=".35"/>
+    <ellipse cx="32" cy="35" rx="18" ry="12" fill="none" stroke="url(#g-jade)" stroke-width="7"/>
+    <path d="M17 31 C21 25 29 23 38 24" stroke="#ecfff3" stroke-width="2" fill="none" opacity=".75" stroke-linecap="round"/>
+    <rect x="44" y="40" width="7" height="4.5" rx="1.5" fill="url(#g-gold)" transform="rotate(-25 47 42)"/>`;
+  // 7 painted fan
+  {
+    const cx = 32, cy = 48, R = 26, a0 = -150, a1 = -30;
+    const pt = a => [cx + R * Math.cos(a * Math.PI / 180), cy + R * Math.sin(a * Math.PI / 180)];
+    const [x0, y0] = pt(a0), [x1, y1] = pt(a1);
+    let ribs = "";
+    for (let k = 0; k <= 8; k++) { const [x, y] = pt(a0 + (a1 - a0) * k / 8); ribs += `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#c99a6a" stroke-width=".9"/>`; }
+    const blossoms = [[-118, 18], [-95, 21], [-70, 17]].map(([a, r]) => {
+      const x = cx + r * Math.cos(a * Math.PI / 180), y = cy + r * Math.sin(a * Math.PI / 180);
+      return petals(+x.toFixed(1), +y.toFixed(1), 5, 1.4, 2, 2, "#e0485a") + `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r=".9" fill="#ffd45a"/>`;
+    }).join("");
+    S[7] = `<path d="M${cx} ${cy} L${x0.toFixed(1)} ${y0.toFixed(1)} A${R} ${R} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)} Z" fill="url(#g-fan)" stroke="#b8333a" stroke-width="1.2"/>
+      ${ribs}${blossoms}
+      <path d="M${x0.toFixed(1)} ${y0.toFixed(1)} A${R} ${R} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}" stroke="#b8333a" stroke-width="3" fill="none"/>
+      <circle cx="${cx}" cy="${cy}" r="2.6" fill="#8a3b1f"/><path d="M32 50 L32 58" stroke="#c4303c" stroke-width="1.6"/><circle cx="32" cy="59" r="1.6" fill="#c4303c"/>`;
+  }
+  // 8 rouge box
+  S[8] = `<path d="M14 36 L14 43 A18 8 0 0 0 50 43 L50 36" fill="#a985d8" stroke="#6f4ea8" stroke-width="1"/>
+    <ellipse cx="32" cy="36" rx="18" ry="8" fill="url(#g-rouge)" stroke="#e8c76a" stroke-width="1.6"/>
+    <g transform="translate(32 36) scale(1 .62) translate(-32 -36)">${petals(32, 36, 5, 3.4, 4.6, 4.8, "#f4a0bf")}</g>
+    <circle cx="32" cy="36" r="1.9" fill="#fbe27a"/>
+    <ellipse cx="22" cy="33" rx="3.5" ry="1.3" fill="#7fbf7a" transform="rotate(-20 22 33)"/>`;
+  // 9 agate pendant
+  S[9] = `<path d="M32 7 C25 9 25 16 32 16 C39 16 39 9 32 7" stroke="#9c2a22" stroke-width="1.6" fill="none"/>
+    <rect x="28" y="15" width="8" height="4.5" rx="1.6" fill="url(#g-gold)"/>
+    <ellipse cx="32" cy="34" rx="14" ry="17" fill="url(#g-agate)" stroke="#8e2c16" stroke-width="1"/>
+    <path d="M24 30 C30 21 41 27 35 34 C30 39 37 45 43 38" stroke="#ffe8cc" stroke-width="1.7" fill="none" opacity=".85" stroke-linecap="round"/>
+    <path d="M32 51 L27 61 M32 51 L32 62 M32 51 L37 61" stroke="#a8241f" stroke-width="1.6" stroke-linecap="round"/>`;
+  // 10 phoenix hairpin
+  S[10] = `<line x1="11" y1="57" x2="40" y2="23" stroke="url(#g-gold)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M34 27 C26 35 18 37 9 35" stroke="#e2452c" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <path d="M36 29 C30 39 22 43 13 43" stroke="#f08a2c" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <path d="M38 30 C34 41 28 47 21 51" stroke="#ffc04d" stroke-width="1.9" fill="none" stroke-linecap="round"/>
+    <path d="M41 22 C35 10 25 9 18 13 C26 15 32 20 36 27Z" fill="#f6a03c" stroke="#c4511e" stroke-width=".8"/>
+    <path d="M34 25 C40 16 50 15 55 21 C51 22 47 26 45 31 C40 31 36 29 34 25Z" fill="url(#g-phoenix)" stroke="#a83a16" stroke-width=".8"/>
+    <circle cx="54.5" cy="20" r="2.8" fill="#ffd35e"/><path d="M57 19 L61 20 L57 21.5Z" fill="#e2452c"/>
+    <path d="M53 17 C54 13 57 12 59 13 C57 14 56 15 55.5 17.5" fill="#e2452c"/>
+    <line x1="45" y1="31" x2="45" y2="41" stroke="#e8c46a" stroke-width="1"/><circle cx="45" cy="43" r="2.4" fill="#d92c3a"/><circle cx="45" cy="47.5" r="1.4" fill="#fff8e6"/>`;
+  // 11 golden diadem
+  {
+    let pearls = "";
+    for (let x = 14; x <= 50; x += 6) pearls += `<circle cx="${x}" cy="46" r="1.5" fill="#fffaf0" stroke="#e6cf9a" stroke-width=".5"/>`;
+    const star = (x, y, r) => `<path d="M${x} ${y - r} L${x + r * .28} ${y - r * .28} L${x + r} ${y} L${x + r * .28} ${y + r * .28} L${x} ${y + r} L${x - r * .28} ${y + r * .28} L${x - r} ${y} L${x - r * .28} ${y - r * .28}Z" fill="#fffbe0"/>`;
+    S[11] = `<path d="M10 44 L14 19 L23 33 L32 12 L41 33 L50 19 L54 44 Z" fill="url(#g-gold)" stroke="#a8741f" stroke-width="1.2" stroke-linejoin="round"/>
+      <rect x="9" y="41" width="46" height="9" rx="2.5" fill="url(#g-gold)" stroke="#a8741f" stroke-width="1"/>${pearls}
+      <circle cx="32" cy="30" r="4.4" fill="#d6243a" stroke="#fff2c0" stroke-width="1.1"/>
+      <circle cx="21.5" cy="37" r="2.6" fill="#3fae7c" stroke="#fff2c0" stroke-width=".7"/><circle cx="42.5" cy="37" r="2.6" fill="#3fae7c" stroke="#fff2c0" stroke-width=".7"/>
+      <circle cx="14" cy="19" r="2.7" fill="#fffaf0" stroke="#e6cf9a"/><circle cx="32" cy="12" r="2.9" fill="#fffaf0" stroke="#e6cf9a"/><circle cx="50" cy="19" r="2.7" fill="#fffaf0" stroke="#e6cf9a"/>
+      ${star(8, 12, 3.4)}${star(57, 9, 2.6)}${star(54, 54, 2.2)}`;
+  }
+  let sym = "";
+  for (let l = 1; l <= CAP; l++) sym += `<symbol id="ic-${l}" viewBox="0 0 64 64">${S[l]}</symbol>`;
+  sym += `<symbol id="ic-check" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#5fae3d" stroke="#e9ffd8" stroke-width="2"/><path d="M9 16.5 14 21.5 23.5 11" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>`;
+  document.getElementById("defs").innerHTML = grads + sym;
+}
+const icon = (l, cls = "") => `<svg class="${cls}" viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-${l}"/></svg>`;
+const badgeClass = l => l <= 2 ? "b-grey" : l <= 5 ? "b-jade" : l <= 7 ? "b-blue" : l === 8 ? "b-violet" : l <= 10 ? "b-amber" : "b-gold";
+
+/* ---------- движок подсказки ----------
+   Порт C++-движка бота на JS. Строка поля — 16-битное число (4 клетки × 4 бита); для всех
+   65 536 строк заранее считаются результат сдвига влево/вправо (LEFT/RIGHT) и эвристика (HEUR).
+   Expectimax: узел хода — максимум по направлениям, узел случая — среднее по пустым клеткам
+   и уровням новой плитки с вероятностями текущей стадии. Ветви с вероятностью < 1e-4 не
+   раскрываются; повторяющиеся позиции берутся из кеша. Глубина растёт 1, 2, 3 … пока хватает
+   времени; прерванная глубина отбрасывается. Функция целиком передаётся в Web Worker
+   (engineFactory.toString()), чтобы расчёт не подвешивал страницу; без Worker — в основном потоке. */
+function engineFactory() {
+  const CAP = 11, GOAL = 3, THRESH = 1e-4;
+  const LEFT = new Uint16Array(65536), RIGHT = new Uint16Array(65536), HEUR = new Float64Array(65536);
+  const rev = r => ((r & 15) << 12) | (((r >> 4) & 15) << 8) | (((r >> 8) & 15) << 4) | ((r >> 12) & 15);
+  for (let row = 0; row < 65536; row++) {
+    const line = [row & 15, (row >> 4) & 15, (row >> 8) & 15, (row >> 12) & 15];
+    let sum = 0, empty = 0, merges = 0, prev = 0, counter = 0;
+    for (let i = 0; i < 4; i++) {
+      const rank = line[i];
+      sum += Math.pow(rank, 3.5);
+      if (rank === 0) empty++;
+      else {
+        if (prev === rank && rank !== CAP) counter++;
+        else if (counter > 0) { merges += 1 + counter; counter = 0; }
+        prev = rank;
+      }
+    }
+    if (counter > 0) merges += 1 + counter;
+    let ml = 0, mr = 0;
+    for (let i = 1; i < 4; i++) {
+      if (line[i - 1] > line[i]) ml += Math.pow(line[i - 1], 4) - Math.pow(line[i], 4);
+      else mr += Math.pow(line[i], 4) - Math.pow(line[i - 1], 4);
+    }
+    // Веса оригинальной эвристики: «жив» + пустые клетки + соседние пары − немонотонность − «тяжесть»
+    // линии. Пара соседних 11 не считается будущим слиянием (rank !== CAP выше).
+    HEUR[row] = 200000 + 270 * empty + 700 * merges - 47 * Math.min(ml, mr) - 11 * sum;
+    const l = line.slice();
+    for (let i = 0; i < 3; i++) {
+      let j = i + 1;
+      while (j < 4 && l[j] === 0) j++;
+      if (j === 4) break;
+      if (l[i] === 0) { l[i] = l[j]; l[j] = 0; i--; }
+      else if (l[i] === l[j] && l[i] !== CAP) { l[i]++; l[j] = 0; } // 11 + 11 не сливаются
+    }
+    LEFT[row] = l[0] | (l[1] << 4) | (l[2] << 8) | (l[3] << 12);
+  }
+  for (let row = 0; row < 65536; row++) RIGHT[rev(row)] = rev(LEFT[row]);
+
+  const col = (R, c) => ((R[0] >> (4 * c)) & 15) | (((R[1] >> (4 * c)) & 15) << 4) | (((R[2] >> (4 * c)) & 15) << 8) | (((R[3] >> (4 * c)) & 15) << 12);
+  function move(d, R) {
+    if (d < 2) { const T = d === 0 ? LEFT : RIGHT; return [T[R[0]], T[R[1]], T[R[2]], T[R[3]]]; }
+    const T = d === 2 ? LEFT : RIGHT, out = [0, 0, 0, 0];
+    for (let c = 0; c < 4; c++) {
+      const v = T[col(R, c)];
+      for (let r = 0; r < 4; r++) out[r] |= ((v >> (4 * r)) & 15) << (4 * c);
+    }
+    return out;
+  }
+  const same = (a, b) => a[0] === b[0] && a[1] === b[1] && a[2] === b[2] && a[3] === b[3];
+  function caps(R) { let n = 0; for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) if (((R[r] >> (4 * c)) & 15) === CAP) n++; return n; }
+  function maxRank(R) { let m = 0; for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) m = Math.max(m, (R[r] >> (4 * c)) & 15); return m; }
+  function heur(R) {
+    if (caps(R) >= GOAL) return 1e9;
+    let s = HEUR[R[0]] + HEUR[R[1]] + HEUR[R[2]] + HEUR[R[3]];
+    for (let c = 0; c < 4; c++) s += HEUR[col(R, c)];
+    return s;
+  }
+
+  // Состояние одного расчёта: таблица появлений, предел глубины, дедлайн, счётчик узлов,
+  // кеш позиций (ключ — две половины поля по 32 бита; значение — [глубина узла, оценка]).
+  let table, depthLimit, deadline, nodes, cache;
+  const ABORT = {};
+  function chance(R, cprob, cur) {
+    if (caps(R) >= GOAL) return 1e9;
+    if ((++nodes & 1023) === 0 && performance.now() > deadline) throw ABORT;
+    if (cprob < THRESH || cur >= depthLimit) return heur(R);
+    const k1 = R[0] + R[1] * 65536, k2 = R[2] + R[3] * 65536;
+    let m = cache.get(k1);
+    if (m) { const e = m.get(k2); if (e && e[0] <= cur) return e[1]; }
+    const empties = [];
+    for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) if (((R[r] >> (4 * c)) & 15) === 0) empties.push(r * 4 + c);
+    const n = empties.length, probs = table[maxRank(R)];
+    const cp = cprob / n;
+    let res = 0;
+    for (const idx of empties) {
+      const r = idx >> 2, c = idx & 3;
+      for (let lv = 1; lv <= 15; lv++) {
+        const p = probs[lv - 1];
+        if (!(p > 0)) continue;
+        const R2 = R.slice(); R2[r] |= lv << (4 * c);
+        res += moveNode(R2, cp * p, cur) * p;
+      }
+    }
+    res /= n;
+    if (!m) { m = new Map(); cache.set(k1, m); }
+    m.set(k2, [cur, res]);
+    return res;
+  }
+  function moveNode(R, cprob, cur) {
+    let best = 0;
+    for (let d = 0; d < 4; d++) {
+      const R2 = move(d, R);
+      if (!same(R, R2)) best = Math.max(best, chance(R2, cprob, cur + 1));
+    }
+    return best;
+  }
+  function solve(msg) {
+    table = msg.table;
+    const R = [0, 0, 0, 0];
+    msg.cells.forEach((v, i) => { R[i >> 2] |= v << (4 * (i & 3)); });
+    const legal = [];
+    for (let d = 0; d < 4; d++) if (!same(R, move(d, R))) legal.push(d);
+    const t0 = performance.now();
+    let result = { id: msg.id, dir: legal.length ? legal[0] : null, depth: 0, scores: null, nodes: 0, ms: 0 };
+    if (!legal.length) return result;
+    let total = 0;
+    for (let depth = 1; depth <= msg.maxDepth; depth++) {
+      depthLimit = depth; nodes = 0; cache = new Map();
+      deadline = depth === 1 ? Infinity : t0 + msg.timeMs;
+      try {
+        const scores = [null, null, null, null];
+        let best = -1, bestDir = legal[0];
+        for (const d of legal) {
+          const s = chance(move(d, R), 1, 0);
+          scores[d] = s;
+          if (s > best) { best = s; bestDir = d; }
+        }
+        total += nodes;
+        result = { id: msg.id, dir: bestDir, depth, scores, nodes: total, ms: 0 };
+      } catch (e) {
+        if (e !== ABORT) throw e;
+        total += nodes;
+        break;
+      }
+      if (performance.now() - t0 > msg.timeMs * 0.35) break; // the next depth would not fit
+    }
+    result.nodes = total;
+    result.ms = performance.now() - t0;
+    return result;
+  }
+  return { solve };
+}
+
+let worker = null, localEngine = null, reqId = 0;
+const pending = new Map();
+try {
+  const src = `const E=(${engineFactory.toString()})();self.onmessage=e=>self.postMessage(E.solve(e.data));`;
+  worker = new Worker(URL.createObjectURL(new Blob([src], { type: "text/javascript" })));
+  worker.onmessage = e => { const f = pending.get(e.data.id); if (f) { pending.delete(e.data.id); f(e.data); } };
+  worker.onerror = () => { worker = null; for (const [id, f] of pending) { pending.delete(id); f(solveLocal(lastRequest)); } };
+} catch (e) { worker = null; }
+let lastRequest = null;
+function solveLocal(data) { localEngine = localEngine || engineFactory(); return localEngine.solve(data); }
+function solveAsync(cells) {
+  const data = { id: ++reqId, cells, table: SPAWN, maxDepth: settings.depth, timeMs: settings.time * 1000 };
+  lastRequest = data;
+  return new Promise(res => {
+    if (worker) { pending.set(data.id, res); worker.postMessage(data); }
+    else setTimeout(() => res(solveLocal(data)), 0);
+  });
+}
+
+/* ---------- состояние партии ----------
+   S.grid — 16 клеток (строки сверху вниз), в клетке null или {id, level}; id нужен для анимации
+   конкретной плитки. history — снимки для «Отменить ход». Партия, лучший счёт и настройки
+   сохраняются в localStorage (если браузер разрешает). */
+const settings = { energyOn: true, regenMin: 3, tools: 3, depth: 6, time: 1.5, speed: 250 };
+let S = null, nextId = 1, history = [], busy = false, toolMode = null, clampFirst = null, auto = false, hintDir = null;
+const els = {};
+const $ = id => document.getElementById(id);
+
+function freshState() {
+  return { grid: Array(16).fill(null), score: 0, moves: 0, energy: ENERGY_MAX, energyTs: Date.now(),
+    tools: { hammer: settings.tools, clamp: settings.tools, dust: settings.tools },
+    maxLevel: 0, maxCaps: 0, won: false };
+}
+const levels = g => g.map(t => t ? t.level : 0);
+function store() {
+  try {
+    localStorage.setItem("shkatulka-v1", JSON.stringify({ S: { ...S, grid: levels(S.grid) }, settings, best: bestScore }));
+  } catch (e) { /* storage is optional */ }
+}
+let bestScore = 0;
+function load() {
+  try {
+    const raw = localStorage.getItem("shkatulka-v1");
+    if (!raw) return false;
+    const d = JSON.parse(raw);
+    Object.assign(settings, d.settings || {});
+    bestScore = d.best || 0;
+    if (!d.S || !Array.isArray(d.S.grid) || d.S.grid.length !== 16) return false;
+    S = { ...freshState(), ...d.S, grid: d.S.grid.map(l => l ? { id: nextId++, level: l } : null) };
+    return true;
+  } catch (e) { return false; }
+}
+
+// Направления: 0 — влево, 1 — вправо, 2 — вверх, 3 — вниз. lineIdx даёт индексы n-й линии
+// в порядке «от стены, к которой едут плитки».
+function lineIdx(d, n) {
+  if (d === 0) return [4 * n, 4 * n + 1, 4 * n + 2, 4 * n + 3];
+  if (d === 1) return [4 * n + 3, 4 * n + 2, 4 * n + 1, 4 * n];
+  if (d === 2) return [n, n + 4, n + 8, n + 12];
+  return [n + 12, n + 8, n + 4, n];
+}
+function levelMove(L, d) {
+  const out = Array(16).fill(0);
+  for (let n = 0; n < 4; n++) {
+    const idx = lineIdx(d, n), vals = idx.map(i => L[i]).filter(Boolean);
+    let t = 0;
+    for (let k = 0; k < vals.length; k++) {
+      if (k + 1 < vals.length && vals[k] === vals[k + 1] && vals[k] < CAP) { out[idx[t++]] = vals[k] + 1; k++; }
+      else out[idx[t++]] = vals[k];
+    }
+  }
+  return out;
+}
+const sameL = (a, b) => a.every((v, i) => v === b[i]);
+const canMove = (L, d) => !sameL(L, levelMove(L, d));
+const anyMove = L => [0, 1, 2, 3].some(d => canMove(L, d));
+
+/* ---------- rendering ---------- */
+const tileEls = new Map();
+function tileEl(t, idx, anim) {
+  const el = document.createElement("div");
+  el.className = `tile t${t.level}`;
+  el.dataset.id = t.id;
+  el.style.setProperty("--r", idx >> 2);
+  el.style.setProperty("--c", idx & 3);
+  el.setAttribute("role", "img");
+  el.setAttribute("aria-label", `${NAMES[t.level]}, уровень ${t.level}`);
+  el.innerHTML = `<div class="in${anim ? " " + anim : ""}"><div class="glow"></div>${icon(t.level, "ic")}<div class="badge ${badgeClass(t.level)}">${t.level}</div></div>`;
+  els.tiles.appendChild(el);
+  tileEls.set(t.id, el);
+  return el;
+}
+function renderAll() {
+  els.tiles.innerHTML = "";
+  tileEls.clear();
+  S.grid.forEach((t, i) => { if (t) tileEl(t, i); });
+  renderHud();
+}
+function renderHud() {
+  els.score.textContent = S.score.toLocaleString("ru-RU");
+  bestScore = Math.max(bestScore, S.score);
+  els.best.textContent = bestScore.toLocaleString("ru-RU");
+  els.moves.textContent = S.moves.toLocaleString("ru-RU");
+  for (const k of ["hammer", "clamp", "dust"]) {
+    $("cnt-" + k).textContent = S.tools[k];
+    $("tool-" + k).disabled = S.tools[k] <= 0 && toolMode !== k;
+  }
+  els.undo.disabled = history.length === 0;
+  renderEnergy();
+  renderTrack();
+  renderSpawnTable();
+}
+function renderEnergy() {
+  tickEnergy();
+  els.energy.textContent = settings.energyOn ? `${S.energy}/${ENERGY_MAX}` : "∞";
+  els.energyPill.classList.toggle("empty", settings.energyOn && S.energy <= 0);
+  if (!settings.energyOn) { els.regen.textContent = "Энергия не учитывается"; return; }
+  if (S.energy >= ENERGY_MAX) { els.regen.textContent = "Запас полон"; return; }
+  const per = settings.regenMin * 60000, left = Math.max(0, per - (Date.now() - S.energyTs));
+  const s = Math.ceil(left / 1000), hh = String(Math.floor(s / 3600)).padStart(2, "0"),
+    mm = String(Math.floor(s % 3600 / 60)).padStart(2, "0"), ss = String(s % 60).padStart(2, "0");
+  els.regen.textContent = `+1 через ${hh}:${mm}:${ss}`;
+}
+function tickEnergy() {
+  const now = Date.now(), per = Math.max(6000, settings.regenMin * 60000);
+  if (S.energy >= ENERGY_MAX) { S.energyTs = now; return; }
+  const n = Math.floor((now - S.energyTs) / per);
+  if (n > 0) {
+    S.energy = Math.min(ENERGY_MAX, S.energy + n);
+    S.energyTs = S.energy >= ENERGY_MAX ? now : S.energyTs + n * per;
+  }
+}
+const MILESTONES = [[6, 1], [7, 1], [8, 1], [9, 1], [10, 1], [11, 1], [11, 2], [11, 3]];
+function renderTrack() {
+  els.track.innerHTML = MILESTONES.map(([l, k]) => {
+    const done = l < CAP ? S.maxLevel >= l : S.maxCaps >= k;
+    const label = k > 1 ? `${NAMES[l]} ×${k}` : NAMES[l];
+    return `<div class="ms${done ? " done" : ""}${k === 3 ? " goal" : ""}" title="${label}${done ? " — получено" : ""}">
+      <div class="disc">${icon(l)}</div>${k > 1 ? `<span class="x">x${k}</span>` : ""}
+      <svg class="check" viewBox="0 0 32 32" aria-hidden="true"><use href="#ic-check"/></svg><span class="dot"></span>
+      <span class="sr">${label}${done ? ", получено" : ""}</span></div>`;
+  }).join("");
+}
+function stageOf(L) { return Math.max(0, ...L); }
+function renderSpawnTable() {
+  const stage = stageOf(levels(S.grid));
+  const groups = [["до 128", 0, s => s <= 7], ["256", 8, s => s === 8], ["512", 9, s => s === 9], ["1024 и 2048", 10, s => s >= 10]];
+  els.spawnRows.innerHTML = groups.map(([name, s, f]) => {
+    const row = SPAWN[s];
+    return `<tr class="${f(stage) ? "now" : ""}"><td>${name}</td>${[0, 1, 2, 3, 4].map(i =>
+      row[i] > 0 ? `<td>${(row[i] * 100).toFixed(1).replace(".", ",")}%</td>` : `<td class="zero">—</td>`).join("")}</tr>`;
+  }).join("");
+}
+function renderLadder() {
+  let h = "";
+  for (let l = 1; l <= CAP; l++) h += `<div class="rung${l === CAP ? " cap" : ""}">${icon(l)}<span class="lv">Уровень ${l}</span><span class="nm">${NAMES[l]}</span><span class="val">${(2 ** l).toLocaleString("ru-RU")}</span></div>`;
+  els.ladder.innerHTML = h;
+}
+function setStatus(html) { els.status.innerHTML = html; }
+
+/* ---------- actions ---------- */
+function snapshot() {
+  history.push(JSON.stringify({ ...S, grid: levels(S.grid) }));
+  if (history.length > 100) history.shift();
+}
+function undo() {
+  if (!history.length || busy) return;
+  const d = JSON.parse(history.pop());
+  S = { ...d, grid: d.grid.map(l => l ? { id: nextId++, level: l } : null) };
+  cancelTool(); hideOverlay(); clearHint();
+  renderAll(); store();
+  setStatus("Ход отменён.");
+}
+function spawnOne(anim) {
+  const L = levels(S.grid), empty = [];
+  L.forEach((v, i) => { if (!v) empty.push(i); });
+  if (!empty.length) return null;
+  const idx = empty[Math.floor(Math.random() * empty.length)];
+  const t = { id: nextId++, level: pickLevel(stageOf(L)) };
+  S.grid[idx] = t;
+  tileEl(t, idx, anim ? "spawn" : "");
+  return t;
+}
+function newGame() {
+  stopAuto();
+  S = freshState();
+  history = [];
+  cancelTool(); hideOverlay(); clearHint();
+  els.tiles.innerHTML = ""; tileEls.clear();
+  spawnOne(true); spawnOne(true);
+  updateProgress();
+  renderHud(); store();
+  setStatus("Новая партия. Соберите три золотые диадемы.");
+}
+function updateProgress() {
+  const L = levels(S.grid);
+  S.maxLevel = Math.max(S.maxLevel, ...L);
+  S.maxCaps = Math.max(S.maxCaps, L.filter(v => v === CAP).length);
+}
+// Ход игрока: сдвиг со слияниями (каждая плитка сливается не больше раза), анимация, затем
+// появление новой плитки, очки 2^k за слияние в уровень k, списание 1 энергии.
+function doMove(d) {
+  if (busy || !S) return false;
+  if (toolMode) { setStatus("Сначала завершите действие инструмента или нажмите Esc."); return false; }
+  const L = levels(S.grid);
+  if (!canMove(L, d)) { shake(); return false; }
+  if (settings.energyOn) {
+    tickEnergy();
+    if (S.energy <= 0) { shake(); setStatus("Энергия закончилась. Нажмите «+» или подождите восстановления."); stopAuto(); renderEnergy(); return false; }
+  }
+  snapshot();
+  clearHint();
+  const out = Array(16).fill(null), merges = [];
+  let gain = 0;
+  for (let n = 0; n < 4; n++) {
+    const idx = lineIdx(d, n), ts = idx.map(i => S.grid[i]).filter(Boolean);
+    let t = 0;
+    for (let k = 0; k < ts.length; k++) {
+      const a = ts[k], b = ts[k + 1], target = idx[t++];
+      if (b && a.level === b.level && a.level < CAP) {
+        const m = { id: nextId++, level: a.level + 1 };
+        out[target] = m; merges.push({ a, b, m, target }); gain += 2 ** m.level; k++;
+      } else out[target] = a;
+    }
+  }
+  busy = true;
+  // slide every surviving tile and both halves of each merge
+  out.forEach((t, i) => { if (t) { const el = tileEls.get(t.id); if (el) { el.style.setProperty("--r", i >> 2); el.style.setProperty("--c", i & 3); } } });
+  for (const { a, b, target } of merges) for (const t of [a, b]) {
+    const el = tileEls.get(t.id);
+    if (el) { el.style.setProperty("--r", target >> 2); el.style.setProperty("--c", target & 3); el.style.zIndex = 1; }
+  }
+  S.grid = out;
+  S.score += gain;
+  S.moves += 1;
+  if (settings.energyOn) { if (S.energy >= ENERGY_MAX) S.energyTs = Date.now(); S.energy -= 1; }
+  const finish = () => {
+    for (const { a, b, m, target } of merges) {
+      for (const t of [a, b]) { const el = tileEls.get(t.id); if (el) el.remove(); tileEls.delete(t.id); }
+      tileEl(m, target, "pop");
+    }
+    const spawned = spawnOne(true);
+    updateProgress();
+    busy = false;
+    renderHud(); store();
+    const capsNow = levels(S.grid).filter(v => v === CAP).length;
+    const parts = [`Ход ${DIRS[d]}`];
+    if (gain) parts.push(`+${gain.toLocaleString("ru-RU")} очков`);
+    if (spawned) parts.push(`выпал «${NAMES[spawned.level]}» (ур. ${spawned.level})`);
+    if (capsNow) parts.push(`диадем на поле: <strong>${capsNow} из ${GOAL}</strong>`);
+    setStatus(parts.join(" · ") + ".");
+    afterChange();
+  };
+  const ms = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--slide")) || 0;
+  if (ms > 0) setTimeout(finish, ms + 10); else finish();
+  return true;
+}
+function afterChange() {
+  const L = levels(S.grid);
+  if (!S.won && L.filter(v => v === CAP).length >= GOAL) {
+    S.won = true; store(); stopAuto();
+    showOverlay(`<h2>Три диадемы собраны</h2><p>Цель достигнута за ${S.moves.toLocaleString("ru-RU")} ходов, счёт ${S.score.toLocaleString("ru-RU")}.</p>
+      <div class="row"><button class="btn gold" type="button" data-act="close">Продолжить</button><button class="btn" type="button" data-act="new">Новая партия</button></div>`);
+    return;
+  }
+  if (!anyMove(L)) {
+    stopAuto();
+    const toolsLeft = S.tools.hammer + S.tools.clamp + S.tools.dust;
+    showOverlay(`<h2>Ходов нет</h2><p>Поле заполнено и соседних одинаковых предметов нет.${toolsLeft ? " Можно освободить клетку инструментом." : ""}</p>
+      <div class="row">${toolsLeft ? `<button class="btn gold" type="button" data-act="close">Взять инструмент</button>` : ""}
+      ${history.length ? `<button class="btn" type="button" data-act="undo">Отменить ход</button>` : ""}
+      <button class="btn" type="button" data-act="new">Новая партия</button></div>`);
+  }
+}
+function showOverlay(html) { els.overlay.innerHTML = html; els.overlay.hidden = false; }
+function hideOverlay() { els.overlay.hidden = true; els.overlay.innerHTML = ""; }
+function shake() { els.board.classList.remove("shake"); void els.board.offsetWidth; els.board.classList.add("shake"); }
+
+/* инструменты (действие предположено, в игре не проверено); не тратят энергию */
+const TOOL_HELP = {
+  hammer: "Молот: нажмите на предмет, чтобы убрать его с поля.",
+  clamp: "Зажим: выберите два предмета, они поменяются местами.",
+  dust: "Золотая пыль: нажмите на предмет, чтобы повысить его на один уровень."
+};
+function setTool(k) {
+  if (busy) return;
+  if (toolMode === k) { cancelTool(); setStatus("Инструмент убран."); return; }
+  if (S.tools[k] <= 0) return;
+  stopAuto();
+  cancelTool();
+  toolMode = k;
+  $("tool-" + k).setAttribute("aria-pressed", "true");
+  els.board.classList.add("tool-on");
+  setStatus(TOOL_HELP[k] + " Esc — отмена.");
+}
+function cancelTool() {
+  toolMode = null;
+  if (clampFirst != null) { const el = tileEls.get(S.grid[clampFirst]?.id); if (el) el.classList.remove("selected"); }
+  clampFirst = null;
+  document.querySelectorAll(".tool").forEach(b => b.setAttribute("aria-pressed", "false"));
+  els.board.classList.remove("tool-on");
+  if (S) renderHud();
+}
+function useToolAt(idx) {
+  const t = S.grid[idx];
+  if (!t) return;
+  if (toolMode === "hammer") {
+    snapshot(); S.tools.hammer--;
+    const el = tileEls.get(t.id); if (el) el.remove(); tileEls.delete(t.id);
+    S.grid[idx] = null;
+    setStatus(`Молот убрал «${NAMES[t.level]}».`);
+  } else if (toolMode === "dust") {
+    if (t.level >= CAP) { setStatus("Золотая диадема — высший уровень, повышать некуда."); return; }
+    snapshot(); S.tools.dust--;
+    const el = tileEls.get(t.id); if (el) el.remove(); tileEls.delete(t.id);
+    const m = { id: nextId++, level: t.level + 1 };
+    S.grid[idx] = m; tileEl(m, idx, "pop");
+    setStatus(`Золотая пыль: «${NAMES[t.level]}» → «${NAMES[m.level]}».`);
+  } else if (toolMode === "clamp") {
+    if (clampFirst == null) { clampFirst = idx; tileEls.get(t.id)?.classList.add("selected"); setStatus("Зажим: теперь выберите второй предмет."); return; }
+    if (clampFirst === idx) { tileEls.get(t.id)?.classList.remove("selected"); clampFirst = null; setStatus(TOOL_HELP.clamp); return; }
+    snapshot(); S.tools.clamp--;
+    const a = S.grid[clampFirst], b = t;
+    tileEls.get(a.id)?.classList.remove("selected");
+    S.grid[clampFirst] = b; S.grid[idx] = a;
+    for (const [tt, i] of [[a, idx], [b, clampFirst]]) { const el = tileEls.get(tt.id); el.style.setProperty("--r", i >> 2); el.style.setProperty("--c", i & 3); }
+    setStatus(`Зажим поменял местами «${NAMES[a.level]}» и «${NAMES[b.level]}».`);
+    clampFirst = null;
+  }
+  updateProgress();
+  cancelTool(); hideOverlay(); clearHint();
+  store();
+  afterChange();
+}
+
+/* подсказка и автоигра: расчёт в Worker, стрелка на поле, ход за ходом с паузой из настроек */
+function clearHint() { hintDir = null; els.hintArrow.classList.remove("on"); }
+async function requestHint(show = true) {
+  const L = levels(S.grid);
+  if (!anyMove(L)) return null;
+  if (show) setStatus("Считаю ход…");
+  const r = await solveAsync(L);
+  if (r.dir == null) return null;
+  if (show) {
+    hintDir = r.dir;
+    els.hintArrow.style.transform = `rotate(${ROT[r.dir]}deg)`;
+    els.hintArrow.classList.add("on");
+    const sc = r.scores ? r.scores.map((s, d) => s == null ? null : [d, s]).filter(Boolean).sort((a, b) => b[1] - a[1]) : [];
+    const gap = sc.length > 1 ? Math.round(sc[0][1] - sc[1][1]).toLocaleString("ru-RU") : null;
+    setStatus(`Совет: <strong>${ARROWS[r.dir]} ${DIRS[r.dir]}</strong> · глубина ${r.depth} · ${(r.ms / 1000).toFixed(2).replace(".", ",")} с · ${r.nodes.toLocaleString("ru-RU")} позиций${gap ? ` · отрыв от второго хода ${gap}` : ""}.`);
+  }
+  return r;
+}
+function stopAuto() {
+  if (!auto) return;
+  auto = false;
+  els.auto.setAttribute("aria-pressed", "false");
+  els.auto.textContent = "Автоигра";
+  els.auto.classList.remove("warn");
+}
+async function autoLoop() {
+  while (auto) {
+    if (busy) { await new Promise(r => setTimeout(r, 30)); continue; }
+    const L = levels(S.grid);
+    if (!anyMove(L) || (S.won && L.filter(v => v === CAP).length >= GOAL && !els.overlay.hidden)) { stopAuto(); break; }
+    const r = await solveAsync(L);
+    if (!auto) break;
+    if (r.dir == null || !doMove(r.dir)) { stopAuto(); break; }
+    els.auto.textContent = `Стоп · глубина ${r.depth}`;
+    await new Promise(res => setTimeout(res, Math.max(settings.speed, 140)));
+  }
+}
+function toggleAuto() {
+  if (auto) { stopAuto(); setStatus("Автоигра остановлена."); return; }
+  cancelTool(); hideOverlay(); clearHint();
+  auto = true;
+  els.auto.setAttribute("aria-pressed", "true");
+  els.auto.textContent = "Стоп";
+  els.auto.classList.add("warn");
+  autoLoop();
+}
+
+/* ---------- шапка: ветка сливы на вечернем небе (canvas, детерминированный «случай») ---------- */
+function drawSky() {
+  const c = els.sky, r = c.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  if (!r.width) return;
+  c.width = r.width * dpr; c.height = r.height * dpr;
+  const g = c.getContext("2d");
+  g.scale(dpr, dpr);
+  const W = r.width, H = r.height;
+  let seed = 7;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < 40; i++) { g.fillStyle = `rgba(255,255,255,${0.15 + rnd() * 0.5})`; g.beginPath(); g.arc(rnd() * W, rnd() * H * 0.6, rnd() * 1.2 + 0.3, 0, 7); g.fill(); }
+  g.strokeStyle = "#3a2030"; g.lineCap = "round";
+  const branch = (x0, y0, x1, y1, cx, cy, w) => { g.lineWidth = w; g.beginPath(); g.moveTo(x0, y0); g.quadraticCurveTo(cx, cy, x1, y1); g.stroke(); };
+  branch(W + 10, 14, W * 0.6, 40, W * 0.8, 8, 8);
+  branch(W * 0.74, 26, W * 0.66, 70, W * 0.7, 46, 3.5);
+  branch(W * 0.88, 18, W * 0.95, 64, W * 0.9, 44, 3);
+  const flower = (x, y, s) => {
+    g.save(); g.translate(x, y); g.rotate(rnd() * 6);
+    g.fillStyle = rnd() > 0.4 ? "#f6c8dc" : "#fbe2ee";
+    for (let k = 0; k < 5; k++) { g.rotate(Math.PI * 2 / 5); g.beginPath(); g.ellipse(0, -s * 0.9, s * 0.6, s * 0.75, 0, 0, 7); g.fill(); }
+    g.fillStyle = "#e05a8a"; g.beginPath(); g.arc(0, 0, s * 0.35, 0, 7); g.fill(); g.restore();
+  };
+  const spots = [[0.97, 14], [0.9, 18], [0.82, 22], [0.74, 28], [0.66, 36], [0.61, 42], [0.7, 52], [0.67, 68], [0.93, 40], [0.96, 60], [0.86, 12], [0.78, 14]];
+  for (const [fx, y] of spots) flower(W * fx + (rnd() - 0.5) * 8, y + (rnd() - 0.5) * 8, 4 + rnd() * 3.5);
+  for (let i = 0; i < 10; i++) { g.fillStyle = "rgba(250,210,230,.75)"; g.beginPath(); g.ellipse(W * (0.55 + rnd() * 0.45), 20 + rnd() * (H - 30), 2.2, 1.3, rnd() * 3, 0, 7); g.fill(); }
+}
+
+/* ---------- ввод: клавиши (стрелки, WASD и русская раскладка), свайп, клики инструментов ---------- */
+function bindInput() {
+  document.addEventListener("keydown", e => {
+    if (e.target.closest && e.target.closest("input, select, textarea")) return;
+    const k = e.key;
+    const map = { ArrowLeft: 0, ArrowRight: 1, ArrowUp: 2, ArrowDown: 3, a: 0, d: 1, w: 2, s: 3, A: 0, D: 1, W: 2, S: 3, "ф": 0, "в": 1, "ц": 2, "ы": 3 };
+    if (k in map) { e.preventDefault(); if (els.overlay.hidden) doMove(map[k]); return; }
+    if (k === "Escape") { if (toolMode) { cancelTool(); setStatus("Инструмент убран."); } return; }
+    if (k === "h" || k === "H" || k === "р" || k === "Р") { requestHint(); return; }
+    if (k === "u" || k === "U" || k === "г" || k === "Г" || ((e.ctrlKey || e.metaKey) && (k === "z" || k === "я"))) { e.preventDefault(); undo(); }
+  });
+  let start = null;
+  els.board.addEventListener("pointerdown", e => { start = { x: e.clientX, y: e.clientY }; });
+  els.board.addEventListener("pointerup", e => {
+    if (!start) return;
+    const dx = e.clientX - start.x, dy = e.clientY - start.y;
+    const s = start; start = null;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) {
+      if (toolMode && els.overlay.hidden) {
+        const rect = els.board.getBoundingClientRect();
+        const c = Math.floor((s.x - rect.left) / rect.width * 4), r = Math.floor((s.y - rect.top) / rect.height * 4);
+        if (r >= 0 && r < 4 && c >= 0 && c < 4) useToolAt(r * 4 + c);
+      }
+      return;
+    }
+    if (!els.overlay.hidden) return;
+    if (Math.abs(dx) > Math.abs(dy)) doMove(dx < 0 ? 0 : 1); else doMove(dy < 0 ? 2 : 3);
+  });
+  els.board.addEventListener("pointercancel", () => { start = null; });
+  els.overlay.addEventListener("click", e => {
+    const a = e.target.closest("[data-act]")?.dataset.act;
+    if (a === "close") hideOverlay();
+    if (a === "new") newGame();
+    if (a === "undo") undo();
+  });
+  let confirmTimer = null;
+  els.newGame.addEventListener("click", () => {
+    if (S.moves === 0 || els.newGame.dataset.confirm === "1") {
+      clearTimeout(confirmTimer); els.newGame.dataset.confirm = ""; els.newGame.textContent = "Новая партия"; els.newGame.classList.remove("warn");
+      newGame(); return;
+    }
+    els.newGame.dataset.confirm = "1"; els.newGame.textContent = "Сбросить партию?"; els.newGame.classList.add("warn");
+    confirmTimer = setTimeout(() => { els.newGame.dataset.confirm = ""; els.newGame.textContent = "Новая партия"; els.newGame.classList.remove("warn"); }, 3000);
+  });
+  els.undo.addEventListener("click", undo);
+  els.hint.addEventListener("click", () => requestHint());
+  els.auto.addEventListener("click", toggleAuto);
+  els.refill.addEventListener("click", () => { S.energy = ENERGY_MAX; S.energyTs = Date.now(); renderEnergy(); store(); setStatus("Энергия пополнена до 200."); });
+  document.querySelectorAll(".tool").forEach(b => b.addEventListener("click", () => setTool(b.dataset.tool)));
+  const num = (id, key, min, max) => {
+    const el = $(id);
+    el.value = settings[key];
+    el.addEventListener("change", () => { const v = Math.min(max, Math.max(min, parseFloat(el.value) || min)); settings[key] = v; el.value = v; renderHud(); store(); });
+  };
+  num("optRegen", "regenMin", 0.1, 60); num("optTools", "tools", 0, 99); num("optDepth", "depth", 1, 8); num("optTime", "time", 0.2, 10); num("optSpeed", "speed", 0, 2000);
+  const en = $("optEnergy");
+  en.checked = settings.energyOn;
+  en.addEventListener("change", () => { settings.energyOn = en.checked; S.energyTs = Date.now(); renderHud(); store(); });
+  window.addEventListener("resize", () => { clearTimeout(drawSky.t); drawSky.t = setTimeout(drawSky, 120); });
+}
+
+/* ---------- запуск ---------- */
+function start(hot) {
+  for (const id of ["tiles", "board", "overlay", "status", "score", "best", "moves", "energy", "energyPill", "regen", "refill", "track", "ladder", "spawnRows", "newGame", "undo", "hint", "auto", "hintArrow", "sky"]) els[id] = $(id);
+  buildDefs();
+  renderLadder();
+  let restored = false;
+  if (hot && hot.S) {
+    Object.assign(settings, hot.settings || {});
+    bestScore = hot.best || 0;
+    S = { ...freshState(), ...hot.S, grid: hot.S.grid.map(l => l ? { id: nextId++, level: l } : null) };
+    restored = true;
+  } else restored = load();
+  bindInput();
+  if (restored) { renderAll(); setStatus("Партия продолжена с того же места."); afterChange(); }
+  else newGame();
+  drawSky();
+  setInterval(() => { if (S) { const before = S.energy; renderEnergy(); if (S.energy !== before) store(); } }, 1000);
+}
+start({});
+})();
+</script>
+</body>
+</html>
