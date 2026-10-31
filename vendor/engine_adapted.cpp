@@ -570,6 +570,8 @@ int upstream_main() {
     return 0;
 }
 
+// Bumped whenever the Python side needs new exports or changed semantics.
+extern "C" int engine_api_version() { return 2; }
 extern "C" int get_cap_rank() { return CAP_RANK; }
 extern "C" int get_goal_count() { return GOAL_COUNT; }
 extern "C" int goal_levels(board_t board) { return goal(board); }
@@ -595,29 +597,50 @@ extern "C" float score_levels_thresh(board_t board,int move,int depth,float thre
     return _score_toplevel_move(state,board,move);
 }
 
-/* Time-budgeted search.
- * Runs passes with decreasing pruning thresholds (thresholds[0] > thresholds[1] > ...).
- * In every pass the allowed first moves are evaluated in parallel threads.
- * The first pass always completes; later passes stop at start+budget_s-margin and are
- * discarded if cut. A pass is not started when previous_pass_time*growth would exceed the budget.
- * The move of the last completed pass is returned.
- * info[0] completed passes, [1] threshold of the last completed pass, [2] positions
- * evaluated (all passes), [3] total seconds, [4] 1 if a pass was cut by the deadline,
- * [5] 1 if a pass was skipped by the estimate, [6] seconds of the last completed pass. */
+/* Time-budgeted search with a hard deadline.
+ * 1. Fallback: depth 1 with thresholds[0], sequential, no deadline (microseconds). It only
+ *    guarantees that a move exists if no full pass finishes in time.
+ * 2. Full passes with decreasing pruning thresholds (thresholds[0] > thresholds[1] > ...),
+ *    the allowed first moves evaluated in parallel threads. Every full pass, including the
+ *    first, is aborted at start+budget_s-margin and then discarded. A pass after the first
+ *    is not started when previous_pass_time*growth would not fit before the deadline.
+ * 3. The move of the last completed full pass is returned (the fallback move if none).
+ * margin = min(1 s, 10% of the budget) leaves time to free the transposition tables of an
+ * aborted pass (measured up to ~0.6 s for 10-second passes).
+ * info[0] completed full passes, [1] threshold of the last completed full pass (0 if none),
+ * [2] positions evaluated (all passes), [3] total seconds, [4] 1 if a pass was cut by the
+ * deadline, [5] 1 if a pass was skipped by the estimate, [6] seconds of the last completed
+ * full pass, [7] 1 if the returned move comes from the fallback. */
 extern "C" int solve_budget(board_t board, int allowed, int depth, const float *thresholds,
                             int n_thresholds, double budget_s, double growth, double *info) {
     typedef std::chrono::steady_clock clock_t_;
     clock_t_::time_point start = clock_t_::now();
-    // A cut pass still has to free its transposition tables (measured up to ~0.6 s),
-    // so the deadline keeps a margin inside the budget.
+    budget_s = std::max(0.0, std::min(budget_s, 1e6));
     double margin = std::min(1.0, 0.1 * budget_s);
     clock_t_::time_point deadline = start + std::chrono::duration_cast<clock_t_::duration>(
         std::chrono::duration<double>(budget_s - margin));
     int best_move = -1;
     double positions = 0, last_pass = 0, last_thresh = 0;
     int completed = 0, cut = 0, skipped = 0;
+
+    float fallback_best = -1;
+    for (int d = 0; d < 4; ++d) {
+        if (!(allowed & (1 << d))) continue;
+        eval_state st;
+        st.depth_limit = 1;
+        st.cprob_thresh = n_thresholds > 0 ? thresholds[0] : 0.0001f;
+        float score = _score_toplevel_move(st, board, d);
+        positions += st.moves_evaled;
+        if (score > fallback_best) { fallback_best = score; best_move = d; }
+    }
+
     for (int k = 0; k < n_thresholds; ++k) {
         clock_t_::time_point pass_start = clock_t_::now();
+        double elapsed = std::chrono::duration<double>(pass_start - start).count();
+        if (pass_start >= deadline || (k > 0 && elapsed + last_pass * growth > budget_s - margin)) {
+            skipped = 1;
+            break;
+        }
         std::atomic<bool> stop(false);
         float scores[4] = {0, 0, 0, 0};
         unsigned long evaled[4] = {0, 0, 0, 0};
@@ -629,7 +652,9 @@ extern "C" int solve_budget(board_t board, int allowed, int depth, const float *
                 eval_state st;
                 st.depth_limit = depth;
                 st.cprob_thresh = thresholds[k];
-                if (k > 0) { st.has_deadline = true; st.deadline = deadline; st.stop = &stop; }
+                st.has_deadline = true;
+                st.deadline = deadline;
+                st.stop = &stop;
                 scores[d] = _score_toplevel_move(st, board, d);
                 evaled[d] = st.moves_evaled;
                 aborted[d] = st.aborted;
@@ -646,15 +671,12 @@ extern "C" int solve_budget(board_t board, int allowed, int depth, const float *
         best_move = move;
         completed++;
         last_thresh = thresholds[k];
-        clock_t_::time_point now = clock_t_::now();
-        last_pass = std::chrono::duration<double>(now - pass_start).count();
-        double elapsed = std::chrono::duration<double>(now - start).count();
-        if (k + 1 < n_thresholds && elapsed + last_pass * growth > budget_s - margin) { skipped = 1; break; }
+        last_pass = std::chrono::duration<double>(clock_t_::now() - pass_start).count();
     }
     if (info) {
         info[0] = completed; info[1] = last_thresh; info[2] = positions;
         info[3] = std::chrono::duration<double>(clock_t_::now() - start).count();
-        info[4] = cut; info[5] = skipped; info[6] = last_pass;
+        info[4] = cut; info[5] = skipped; info[6] = last_pass; info[7] = completed == 0;
     }
     return best_move;
 }

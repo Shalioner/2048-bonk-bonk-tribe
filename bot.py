@@ -215,38 +215,58 @@ def choose_legacy(b):
     return max(legal,key=lambda item:search(item[1],depth,True))[0] if legal else None
 
 ENGINE=ROOT/"vendor"/("engine.dylib" if sys.platform=="darwin" else "engine.so")
-if not ENGINE.exists():raise RuntimeError(f"Движок не собран: выполните sh vendor/build.sh ({ENGINE.name})")
-NATIVE=ctypes.CDLL(str(ENGINE))
-NATIVE.init_tables()
-NATIVE.solve_levels.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int]
-NATIVE.solve_levels.restype=ctypes.c_int
-NATIVE.solve_budget.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int,ctypes.POINTER(ctypes.c_float),ctypes.c_int,ctypes.c_double,ctypes.c_double,ctypes.POINTER(ctypes.c_double)]
-NATIVE.solve_budget.restype=ctypes.c_int
-NATIVE.execute_move.argtypes=[ctypes.c_int,ctypes.c_uint64]
-NATIVE.execute_move.restype=ctypes.c_uint64
-NATIVE.set_spawn_probs.argtypes=[ctypes.c_float]*3
-NATIVE.set_spawn_probs.restype=None
-NATIVE.set_spawn_vector.argtypes=[ctypes.POINTER(ctypes.c_float),ctypes.c_int]
-NATIVE.set_spawn_vector.restype=None
-NATIVE.set_spawn_table.argtypes=[ctypes.POINTER(ctypes.c_float),ctypes.c_int,ctypes.c_int]
-NATIVE.set_spawn_table.restype=ctypes.c_int
-NATIVE.get_spawn_prob.argtypes=[ctypes.c_int,ctypes.c_int]
-NATIVE.get_spawn_prob.restype=ctypes.c_float
-NATIVE.score_levels.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int]
-NATIVE.score_levels.restype=ctypes.c_float
-NATIVE.score_levels_thresh.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int,ctypes.c_float]
-NATIVE.score_levels_thresh.restype=ctypes.c_float
-NATIVE.goal_levels.argtypes=[ctypes.c_uint64]
-NATIVE.goal_levels.restype=ctypes.c_int
-if (NATIVE.get_cap_rank(),NATIVE.get_goal_count())!=(CAP,GOAL_COUNT):
-    raise RuntimeError("Движок собран с другими правилами: пересоберите sh vendor/build.sh")
+ENGINE_API=2
+REQUIRED_SYMBOLS=("engine_api_version","get_cap_rank","get_goal_count","solve_budget","set_spawn_table",
+                  "get_spawn_prob","score_levels_thresh","init_tables","execute_move","goal_levels")
+
+def check_engine(lib,name=ENGINE.name):
+    # До настройки argtypes: у старого движка нет новых функций, и ctypes упал бы с AttributeError.
+    missing=[n for n in REQUIRED_SYMBOLS if not hasattr(lib,n)]
+    if missing:
+        raise RuntimeError(f"Движок {name} собран из старой версии (нет {', '.join(missing)}): пересоберите sh vendor/build.sh")
+    if lib.engine_api_version()!=ENGINE_API or (lib.get_cap_rank(),lib.get_goal_count())!=(CAP,GOAL_COUNT):
+        raise RuntimeError(f"Движок {name} собран из другой версии: пересоберите sh vendor/build.sh")
+
+def load_engine(path=ENGINE):
+    if not path.exists():raise RuntimeError(f"Движок не собран: выполните sh vendor/build.sh ({path.name})")
+    lib=ctypes.CDLL(str(path))
+    check_engine(lib,path.name)
+    lib.solve_levels.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int]
+    lib.solve_levels.restype=ctypes.c_int
+    lib.solve_budget.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int,ctypes.POINTER(ctypes.c_float),ctypes.c_int,ctypes.c_double,ctypes.c_double,ctypes.POINTER(ctypes.c_double)]
+    lib.solve_budget.restype=ctypes.c_int
+    lib.execute_move.argtypes=[ctypes.c_int,ctypes.c_uint64]
+    lib.execute_move.restype=ctypes.c_uint64
+    lib.set_spawn_probs.argtypes=[ctypes.c_float]*3
+    lib.set_spawn_probs.restype=None
+    lib.set_spawn_vector.argtypes=[ctypes.POINTER(ctypes.c_float),ctypes.c_int]
+    lib.set_spawn_vector.restype=None
+    lib.set_spawn_table.argtypes=[ctypes.POINTER(ctypes.c_float),ctypes.c_int,ctypes.c_int]
+    lib.set_spawn_table.restype=ctypes.c_int
+    lib.get_spawn_prob.argtypes=[ctypes.c_int,ctypes.c_int]
+    lib.get_spawn_prob.restype=ctypes.c_float
+    lib.score_levels.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int]
+    lib.score_levels.restype=ctypes.c_float
+    lib.score_levels_thresh.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int,ctypes.c_float]
+    lib.score_levels_thresh.restype=ctypes.c_float
+    lib.goal_levels.argtypes=[ctypes.c_uint64]
+    lib.goal_levels.restype=ctypes.c_int
+    lib.init_tables()
+    return lib
+
+try:NATIVE=load_engine()
+except RuntimeError as exc:
+    if __name__=="__main__":sys.exit(str(exc))
+    raise
 DIRECTIONS=(2,3,0,1) # Python L,R,U,D -> upstream U,D,L,R
 
 # Поиск: проходы с ослабляемым отсечением, пока укладываются в бюджет времени.
 DEFAULT_DEPTH=8
 DEFAULT_THINK=10.0
 THRESHOLDS=(1e-4,1e-5,1e-6)
-# Следующий проход не начинается, если даже при росте в GROWTH раз он не успеет до конца бюджета.
+# Бюджет жёсткий: каждый проход прерывается дедлайном. Если не завершился ни один,
+# используется запасной ход глубины 1 (считается за микросекунды до проходов).
+# Следующий проход не начинается, если даже при росте в GROWTH раз он не успеет до дедлайна.
 # Замеренный рост 6–14 раз; берём оптимистичные 5: если проход не успеет, дедлайн прервёт его,
 # и останется результат предыдущего прохода.
 GROWTH=5.0
@@ -301,12 +321,13 @@ def choose(b,depth=DEFAULT_DEPTH,think=DEFAULT_THINK,info=None):
     legal=legal_moves(b)
     if not legal:return None
     allowed=sum(1<<DIRECTIONS[d] for d,_ in legal)
-    out=(ctypes.c_double*7)()
+    out=(ctypes.c_double*8)()
     thresholds=(ctypes.c_float*len(THRESHOLDS))(*THRESHOLDS)
     result=NATIVE.solve_budget(pack(b),allowed,depth,thresholds,len(THRESHOLDS),think,GROWTH,out)
     if info is not None:
-        info.update(depth=depth,passes=int(out[0]),threshold=float(f"{out[1]:.0e}"),positions=int(out[2]),
-                    search_s=round(out[3],3),cut=bool(out[4]),skipped=bool(out[5]))
+        fallback=bool(out[7])
+        info.update(depth=1 if fallback else depth,passes=int(out[0]),threshold=float(f"{out[1]:.0e}") if out[1] else None,
+                    positions=int(out[2]),search_s=round(out[3],3),cut=bool(out[4]),skipped=bool(out[5]),fallback=fallback)
     return DIRECTIONS.index(result) if result>=0 else None
 
 apply_spawn_model(default_spawn_model())

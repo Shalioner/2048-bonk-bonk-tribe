@@ -23,3 +23,7 @@ The pruning threshold moved into eval_state. New solve_budget: passes with thres
 1e-6, first moves evaluated in parallel std::threads, deadline with a margin inside the budget.
 Exports get_cap_rank, get_goal_count, score_levels_thresh. config.h uses arc4random only on macOS;
 build.sh also builds engine.so on Linux (tests and simulation).
+
+2026-10-31 (review): the budget is hard — every full pass, including the first, stops at the
+deadline; a depth-1 fallback computed before the passes provides the move if none completes
+(info[7]). engine_api_version() = 2 lets bot.py reject a library built from older sources.

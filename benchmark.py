@@ -5,9 +5,10 @@
 spawn-model.default.json для текущей стадии (максимальный уровень после хода).
 Ходы выбирает тот же движок, что и на телефоне (bot.choose).
 
-Пример: python3 benchmark.py --games 10 --depth 4 --think 0
---think 0 оставляет только первый проход (порог 1e-4); иначе проходы ослабляют отсечение,
-пока укладываются в бюджет. Результаты пишутся в benchmark.json (в .gitignore).
+Пример: python3 benchmark.py --games 10 --depth 4
+Без --think — один проход с порогом 1e-4 без ограничения времени (воспроизводимо, не зависит
+от скорости машины). С --think N — как на телефоне: проходы с ослабляемым отсечением в пределах
+жёсткого бюджета N секунд. Результаты пишутся в benchmark.json (в .gitignore).
 """
 import argparse, json, random, time
 import bot
@@ -33,7 +34,14 @@ def play(seed, depth, think, max_moves, table):
         if bot.reached_goal(board):
             result = "goal"
             break
-        d = bot.choose(board, depth, think)
+        if think is None:
+            saved, bot.THRESHOLDS = bot.THRESHOLDS, (1e-4,)
+            try:
+                d = bot.choose(board, depth, 1e6)
+            finally:
+                bot.THRESHOLDS = saved
+        else:
+            d = bot.choose(board, depth, think)
         if d is None:
             result = "loss"
             break
@@ -51,7 +59,8 @@ def main():
     ap.add_argument("--games", type=int, default=10)
     ap.add_argument("--seed", type=int, default=1, help="seed первой партии; далее seed+1, ...")
     ap.add_argument("--depth", type=int, default=4)
-    ap.add_argument("--think", type=float, default=0.0)
+    ap.add_argument("--think", type=float, default=None,
+                    help="бюджет на ход, с; без параметра — один проход 1e-4 без ограничения времени")
     ap.add_argument("--max-moves", type=int, default=6000)
     ap.add_argument("--out", default=str(bot.ROOT / "benchmark.json"))
     args = ap.parse_args()

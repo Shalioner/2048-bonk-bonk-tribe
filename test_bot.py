@@ -169,26 +169,49 @@ class BotTests(unittest.TestCase):
             with patch.object(bot,'SPAWN_LEARNED',path):
                 self.assertEqual(bot.load_spawn_model(),bot.default_spawn_model())
     def test_budget_first_pass_matches_sequential(self):
+        from unittest.mock import patch
         board=(10,7,6,4, 4,3,1,2, 3,2,1,0, 2,1,0,1)
         info={}
-        d=bot.choose(board,depth=5,think=0,info=info)
-        self.assertEqual((info['passes'],info['threshold'],info['skipped']),(1,1e-4,True))
+        with patch.object(bot,'THRESHOLDS',(1e-4,)):
+            d=bot.choose(board,depth=5,think=60,info=info)
+        self.assertEqual((info['passes'],info['threshold'],info['fallback']),(1,1e-4,False))
         scores={m:bot.NATIVE.score_levels_thresh(bot.pack(board),bot.DIRECTIONS[m],5,1e-4) for m,_ in bot.legal_moves(board)}
         self.assertEqual(d,max(scores,key=scores.get))
     def test_budget_deadline(self):
         import time
         from unittest.mock import patch
         board=(10,7,6,4, 4,3,1,2, 3,2,1,0, 2,1,0,1) # реальная позиция из play.log, 2 пустые клетки
-        first={};bot.choose(board,depth=8,think=0,info=first)
-        self.assertEqual(first['passes'],1)
-        info={};started=time.monotonic()
+        first={}
+        with patch.object(bot,'THRESHOLDS',(1e-4,)):
+            bot.choose(board,depth=8,think=60,info=first)
         think=first['search_s']*1.5+.3 # первый проход успевает, второй — нет
+        info={};started=time.monotonic()
         with patch.object(bot,'GROWTH',0.0): # заставляем начать следующий проход
             d=bot.choose(board,depth=8,think=think,info=info)
         elapsed=time.monotonic()-started
         self.assertIn(d,[m for m,_ in bot.legal_moves(board)])
-        self.assertEqual((info['passes'],info['cut']),(1,True)) # второй проход прерван дедлайном
-        self.assertLess(elapsed,think+.5)
+        self.assertEqual((info['passes'],info['cut'],info['fallback']),(1,True,False)) # второй проход прерван
+        self.assertLessEqual(elapsed,think+.05)
+    def test_budget_is_hard(self):
+        import time
+        board=(10,7,6,4, 4,3,1,2, 3,2,1,0, 2,1,0,1) # первый проход глубины 8 здесь идёт ~1 с
+        for think in (0,.01,.05):
+            info={};started=time.monotonic()
+            d=bot.choose(board,depth=8,think=think,info=info)
+            elapsed=time.monotonic()-started
+            self.assertIn(d,[m for m,_ in bot.legal_moves(board)])
+            self.assertTrue(info['fallback']) # ни один проход не успел: запасной ход глубины 1
+            self.assertLessEqual(elapsed,think+.05)
+    def test_old_engine_rejected(self):
+        from types import SimpleNamespace
+        old=SimpleNamespace(init_tables=lambda:None,execute_move=lambda d,b:b,solve_levels=lambda b,a,d:0)
+        with self.assertRaisesRegex(RuntimeError,'старой версии.*solve_budget.*пересоберите'):
+            bot.check_engine(old)
+        current={n:getattr(bot.NATIVE,n) for n in bot.REQUIRED_SYMBOLS}
+        current['engine_api_version']=lambda:1
+        with self.assertRaisesRegex(RuntimeError,'другой версии.*пересоберите'):
+            bot.check_engine(SimpleNamespace(**current))
+        bot.check_engine(bot.NATIVE) # текущий движок проходит проверку
     def test_merge_once(self):
         self.assertEqual(bot.move((1,1,1,1)+(0,)*12,0),(2,2,0,0)+(0,)*12)
     def test_calibration(self):
