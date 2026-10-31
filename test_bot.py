@@ -22,6 +22,13 @@ class BotTests(unittest.TestCase):
         for d in range(4):
             self.assertEqual(bot.move(column,d).count(11),4)
             self.assertEqual(bot.NATIVE.execute_move(bot.DIRECTIONS[d],bot.pack(column)),bot.pack(bot.move(column,d)))
+    def test_above_cap_move_parity(self):
+        for rank in range(bot.CAP,16):
+            board=(rank,rank,0,0)+(0,)*12
+            for d in range(4):
+                self.assertEqual(bot.NATIVE.execute_move(bot.DIRECTIONS[d],bot.pack(board)),
+                                 bot.pack(bot.move(board,d)))
+
     def test_crop_decode(self):
         from PIL import Image
         im=bot.decode_screen((bot.ROOT/'calibration.png').read_bytes())
@@ -116,6 +123,16 @@ class BotTests(unittest.TestCase):
         for board,expected in cases:
             self.assertEqual(bot.reached_goal(board),expected)
             self.assertEqual(bool(native(bot.pack(board))),expected)
+    def test_native_goal_matches_all_cap_positions(self):
+        import itertools, random
+        for positions in itertools.combinations(range(16),bot.GOAL_COUNT):
+            board=tuple(bot.CAP if i in positions else 0 for i in range(16))
+            self.assertTrue(bot.NATIVE.goal_levels(bot.pack(board)))
+        rng=random.Random(2048)
+        for _ in range(1000):
+            board=tuple(rng.randrange(16) for _ in range(16))
+            self.assertEqual(bool(bot.NATIVE.goal_levels(bot.pack(board))),bot.reached_goal(board))
+
     def test_elevens_do_not_merge(self):
         board=(11,11,1,0)+(0,)*12
         legal=bot.legal_moves(board)
