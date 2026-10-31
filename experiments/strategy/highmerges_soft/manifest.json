@@ -1,0 +1,9 @@
+{
+  "variant": "highmerges_soft",
+  "parameters": {
+    "highmerges": true,
+    "merge_start": 7
+  },
+  "source_sha256": "db2ef7e3a171a2f2d452b1a1084af5eed1532fdd87161eadfc219abb75ed7a17",
+  "engine_sha256": "a9f6560e2a28fdceea5127d197830467a9b98176149783ddb43f91359d993a5b"
+}

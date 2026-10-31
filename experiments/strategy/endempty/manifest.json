@@ -1,0 +1,8 @@
+{
+  "variant": "endempty",
+  "parameters": {
+    "endempty": 1620
+  },
+  "source_sha256": "87d6c8a59d50e218a969673ffa6e6140f2410fb95407b028a49ae7a45b346248",
+  "engine_sha256": "659229f821d7bdf443cdf5ee95d25c741fbf6cf52cefadb17a8299f69017fb6a"
+}

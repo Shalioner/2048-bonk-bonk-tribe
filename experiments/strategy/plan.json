@@ -1,0 +1,29 @@
+{
+  "baseline_commit": "a0e5527",
+  "branch": "local/strategy-plateau-20261031",
+  "target": "three unmergeable rank-11 tiles",
+  "depth": 3,
+  "threshold": 0.0001,
+  "max_moves": 6000,
+  "screen_seeds": [
+    1001,
+    1010
+  ],
+  "selection_seeds": [
+    1001,
+    1020
+  ],
+  "holdout_seeds": [
+    10001,
+    10060
+  ],
+  "holdout_policy": "Freeze one finalist before holdout; paired baseline, no tuning on holdout.",
+  "plateau": "Up to three rounds of structural/weight refinements; stop after two rounds with no selection improvement, or report bounded search and failed control honestly.",
+  "selection": "Screen top two by goals then mean caps; promote only if selection win count exceeds baseline; unchanged compute policy. Holdout uses exact one-sided paired binomial test on discordant outcomes, no censored games.",
+  "sources_sha256": {
+    "baseline.cpp": "583a27980489193d30a40e6a9ce7ffafa736562691f6bc1c6d8a7a15346f27a7",
+    "bot.py": "6495f1ad41272048679eee8f7a65a1d91c90508ec2b1e49d8c95e0e5437f288a",
+    "benchmark.py": "6a361da30ceb112bde886815c35f8b8bb656d25fc451d0b5d1a8b6e68d34e3cd",
+    "spawn-model.default.json": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719"
+  }
+}

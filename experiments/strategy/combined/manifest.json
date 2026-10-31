@@ -1,0 +1,9 @@
+{
+  "variant": "combined",
+  "parameters": {
+    "highmerges": true,
+    "endempty": 1620
+  },
+  "source_sha256": "145f868bbe23a99dfe88208e5f7cb7b1b63e18753d684d67bc70ea1fe38d99cf",
+  "engine_sha256": "824311b461e8f84e6cb236712f4d5cfb83b749b36a52eb798c9316cd1ea19c03"
+}

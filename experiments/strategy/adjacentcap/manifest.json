@@ -1,0 +1,8 @@
+{
+  "variant": "adjacentcap",
+  "parameters": {
+    "adjacent": 10000
+  },
+  "source_sha256": "13e452b5c2f95b56d8a0897d0180cb81c513fb4ada65bb98aca7fb994c4750e9",
+  "engine_sha256": "991294969ae3fdc5a9192661313149ea5d446dc66374bd8f87195fc8b81701c6"
+}

@@ -1,0 +1,45 @@
+{
+  "finalist": "endempty",
+  "parameters": {
+    "endempty": 1620
+  },
+  "selection_goals": 7,
+  "baseline_selection_goals": 5,
+  "selection_games": 20,
+  "plateau_rounds": [
+    {
+      "highmerges_soft": 6,
+      "combined": 6,
+      "endempty_half": 4
+    },
+    {
+      "endempty_double": 7,
+      "endempty_quarter": 5,
+      "endempty_mono70": 7
+    }
+  ],
+  "control_seeds": [
+    10001,
+    10060
+  ],
+  "control_games": 60,
+  "no_further_tuning": true,
+  "frozen_manifest": {
+    "variant": "endempty",
+    "parameters": {
+      "endempty": 1620
+    },
+    "source_sha256": "87d6c8a59d50e218a969673ffa6e6140f2410fb95407b028a49ae7a45b346248",
+    "engine_sha256": "659229f821d7bdf443cdf5ee95d25c741fbf6cf52cefadb17a8299f69017fb6a"
+  },
+  "frozen_files": {
+    "lab.py": "d7a59eb7634dcc52ccf66cb4a68d25f7c296eeb8dc0dd9a5262c02099892e1b3",
+    "baseline.cpp": "583a27980489193d30a40e6a9ce7ffafa736562691f6bc1c6d8a7a15346f27a7",
+    "endempty/engine.cpp": "87d6c8a59d50e218a969673ffa6e6140f2410fb95407b028a49ae7a45b346248",
+    "endempty/engine.dylib": "659229f821d7bdf443cdf5ee95d25c741fbf6cf52cefadb17a8299f69017fb6a",
+    "baseline/engine.dylib": "08b875d0760e7d005791b6d37e1e63a213f815e030286a76caa67772471dfc20",
+    "worktree/bot.py": "6495f1ad41272048679eee8f7a65a1d91c90508ec2b1e49d8c95e0e5437f288a",
+    "worktree/benchmark.py": "6a361da30ceb112bde886815c35f8b8bb656d25fc451d0b5d1a8b6e68d34e3cd",
+    "worktree/vendor/engine_adapted.cpp": "583a27980489193d30a40e6a9ce7ffafa736562691f6bc1c6d8a7a15346f27a7"
+  }
+}

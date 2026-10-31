@@ -1,0 +1,8 @@
+{
+  "variant": "edgecap",
+  "parameters": {
+    "edge": 6000
+  },
+  "source_sha256": "0370083d3ef9801d5ca86a8bcbc398ed87ac7f2f958a9830075ad7f7692c1cf4",
+  "engine_sha256": "4db163dd044547674c0e61a53a085be02c9588ba4cded5639db754ba891cfb6d"
+}

@@ -1,0 +1,8 @@
+{
+  "variant": "mono70",
+  "parameters": {
+    "mono": 70
+  },
+  "source_sha256": "5eb465a07ec64b084c38588b46b1c705b9626b55e7188c66fb0672dfd7561945",
+  "engine_sha256": "f7facdb9dd46ff510a2e97641ed63ad28adf4716522593a0e055b84d079839da"
+}

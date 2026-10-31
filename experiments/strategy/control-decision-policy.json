@@ -1,0 +1,11 @@
+{
+  "rule": "Adopt default heuristic only if frozen holdout has more goals and exact one-sided paired binomial p <= 0.05, with zero censored/incomplete games. Otherwise preserve current default and retain candidate as experimental.",
+  "defined_before_full_control": true,
+  "observed_progress_at_definition": {
+    "baseline_games": 4,
+    "baseline_goals": 1,
+    "candidate_games": 3,
+    "candidate_goals": 1
+  },
+  "no_retuning_or_second_finalist": true
+}

@@ -1,0 +1,19 @@
+{
+  "seeds": [
+    1001,
+    1020
+  ],
+  "variants": {
+    "endempty_double": {
+      "endempty": 3240
+    },
+    "endempty_quarter": {
+      "endempty": 405
+    },
+    "endempty_mono70": {
+      "endempty": 1620,
+      "mono": 70
+    }
+  },
+  "policy": "Full 20-seed selection. Does not use holdout. Start as preceding trials free compute slots. Plateau rounds counted only after all candidates completed."
+}

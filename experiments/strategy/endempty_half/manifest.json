@@ -1,0 +1,8 @@
+{
+  "variant": "endempty_half",
+  "parameters": {
+    "endempty": 810
+  },
+  "source_sha256": "0f3a4e82f88c6535f0d37dcda8d3f7511279b68a5b2cedd883bd729659cbbc0b",
+  "engine_sha256": "957f85b9ba91af60e73f011a1c1cd2f28c02463aff8d3a995da699001cb6e3d8"
+}

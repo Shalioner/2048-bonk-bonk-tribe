@@ -1,0 +1,8 @@
+{
+  "variant": "highmerges",
+  "parameters": {
+    "highmerges": true
+  },
+  "source_sha256": "81eaa6e276bbb1c9998e2d5362472c905399ccafcc0e72033fc7941ba35aff79",
+  "engine_sha256": "3b5e4d3cf40fc5f5d0535cff988224440ce0f630f44cd4ac1cdabf448ed475d8"
+}
