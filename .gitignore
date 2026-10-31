@@ -12,3 +12,5 @@ latest.png
 goal.png
 recognition-error.png
 benchmark.json
+*.so
+spawn-model.json

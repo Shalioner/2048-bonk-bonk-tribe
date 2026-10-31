@@ -14,3 +14,16 @@ LICENSE: sha256 7916c6cf82fc4ffcec8ffbe70a202851c1cfc5868cf96bc648ab40c1ce5cf30b
 2026-10-29: add rank-3 spawn branch, normalized runtime spawn probabilities (set_spawn_probs), score_levels diagnostics; Python updates prior weights from observed spawns. Search depth 5/6.
 
 Extend spawn vector to 15 ranks with set_spawn_vector; Python confirms newly observed ranks in a second stable frame before updating the vector. Rank 4 witnessed through ADB.
+
+2026-10-31: rules of the merge mode — rank 11 tiles never merge (move tables and the merge term
+of the heuristic), goal is three rank-11 tiles; the rank-13 goal and preservation logic were removed.
+Spawn probabilities are a 16x15 table indexed by the maximum rank of the board in each chance node
+(set_spawn_table, get_spawn_prob; set_spawn_vector/set_spawn_probs fill every row with one vector).
+The pruning threshold moved into eval_state. New solve_budget: passes with thresholds 1e-4, 1e-5,
+1e-6, first moves evaluated in parallel std::threads, deadline with a margin inside the budget.
+Exports get_cap_rank, get_goal_count, score_levels_thresh. config.h uses arc4random only on macOS;
+build.sh also builds engine.so on Linux (tests and simulation).
+
+2026-10-31 (review): the budget is hard — every full pass, including the first, stops at the
+deadline; a depth-1 fallback computed before the passes provides the move if none completes
+(info[7]). engine_api_version() = 2 lets bot.py reject a library built from older sources.

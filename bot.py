@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Звёздное провидение: локальный ADB-бот. Ctrl+C останавливает."""
-import argparse, subprocess, time, json, io, tempfile, struct, fcntl, ctypes
+import argparse, subprocess, time, json, io, tempfile, struct, fcntl, ctypes, sys
 from pathlib import Path
 from functools import lru_cache
 import cv2
@@ -8,6 +8,9 @@ import numpy as np
 from PIL import Image
 ROOT=Path(__file__).resolve().parent
 PACKAGE="com.global.sgdbzseaeu"
+# Правила режима: плитки уровня CAP (2048) не сливаются; цель — GOAL_COUNT таких плиток.
+CAP=11
+GOAL_COUNT=3
 
 def mask(im,r,c,raw=False):
     # Геометрия при 1440x3040; координаты нормализованы в read_board.
@@ -148,7 +151,7 @@ def move(board,d):
         if d in (1,3):ids=ids[::-1]
         vals=[board[i] for i in ids if board[i]]; result=[];i=0
         while i<len(vals):
-            if i+1<len(vals) and vals[i]==vals[i+1]:result.append(vals[i]+1);i+=2
+            if i+1<len(vals) and vals[i]==vals[i+1] and vals[i]<CAP:result.append(vals[i]+1);i+=2
             else:result.append(vals[i]);i+=1
         result += [0]*(4-len(result))
         for idx,v in zip(ids,result):out[idx]=v
@@ -172,13 +175,11 @@ def send_move(adb,xy):
     adb("shell",command)
 
 def reached_goal(b):
-    return b.count(13)>=3
+    return b.count(CAP)>=GOAL_COUNT
 
 def legal_moves(b):
-    options=[(d,move(b,d)) for d in range(4) if move(b,d)!=b]
-    # Сохраняем собранные 13 для трёх плиток одновременно.
-    preserved=[(d,a) for d,a in options if a.count(13)>=b.count(13)]
-    return preserved or options
+    # Плитки CAP не сливаются, поэтому потерять уже собранную CAP нельзя.
+    return [(d,move(b,d)) for d in range(4) if move(b,d)!=b]
 
 def heuristic(b):
     if reached_goal(b):return 1e9
@@ -213,35 +214,123 @@ def choose_legacy(b):
     depth=3 if b.count(0)>=6 else 5
     return max(legal,key=lambda item:search(item[1],depth,True))[0] if legal else None
 
-NATIVE=ctypes.CDLL(str(ROOT/"vendor/engine.dylib"))
-NATIVE.init_tables()
-NATIVE.solve_levels.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int]
-NATIVE.solve_levels.restype=ctypes.c_int
-NATIVE.execute_move.argtypes=[ctypes.c_int,ctypes.c_uint64]
-NATIVE.execute_move.restype=ctypes.c_uint64
-NATIVE.set_spawn_probs.argtypes=[ctypes.c_float]*3
-NATIVE.set_spawn_probs.restype=None
-NATIVE.set_spawn_vector.argtypes=[ctypes.POINTER(ctypes.c_float),ctypes.c_int]
-NATIVE.set_spawn_vector.restype=None
-NATIVE.score_levels.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int]
-NATIVE.score_levels.restype=ctypes.c_float
+ENGINE=ROOT/"vendor"/("engine.dylib" if sys.platform=="darwin" else "engine.so")
+ENGINE_API=2
+REQUIRED_SYMBOLS=("engine_api_version","get_cap_rank","get_goal_count","solve_budget","set_spawn_table",
+                  "get_spawn_prob","score_levels_thresh","init_tables","execute_move","goal_levels")
+
+def check_engine(lib,name=ENGINE.name):
+    # До настройки argtypes: у старого движка нет новых функций, и ctypes упал бы с AttributeError.
+    missing=[n for n in REQUIRED_SYMBOLS if not hasattr(lib,n)]
+    if missing:
+        raise RuntimeError(f"Движок {name} собран из старой версии (нет {', '.join(missing)}): пересоберите sh vendor/build.sh")
+    if lib.engine_api_version()!=ENGINE_API or (lib.get_cap_rank(),lib.get_goal_count())!=(CAP,GOAL_COUNT):
+        raise RuntimeError(f"Движок {name} собран из другой версии: пересоберите sh vendor/build.sh")
+
+def load_engine(path=ENGINE):
+    if not path.exists():raise RuntimeError(f"Движок не собран: выполните sh vendor/build.sh ({path.name})")
+    lib=ctypes.CDLL(str(path))
+    check_engine(lib,path.name)
+    lib.solve_levels.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int]
+    lib.solve_levels.restype=ctypes.c_int
+    lib.solve_budget.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int,ctypes.POINTER(ctypes.c_float),ctypes.c_int,ctypes.c_double,ctypes.c_double,ctypes.POINTER(ctypes.c_double)]
+    lib.solve_budget.restype=ctypes.c_int
+    lib.execute_move.argtypes=[ctypes.c_int,ctypes.c_uint64]
+    lib.execute_move.restype=ctypes.c_uint64
+    lib.set_spawn_probs.argtypes=[ctypes.c_float]*3
+    lib.set_spawn_probs.restype=None
+    lib.set_spawn_vector.argtypes=[ctypes.POINTER(ctypes.c_float),ctypes.c_int]
+    lib.set_spawn_vector.restype=None
+    lib.set_spawn_table.argtypes=[ctypes.POINTER(ctypes.c_float),ctypes.c_int,ctypes.c_int]
+    lib.set_spawn_table.restype=ctypes.c_int
+    lib.get_spawn_prob.argtypes=[ctypes.c_int,ctypes.c_int]
+    lib.get_spawn_prob.restype=ctypes.c_float
+    lib.score_levels.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int]
+    lib.score_levels.restype=ctypes.c_float
+    lib.score_levels_thresh.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int,ctypes.c_float]
+    lib.score_levels_thresh.restype=ctypes.c_float
+    lib.goal_levels.argtypes=[ctypes.c_uint64]
+    lib.goal_levels.restype=ctypes.c_int
+    lib.init_tables()
+    return lib
+
+try:NATIVE=load_engine()
+except RuntimeError as exc:
+    if __name__=="__main__":sys.exit(str(exc))
+    raise
 DIRECTIONS=(2,3,0,1) # Python L,R,U,D -> upstream U,D,L,R
 
-def set_spawn_weights(counts):
-    weights=(ctypes.c_float*len(counts))(*counts)
-    NATIVE.set_spawn_vector(weights,len(counts))
+# Поиск: проходы с ослабляемым отсечением, пока укладываются в бюджет времени.
+DEFAULT_DEPTH=8
+DEFAULT_THINK=10.0
+THRESHOLDS=(1e-4,1e-5,1e-6)
+# Бюджет жёсткий: каждый проход прерывается дедлайном. Если не завершился ни один,
+# используется запасной ход глубины 1 (считается за микросекунды до проходов).
+# Следующий проход не начинается, если даже при росте в GROWTH раз он не успеет до дедлайна.
+# Замеренный рост 6–14 раз; берём оптимистичные 5: если проход не успеет, дедлайн прервёт его,
+# и останется результат предыдущего прохода.
+GROWTH=5.0
+
+# Модель появлений по стадиям (стадия = максимальный уровень после хода).
+SPAWN_DEFAULT=ROOT/"spawn-model.default.json"
+SPAWN_LEARNED=ROOT/"spawn-model.json"
+
+def default_spawn_model():
+    return json.loads(SPAWN_DEFAULT.read_text())
+
+def load_spawn_model():
+    if SPAWN_LEARNED.exists():
+        data=json.loads(SPAWN_LEARNED.read_text())
+        if data.get("version")==2:return data
+        print(json.dumps({"spawn_model":"старый формат spawn-model.json без стадий проигнорирован; используется spawn-model.default.json"},ensure_ascii=False),flush=True)
+    return default_spawn_model()
+
+def stage_row(model,stage):
+    keys=sorted(int(k) for k in model["stages"])
+    key=max([k for k in keys if k<=stage],default=keys[0])
+    return (list(model["stages"][str(key)])+[0]*15)[:15]
+
+def spawn_table(model):
+    return [stage_row(model,s) for s in range(16)]
+
+def apply_spawn_model(model):
+    flat=[float(v) for row in spawn_table(model) for v in row]
+    if NATIVE.set_spawn_table((ctypes.c_float*len(flat))(*flat),16,15)!=0:
+        raise RuntimeError("Некорректная модель появлений")
+
+def record_spawn(model,stage,level):
+    key=str(stage)
+    if key not in model["stages"]:model["stages"][key]=stage_row(model,stage)
+    row=model["stages"][key]
+    row+= [0]*(15-len(row))
+    row[level-1]+=1
+
+def format_spawn_model(model):
+    head="".join(f" {json.dumps(k)}: {json.dumps(v,ensure_ascii=False)},\n" for k,v in model.items() if k!="stages")
+    rows=",\n".join(f'  "{k}": {json.dumps(model["stages"][k])}' for k in sorted(model["stages"],key=int))
+    return "{\n"+head+' "stages": {\n'+rows+"\n }\n}\n"
+
+def save_spawn_model(model):
+    SPAWN_LEARNED.write_text(format_spawn_model(model))
 
 def pack(b):
     if any(not 0<=v<=15 for v in b):raise RuntimeError("Уровень вне диапазона движка")
     return sum(v<<(4*i) for i,v in enumerate(b))
 
-def choose(b):
+def choose(b,depth=DEFAULT_DEPTH,think=DEFAULT_THINK,info=None):
     legal=legal_moves(b)
     if not legal:return None
     allowed=sum(1<<DIRECTIONS[d] for d,_ in legal)
-    depth=7
-    result=NATIVE.solve_levels(pack(b),allowed,depth)
+    out=(ctypes.c_double*8)()
+    thresholds=(ctypes.c_float*len(THRESHOLDS))(*THRESHOLDS)
+    result=NATIVE.solve_budget(pack(b),allowed,depth,thresholds,len(THRESHOLDS),think,GROWTH,out)
+    if info is not None:
+        fallback=bool(out[7])
+        info.update(depth=1 if fallback else depth,passes=int(out[0]),threshold=float(f"{out[1]:.0e}") if out[1] else None,
+                    positions=int(out[2]),search_s=round(out[3],3),cut=bool(out[4]),skipped=bool(out[5]),fallback=fallback)
     return DIRECTIONS.index(result) if result>=0 else None
+
+apply_spawn_model(default_spawn_model())
 
 def main():
     ap=argparse.ArgumentParser()
@@ -249,6 +338,8 @@ def main():
     ap.add_argument("--steps",type=int,default=10000)
     ap.add_argument("--delay",type=float,default=.4)
     ap.add_argument("--dry-run",action="store_true")
+    ap.add_argument("--depth",type=int,default=DEFAULT_DEPTH,help="предел глубины поиска (ходов вперёд)")
+    ap.add_argument("--think",type=float,default=DEFAULT_THINK,help="бюджет расчёта хода, с")
     args=ap.parse_args()
     lock=open(ROOT/"bot.lock","w")
     try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
@@ -268,12 +359,9 @@ def main():
         for i,y in enumerate((1150,1460,1770,2080)):
             payload+=struct.pack("<I",y)+raw[i*block+16:i*block+16+5760*80]
         return payload
-    # Initial weights are a provisional prior, not measured game probabilities.
-    model_path=ROOT/"spawn-model.json"
-    counts=json.loads(model_path.read_text())["weights"] if model_path.exists() else [85,10,5]
-    counts=(counts+[0]*15)[:15]
-    if counts[3]==0:counts[3]=1 # rank 4 independently confirmed in fixtures/spawn-four.png
-    set_spawn_weights(counts)
+    # Начальная модель — счётчики из play.log по стадиям; дальше уточняется по наблюдениям.
+    model=load_spawn_model()
+    apply_spawn_model(model)
     last=None;expected=None;stuck=0
     for step in range(args.steps):
         if (ROOT/"STOP").exists():print("Остановлено файлом STOP",flush=True);break
@@ -296,7 +384,7 @@ def main():
                 if observation_ready(b,previous_observation,expected,last):
                     if expected is not None:
                         rank=next(b[i] for i in range(16) if b[i]!=expected[i])
-                        if counts[rank-1]==0:print(json.dumps({"confirmed_new_spawn":rank}),flush=True)
+                        if NATIVE.get_spawn_prob(max(expected),rank)==0:print(json.dumps({"confirmed_new_spawn":rank,"stage":max(expected)}),flush=True)
                     break
                 if expected is not None and b!=last and not valid_successor(expected,b):
                     if not full_mode:print(json.dumps({"action":"retry_full_frame","reason":"transition_mismatch"}),flush=True)
@@ -314,15 +402,17 @@ def main():
             data=adb("exec-out","screencap") if full_mode else capture()
         if expected is not None and b!=last:
             index=next(i for i in range(16) if b[i]!=expected[i])
-            rank=b[index];counts[rank-1]+=1
-            set_spawn_weights(counts)
-            model_path.write_text(json.dumps({"weights":counts,"prior":[85,10,5],"description":"prior plus observed spawns of levels 1..15; new ranks require stable frame confirmation"}))
-            print(json.dumps({"spawn_level":rank,"cell":index,"spawn_weights":counts}),flush=True)
+            rank=b[index];stage=max(expected)
+            record_spawn(model,stage,rank)
+            apply_spawn_model(model)
+            save_spawn_model(model)
+            print(json.dumps({"spawn_level":rank,"cell":index,"stage":stage,"stage_counts":model["stages"][str(stage)][:6]}),flush=True)
         if reached_goal(b):
             decode_screen(adb("exec-out","screencap")).save(ROOT/"goal.png")
-            print("ЦЕЛЬ ДОСТИГНУТА: три плитки 13 одновременно. "+str(b),flush=True);break
-        d=choose(b)
-        print(json.dumps({"step":step,"board":b,"direction":None if d is None else ["left","right","up","down"][d],"capture_s":round(captured-started,3),"think_s":round(time.monotonic()-captured,3)},ensure_ascii=False),flush=True)
+            print(f"ЦЕЛЬ ДОСТИГНУТА: {GOAL_COUNT} плитки уровня {CAP} одновременно. "+str(b),flush=True);break
+        search={}
+        d=choose(b,args.depth,args.think,search)
+        print(json.dumps({"step":step,"board":b,"direction":None if d is None else ["left","right","up","down"][d],"capture_s":round(captured-started,3),"think_s":round(time.monotonic()-captured,3),"search":search},ensure_ascii=False),flush=True)
         if args.dry_run or d is None:
             decode_screen(data).save(ROOT/"latest.png");break
         stuck=stuck+1 if b==last else 0
