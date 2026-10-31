@@ -1,4 +1,4 @@
-# 2048 — Автоигра: Звёздное провидение
+# 2048-bonk-bonk-tribe — Автоигра: Звёздное провидение
 
 Откройте поле на подключённом телефоне. Дважды нажмите `Запустить.command`. Для остановки — `Остановить.command` или Ctrl+C. Не играйте вручную одновременно с ботом. scrcpy можно оставить открытым.
 
@@ -12,8 +12,8 @@
 Нужны Python 3, ADB (`android-platform-tools`), Tesseract с английским языком и Xcode Command Line Tools с `clang++`.
 
 ```sh
-git clone https://github.com/Shalioner/2048.git
-cd 2048
+git clone https://github.com/Shalioner/2048-bonk-bonk-tribe.git
+cd 2048-bonk-bonk-tribe
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -r requirements.txt
