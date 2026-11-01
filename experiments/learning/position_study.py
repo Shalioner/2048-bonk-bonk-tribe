@@ -43,6 +43,10 @@ def positions():
             board = game["cap_boards"].get(caps)
             if board is None:
                 continue
+            if not cycle.valid_board(board) or board.count(cycle.bot.CAP) != int(caps):
+                raise ValueError("Некорректный cap-снимок корпуса")
+            if cycle.bot.reached_goal(tuple(board)) or not cycle.bot.legal_moves(tuple(board)):
+                continue
             empty = board.count(0)
             bucket = 0 if empty <= 3 else 1 if empty <= 7 else 2
             groups.setdefault((caps, bucket), []).append(dict(id=str(game["seed"]) + "/cap" + caps,

@@ -60,6 +60,9 @@ def freeze():
     for path in (ROOT / "screen.json", ROOT / "training-metrics.json"):
         if path.exists():
             hashes[cycle.location(path)] = cycle.sha(path)
+    # Статистическое правило и выбор корпуса — тоже часть замороженного опыта.
+    for path in (ROOT / "evaluate.py", ROOT / "position_study.py"):
+        hashes[cycle.location(path)] = cycle.sha(path)
     for relative, digest in hashes.items():
         if cycle.sha(cycle.WORK / relative) != digest:
             raise ValueError("Источник изменился после screen: " + relative)
