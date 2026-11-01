@@ -20,7 +20,8 @@
     "learning_rate": 0.25,
     "l2": 0.0001,
     "patience": 4,
-    "validation_gate": "validation Brier at least0.001 better than stage-prior baseline; else exclude learned arm from full-game selection; never describe output as calibrated true probability"
+    "validation_gate": "validation Brier at least0.001 better than stage-prior baseline; else exclude learned arm from full-game selection; never describe output as calibrated true probability",
+    "min_delta": 0.001
   },
   "screen": {
     "seeds": [
@@ -37,7 +38,7 @@
     "think_seconds": 0.01,
     "max_moves": 6000,
     "order": "seeds ascending; policy order rotates by seed; sequential full-game runs, no concurrent heavy job",
-    "selection": "Start baseline; candidate requires strictly more wins than baseline. Choose highest wins, ties use lower observed seconds_per_move then declared order. Cost is descriptive, no equal elapsed efficiency claim unless aggregate search time within10% of baseline. If no candidate beats baseline, freeze best non-baseline as exploratory control, no default adoption."
+    "selection": "Start baseline; candidate requires strictly more wins than baseline. Choose highest wins, ties use lower observed seconds_per_move then declared order. Cost is descriptive, no equal elapsed efficiency claim unless aggregate search time per completed move within10% of baseline. If no candidate beats baseline, freeze best non-baseline as exploratory control, no default adoption."
   },
   "holdout": {
     "seeds": [
@@ -74,5 +75,6 @@
   },
   "limits": "Do not relabel limit as loss; invalidates experiment until symmetric max-moves amendment before unblinding",
   "freeze": "code, model, source/engine SHA, configs and one finalist committed before holdout; previous control is diagnostics only",
-  "local_plateau": "Bounded cycle of the3 distinct mechanisms and one frozen learned pilot. No hyperparameter tuning after holdout. Report lack of improvement honestly; not global optimum."
+  "local_plateau": "Bounded cycle of the3 distinct mechanisms and one frozen learned pilot. No hyperparameter tuning after holdout. Report lack of improvement honestly; not global optimum.",
+  "cost_definition": "Equal nominal per-move budget for both arms. Actual cost comparison uses measured choose wall seconds per completed move; total search time also reported, but longer winning games naturally spend more total CPU. Near-equal means per-move ratio within10%; otherwise no equal-elapsed efficiency claim."
 }
