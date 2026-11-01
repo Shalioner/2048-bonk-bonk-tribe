@@ -63,6 +63,10 @@ def freeze():
     # Статистическое правило и выбор корпуса — тоже часть замороженного опыта.
     for path in (ROOT / "evaluate.py", ROOT / "position_study.py"):
         hashes[cycle.location(path)] = cycle.sha(path)
+    for path in (ROOT / "fit_round2.py", ROOT / "model-round2-plan.json",
+                 ROOT / "refinement" / "selection.json"):
+        if path.exists():
+            hashes[cycle.location(path)] = cycle.sha(path)
     for relative, digest in hashes.items():
         if cycle.sha(cycle.WORK / relative) != digest:
             raise ValueError("Источник изменился после screen: " + relative)
@@ -110,6 +114,14 @@ def finalize():
     significance = len(wins_b) > len(wins_a) and p <= .05
     training_count = sum(len(json.loads((ROOT / ("teacher-" + split + ".json")).read_text())["games"])
                          for split in ("train", "validation"))
+    corpus_path = ROOT / "corpus-source.json"
+    corpus_count = 0
+    if corpus_path.exists():
+        corpus = json.loads(corpus_path.read_text())
+        if not corpus.get("complete"):
+            raise ValueError("Позиционный корпус не завершён")
+        cycle.reject_limits(corpus)
+        corpus_count = len(corpus["games"])
     result = dict(finalist=candidate, games_per_arm=len(base), baseline_goals=len(wins_a),
                   candidate_goals=len(wins_b), gained=gained, lost=lost, same=len(base) - n,
                   exact_tail_numerator=numerator, exact_tail_denominator=denominator, one_sided_p=p,
@@ -121,7 +133,8 @@ def finalize():
                   per_move_search_cost_ratio=per_move_ratio, near_equal_actual_search_cost=abs(per_move_ratio - 1) <= .1,
                   limits=0, no_seed_overlap=True, frozen_provenance_verified=True,
                   full_games_training_validation=training_count, full_games_screen=len(screen["games"]),
-                  full_games_holdout=len(data["games"]), total_full_games=training_count + len(screen["games"]) + len(data["games"]),
+                  full_games_holdout=len(data["games"]), full_games_position_corpus=corpus_count,
+                  total_full_games=training_count + len(screen["games"]) + len(data["games"]) + corpus_count,
                   runtime_or_default_policy_switched=False, ten_second_full_game_win_rate_validated=False)
     cycle.benchmark.save_checkpoint(ROOT / "summary.json", result)
     print(json.dumps({key: result[key] for key in ("finalist", "baseline_goals", "candidate_goals", "one_sided_p", "supported_short_budget_improvement", "per_move_search_cost_ratio", "total_full_games")}, indent=2))
