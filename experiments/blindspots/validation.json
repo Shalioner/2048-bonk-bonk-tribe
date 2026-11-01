@@ -1,0 +1,38 @@
+{
+  "boards": 83,
+  "variants": 10,
+  "baseline_score_parity": true,
+  "move_goal_parity": true,
+  "bonus_formula_symmetry": true,
+  "runner_two_move_parity": true,
+  "numerical_witness": {
+    "board": [
+      10,
+      5,
+      1,
+      8,
+      9,
+      11,
+      9,
+      9,
+      7,
+      8,
+      8,
+      8,
+      8,
+      7,
+      4,
+      7
+    ],
+    "baseline": {
+      "0": 9.999999974752427e-07,
+      "1": 9.999999974752427e-07
+    },
+    "signed_reference": {
+      "0": -877294.0340413942,
+      "1": -720742.8499455337
+    }
+  },
+  "technical_seed": 202611009,
+  "technical_seed_excluded": true
+}

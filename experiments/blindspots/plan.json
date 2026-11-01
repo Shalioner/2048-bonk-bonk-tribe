@@ -1,0 +1,92 @@
+{
+  "baseline_commit": "61158f580e53f06b3188c0ea02a094446dc40bc0",
+  "branch": "local/strategy-blindspots-20261101",
+  "created_before_new_games": true,
+  "target": "three unmergeable rank11 tiles, fixed default spawn model",
+  "training_seeds": [
+    202611010,
+    202611021
+  ],
+  "holdout_seeds": [
+    202611100,
+    202611159
+  ],
+  "depth": 3,
+  "focus_depth": 4,
+  "threshold": 0.0001,
+  "max_moves": 6000,
+  "variants": {
+    "baseline": {},
+    "progress20000": {
+      "progress": 20000
+    },
+    "mobility2000": {
+      "mobility": 2000
+    },
+    "focus3": {
+      "focus_empty": 3
+    },
+    "progress10000": {
+      "progress": 10000
+    },
+    "mobility1000": {
+      "mobility": 1000
+    },
+    "focus1": {
+      "focus_empty": 1
+    },
+    "progress40000": {
+      "progress": 40000
+    },
+    "mobility4000": {
+      "mobility": 4000
+    },
+    "focus5": {
+      "focus_empty": 5
+    }
+  },
+  "rounds": [
+    [
+      "progress20000",
+      "mobility2000",
+      "focus3"
+    ],
+    [
+      "progress10000",
+      "mobility1000",
+      "focus1"
+    ],
+    [
+      "progress40000",
+      "mobility4000",
+      "focus5"
+    ]
+  ],
+  "selection": "Strictly more training wins replaces incumbent; start baseline, order as rounds; ties retain incumbent. Always freeze best non-baseline candidate for holdout, even if it failed to beat baseline; ties use declared order. No selection on holdout.",
+  "plateau": "After first round, two successive refinement rounds without strictly increasing incumbent wins. If not reached, preregister additional training-only refinements before running them; never tune after holdout. Plateau is local to tested families/12 training seeds.",
+  "holdout_decision": "One candidate only. Exact one-sided paired binomial p<=0.05 AND more holdout wins AND no limits supports offline improvement; otherwise no convincing improvement. No default/runtime adoption without separate 8/10s and phone evidence.",
+  "censoring": "A limit invalidates selection/control, not counted as loss; increase limit symmetrically in a protocol amendment before comparison.",
+  "cost": "Record nodes, clipping counts, depth_counts and wall time. Focus buys depth with additional CPU; no equal-budget efficiency claim.",
+  "seed_inventory": {
+    "roots": [
+      "output",
+      "2048-github"
+    ],
+    "result_files": 76,
+    "unique_old_seeds": 106,
+    "old_min": 1,
+    "old_max": 99001,
+    "overlap": []
+  },
+  "hypotheses": {
+    "progress": "Cap-count reward changes earlier sacrifices/progress; cheap proxy previously tested at10000, not staged win-probability value; constant after two caps.",
+    "mobility": "At exactly two caps bonus per legal leaf direction preserves workspace; four execute_move calls per affected leaf; can reward useless shuffling.",
+    "focus": "Depth4 only at >=two caps and <=N empty cells; otherwise3. Can resolve imminent traps; extra CPU and can react too late."
+  },
+  "source_sha256": {
+    "bot.py": "6495f1ad41272048679eee8f7a65a1d91c90508ec2b1e49d8c95e0e5437f288a",
+    "benchmark.py": "6a361da30ceb112bde886815c35f8b8bb656d25fc451d0b5d1a8b6e68d34e3cd",
+    "vendor/engine_adapted.cpp": "583a27980489193d30a40e6a9ce7ffafa736562691f6bc1c6d8a7a15346f27a7",
+    "spawn-model.default.json": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719"
+  }
+}
