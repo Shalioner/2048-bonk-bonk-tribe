@@ -1,0 +1,121 @@
+{
+ "finalist": "progressive",
+ "hashes": {
+  "benchmark.py": "6a361da30ceb112bde886815c35f8b8bb656d25fc451d0b5d1a8b6e68d34e3cd",
+  "bot.py": "1bdcfa9fb6d511d559674769397e3dce5c91802110760adedf7613984d63508c",
+  "experiments/learning/cycle.py": "02de337ee01bffdd4b4255d632c6906853580cce258846743855bec56ef174cd",
+  "experiments/learning/plan.json": "0880c0aa7c14e54225686b36a66e8cc3ea11bc14f387ecdc6f3aaa5d6f9e9d65",
+  "spawn-model.default.json": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+  "vendor/2048.h": "2597ae4726e872494bb57997154fdb0279cfc706bb0aad7dcb758be5231ec85d",
+  "vendor/config.h": "5bbfde3aedbd34414eb6a7c1fb1a8b7f5fb2b76b66bb014318be496f24c7bda1",
+  "vendor/engine_adapted.cpp": "f04b93508e9a975fee39f5a868f26e3186c4103867bf5bd17c8a7b52bb9651e7",
+  "vendor/platdefs.h": "5b3923979efb21112335319ff92a807cf47620002b446864eddea5f9925d983c",
+  "vendor/value_model.h": "b6e08d1291193e6235d2d365a76d293fefd22e8645fd1eb5a2bf2a09bd0c7c9c",
+  "experiments/learning/build/baseline/engine.dylib": "790ec184a4143c10659f96122e35efc1d8bf8efa522f827efcbdb24f659c3005",
+  "vendor/engine.dylib": "d7dedbfdfb0f1e83f706aa874ef47e23fd24c585f9e49f43f31f2932620f6e95",
+  "experiments/learning/model.bin": "7c714d2bfb177fe88d411b4a411d60a166a76e9a4400972b8e59c3cad2f8e439",
+  "value_model.py": "992cd3fd91c1537fd574a00c75a1f5850bc2bf1d6fb8ef17c47c94a2d4c00802",
+  "experiments/learning/screen.json": "d899e2e551765a46cfecb492a4e08369b6bae5861c2c21cef4298ef213853dbe",
+  "experiments/learning/training-metrics.json": "de5a954f68a02346490da882a4d8691ca600669e0821593b5d1cfe150319e77e",
+  "experiments/learning/evaluate.py": "b5de5e1eeed177f0c59de7d36bb39bbbd6adffe7a83193cc6525e40b835e3913",
+  "experiments/learning/position_study.py": "9c7a4e75cc337946e662aa35f5a70663b1fbff9ec16424185b70e73b305a75f7",
+  "experiments/learning/fit_round2.py": "7c0ab986348fc4d48a117c2e1f3b4213e305061c5f3f3ee81b0f3fbe667e92eb",
+  "experiments/learning/model-round2-plan.json": "78c3844c2ced1f51e8fa9ceb06577aa1f28703bae7bc27ee8c65e148ab079a68",
+  "experiments/learning/refinement/selection.json": "d0c470bdda64070b53fba32211640752645359bab12d172ded9cc3249db6b33d"
+ },
+ "screen_scores": {
+  "baseline_legacy": 0,
+  "cache_legacy": 0,
+  "progressive": 4,
+  "value_progressive": 0
+ },
+ "screen_costs": {
+  "baseline_legacy": {
+   "moves": 8479,
+   "search_wall_seconds": 81.01498713800206,
+   "search_seconds_per_move": 0.009554780886661405,
+   "seconds": 83.542904623,
+   "positions": 7421512744,
+   "fallbacks": 8343,
+   "cuts": 8343,
+   "actual_depth_counts": {
+    "8": 136,
+    "1": 8343
+   }
+  },
+  "cache_legacy": {
+   "moves": 10276,
+   "search_wall_seconds": 93.5163849899993,
+   "search_seconds_per_move": 0.009100465647138897,
+   "seconds": 95.65679649899998,
+   "positions": 9746466128,
+   "fallbacks": 10155,
+   "cuts": 10155,
+   "actual_depth_counts": {
+    "8": 121,
+    "1": 10155
+   }
+  },
+  "progressive": {
+   "moves": 21836,
+   "search_wall_seconds": 95.30370827800175,
+   "search_seconds_per_move": 0.0043645222695549435,
+   "seconds": 100.685646251,
+   "positions": 7973449956,
+   "fallbacks": 76,
+   "cuts": 2730,
+   "actual_depth_counts": {
+    "4": 2953,
+    "3": 17540,
+    "2": 1085,
+    "5": 155,
+    "8": 10,
+    "1": 76,
+    "6": 16,
+    "7": 1
+   }
+  },
+  "value_progressive": {
+   "moves": 7038,
+   "search_wall_seconds": 34.530769881999404,
+   "search_seconds_per_move": 0.0049063327482238425,
+   "seconds": 35.83737529299996,
+   "positions": 679129752,
+   "fallbacks": 13,
+   "cuts": 1558,
+   "actual_depth_counts": {
+    "3": 4892,
+    "2": 792,
+    "4": 1179,
+    "5": 141,
+    "6": 16,
+    "7": 4,
+    "1": 13,
+    "8": 1
+   }
+  }
+ },
+ "promoted": true,
+ "exploratory": false,
+ "baseline_commit": "9b4120f1c2f1943b491d7378bcea18efd15a2350",
+ "selection_commit": "4f12f11d3ebf46f6079574afafd11219bf76d3c7",
+ "frozen_at_utc": "2026-11-01T20:06:56.225323+00:00",
+ "holdout_policy": {
+  "seeds": [
+   202612400,
+   202612459
+  ],
+  "games_per_arm": 60,
+  "policies": "one frozen candidate vs original baseline_legacy only",
+  "depth": 8,
+  "think_seconds": 0.01,
+  "max_moves": 6000,
+  "order": "paired alternating arm order by seed; sequential; no tuning or additional finalist after results",
+  "decision": "support short-budget offline win improvement only if more wins, exact paired one-sided binomial p<=0.05 and no limits; report all outcomes/cost. Never transfer 10ms results to10s runtime."
+ },
+ "model_gate": {
+  "passed": true,
+  "metrics_sha256": "de5a954f68a02346490da882a4d8691ca600669e0821593b5d1cfe150319e77e"
+ },
+ "no_further_tuning": true
+}
