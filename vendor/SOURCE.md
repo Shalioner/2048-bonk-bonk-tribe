@@ -27,3 +27,14 @@ build.sh also builds engine.so on Linux (tests and simulation).
 2026-10-31 (review): the budget is hard — every full pass, including the first, stops at the
 deadline; a depth-1 fallback computed before the passes provides the move if none completes
 (info[7]). engine_api_version() = 2 lets bot.py reject a library built from older sources.
+
+2026-11-01, local/strategy-learning-20261101, baseline 9b4120f:
+the transposition key now includes remaining depth and exact cprob bits (cprob
+omitted when the probability cutoff is disabled). An optional uncached
+score_levels_reference validates the cache contract. Added optional
+solve_budget_progressive; the original solve_budget algorithm remains available.
+Added local value_model.h and load/clear diagnostics for an optional learned
+afterstate value with consistent goal=1/loss=0. API2 is retained; Python checks
+optional symbols when explicitly requested. Original 2048.cpp, 2048.h,
+platdefs.h and LICENSE are unchanged. Local models, provenance, tests and
+offline controls are documented in ../LEARNING.md and ../VALUE-IMPLEMENTATION.md.
