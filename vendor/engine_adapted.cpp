@@ -13,16 +13,45 @@
 
 #include "2048.h"
 
+// Значение узла относится к точному горизонту и вероятностному контексту.
+// Порог отсечения и spawn-модель неизменны в пределах одного eval_state.
+struct search_cache_key {
+    board_t board;
+    int remaining_depth;
+    uint32_t probability_bits;
+
+    bool operator==(const search_cache_key &other) const {
+        return board == other.board && remaining_depth == other.remaining_depth &&
+               probability_bits == other.probability_bits;
+    }
+
+    bool operator<(const search_cache_key &other) const {
+        if (board != other.board) return board < other.board;
+        if (remaining_depth != other.remaining_depth) return remaining_depth < other.remaining_depth;
+        return probability_bits < other.probability_bits;
+    }
+};
+
+struct search_cache_hash {
+    size_t operator()(const search_cache_key &key) const {
+        uint64_t x = key.board ^ (static_cast<uint64_t>(key.remaining_depth) * 0x9e3779b97f4a7c15ULL) ^
+                     (static_cast<uint64_t>(key.probability_bits) * 0xbf58476d1ce4e5b9ULL);
+        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9ULL;
+        x = (x ^ (x >> 27)) * 0x94d049bb133111ebULL;
+        return static_cast<size_t>(x ^ (x >> 31));
+    }
+};
+
 #include "config.h"
 #if defined(HAVE_UNORDERED_MAP)
     #include <unordered_map>
-    typedef std::unordered_map<board_t, trans_table_entry_t> trans_table_t;
+    typedef std::unordered_map<search_cache_key, float, search_cache_hash> trans_table_t;
 #elif defined(HAVE_TR1_UNORDERED_MAP)
     #include <tr1/unordered_map>
-    typedef std::tr1::unordered_map<board_t, trans_table_entry_t> trans_table_t;
+    typedef std::tr1::unordered_map<search_cache_key, float, search_cache_hash> trans_table_t;
 #else
     #include <map>
-    typedef std::map<board_t, trans_table_entry_t> trans_table_t;
+    typedef std::map<search_cache_key, float> trans_table_t;
 #endif
 
 /* MSVC compatibility: undefine max and min macros */
@@ -297,6 +326,7 @@ struct eval_state {
     unsigned long moves_evaled;
     int depth_limit;
     float cprob_thresh;              // branches with cumulative probability below this are cut
+    bool cache_enabled;
     bool has_deadline;               // abort the search once deadline has passed
     std::chrono::steady_clock::time_point deadline;
     std::atomic<bool> *stop;         // shared between the threads of one pass
@@ -304,7 +334,7 @@ struct eval_state {
     unsigned long checks;
 
     eval_state() : maxdepth(0), curdepth(0), cachehits(0), moves_evaled(0), depth_limit(0),
-                   cprob_thresh(0.0001f), has_deadline(false), stop(NULL), aborted(false), checks(0) {
+                   cprob_thresh(0.0001f), cache_enabled(true), has_deadline(false), stop(NULL), aborted(false), checks(0) {
     }
 };
 
@@ -360,21 +390,19 @@ static float score_tilechoose_node(eval_state &state, board_t board, float cprob
         state.maxdepth = std::max(state.curdepth, state.maxdepth);
         return score_heur_board(board);
     }
-    if (state.curdepth < CACHE_DEPTH_LIMIT) {
-        const trans_table_t::iterator &i = state.trans_table.find(board);
+    search_cache_key cache_key = {board, state.depth_limit - state.curdepth, 0};
+    if (state.cprob_thresh > 0.0f) {
+        // memcpy сохраняет точные float-биты без нарушения strict aliasing.
+        // Без вероятностного отсечения cprob не влияет на значение узла.
+        static_assert(sizeof(cprob) == sizeof(cache_key.probability_bits), "Unexpected float size");
+        memcpy(&cache_key.probability_bits, &cprob, sizeof(cprob));
+    }
+    const bool use_cache = state.cache_enabled && state.curdepth < CACHE_DEPTH_LIMIT;
+    if (use_cache) {
+        const trans_table_t::iterator i = state.trans_table.find(cache_key);
         if (i != state.trans_table.end()) {
-            trans_table_entry_t entry = i->second;
-            /*
-            return heuristic from transposition table only if it means that
-            the node will have been evaluated to a minimum depth of state.depth_limit.
-            This will result in slightly fewer cache hits, but should not impact the
-            strength of the ai negatively.
-            */
-            if(entry.depth <= state.curdepth)
-            {
-                state.cachehits++;
-                return entry.heuristic;
-            }
+            state.cachehits++;
+            return i->second;
         }
     }
 
@@ -397,9 +425,8 @@ static float score_tilechoose_node(eval_state &state, board_t board, float cprob
     }
     res = res / num_open;
 
-    if (state.curdepth < CACHE_DEPTH_LIMIT) {
-        trans_table_entry_t entry = {static_cast<uint8_t>(state.curdepth), res};
-        state.trans_table[board] = entry;
+    if (use_cache) {
+        state.trans_table[cache_key] = res;
     }
 
     return res;
@@ -599,6 +626,12 @@ extern "C" float score_levels(board_t board,int move,int depth) {
 
 extern "C" float score_levels_thresh(board_t board,int move,int depth,float thresh) {
     eval_state state;state.depth_limit=depth;state.cprob_thresh=thresh;
+    return _score_toplevel_move(state,board,move);
+}
+
+// Диагностический reference с теми же листьями/отсечением, но без cache.
+extern "C" float score_levels_reference(board_t board,int move,int depth,float thresh) {
+    eval_state state;state.depth_limit=depth;state.cprob_thresh=thresh;state.cache_enabled=false;
     return _score_toplevel_move(state,board,move);
 }
 
