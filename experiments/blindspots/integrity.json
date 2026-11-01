@@ -9,6 +9,14 @@
       "nodes": 4122998382
     },
     {
+      "variant": "baseline",
+      "stage": "holdout",
+      "games": 60,
+      "goals": 18,
+      "clips": 276936338,
+      "nodes": 20792721948
+    },
+    {
       "variant": "progress20000",
       "stage": "training",
       "games": 12,
@@ -113,6 +121,14 @@
       "nodes": 7638686709
     },
     {
+      "variant": "focus7",
+      "stage": "holdout",
+      "games": 60,
+      "goals": 29,
+      "clips": 2217434021,
+      "nodes": 41447422741
+    },
+    {
       "variant": "focus8",
       "stage": "training",
       "games": 12,
@@ -145,7 +161,7 @@
       "nodes": 7390510988
     }
   ],
-  "total_games": 216,
+  "total_games": 336,
   "rounds": [
     {
       "variants": {
