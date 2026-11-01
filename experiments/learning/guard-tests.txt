@@ -1,0 +1,21 @@
+...............................
+----------------------------------------------------------------------
+Ran 31 tests in 2.541s
+
+OK
+{
+  "finalist": "progressive",
+  "scores": {
+    "baseline_legacy": 0,
+    "progressive": 1
+  },
+  "promoted": true
+}
+{
+  "finalist": "progressive",
+  "scores": {
+    "baseline_legacy": 0,
+    "progressive": 1
+  },
+  "promoted": true
+}

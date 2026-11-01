@@ -67,7 +67,8 @@ def _check_inputs(context):
 
 
 def _evaluated():
-    return any((ROOT / name).exists() for name in ("screen.json", "holdout.json", "finalist.json"))
+    return any((ROOT / name).exists() for name in
+               ("evaluation-started.json", "screen.json", "holdout.json", "finalist.json"))
 
 
 def _context(cycle, module):

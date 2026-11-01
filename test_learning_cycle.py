@@ -125,6 +125,41 @@ class CycleTests(unittest.TestCase):
             cycle.evaluate("screen", resume=True)
         self.assertEqual((self.root / "screen.json").read_bytes(), before)
 
+    def test_external_output_locks_training_before_first_episode(self):
+        with tempfile.TemporaryDirectory() as outside:
+            output = Path(outside) / "screen-custom.json"
+            with patch.object(cycle, "play", side_effect=KeyboardInterrupt):
+                with self.assertRaises(KeyboardInterrupt):
+                    cycle.evaluate("screen", out=output)
+            self.assertTrue((self.root / "evaluation-started.json").exists())
+            marker = json.loads((self.root / "evaluation-started.json").read_text())
+            self.assertEqual(marker["stage"], "screen")
+            self.assertEqual(marker["output"], str(output.resolve()))
+            self.assertFalse((self.root / "screen.json").exists())
+
+    def test_initial_fit_after_external_evaluation_is_refused_even_with_resume(self):
+        self.prepare_teacher("train")
+        self.prepare_teacher("validation")
+        module, calls = self.fake_value_module()
+        with tempfile.TemporaryDirectory() as outside, patch.object(cycle, "play", side_effect=episode):
+            cycle.evaluate("screen", out=Path(outside) / "screen-custom.json")
+        with patch.dict(sys.modules, {"value_model": module}):
+            for resume in (False, True):
+                with self.assertRaisesRegex(ValueError, "отбора"):
+                    cycle.fit(resume=resume)
+        self.assertEqual(calls, [])
+        self.assertFalse((self.root / "model.bin").exists())
+
+    def test_existing_fit_can_be_verified_after_evaluation_without_refitting(self):
+        self.prepare_teacher("train")
+        self.prepare_teacher("validation")
+        module, calls = self.fake_value_module()
+        with patch.dict(sys.modules, {"value_model": module}):
+            original = cycle.fit()
+            (self.root / "evaluation-started.json").write_text("{}")
+            self.assertEqual(cycle.fit(resume=True), original)
+        self.assertEqual(len(calls), 1)
+
     def test_fingerprints_refuse_engine_and_environment_changes_without_overwrite(self):
         with patch.object(cycle, "play", side_effect=episode):
             cycle.evaluate("screen")

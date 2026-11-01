@@ -292,6 +292,11 @@ def load_teacher(split):
     return data
 
 
+def evaluation_started():
+    return any((ROOT / name).exists() for name in
+               ("evaluation-started.json", "screen.json", "holdout.json", "finalist.json"))
+
+
 def fit(resume=False):
     import value_model
     training = load_teacher("train")
@@ -316,6 +321,8 @@ def fit(resume=False):
                 saved.get("model_sha256") != sha(model_path)):
             raise ValueError("Fit-checkpoint несовместим")
         return saved
+    if evaluation_started():
+        raise ValueError("Новый fit после начала отбора/контроля запрещён")
     model = value_model.ValueModel()
     metrics = model.fit(training["records"], validation_records=validation["records"], **config)
     brier = float(metrics["validation_brier"])
@@ -423,6 +430,10 @@ def evaluate(stage, resume=False, out=None, solver_table=None, environment_table
     path = Path(out or ROOT / (stage + ".json"))
     data = checkpoint(path, stage, config, sources, solver, environment, schedule, resume)
     reject_limits(data)
+    # Не зависит от --out: даже прерванная первая партия закрывает обучение.
+    marker = ROOT / "evaluation-started.json"
+    if not marker.exists():
+        benchmark.save_checkpoint(marker, dict(stage=stage, output=str(path.resolve())))
     if not path.exists():
         data["summaries"] = {name: summarize([], name) for name in config["arms"]}
         save(path, data, schedule)

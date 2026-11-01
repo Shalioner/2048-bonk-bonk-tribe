@@ -120,6 +120,21 @@ class RefinementTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "--resume"):
             self.run_refinement()
 
+    def test_external_evaluation_marker_blocks_new_fit_without_active_changes(self):
+        self.write(self.root / "evaluation-started.json", dict(stage="screen", output="/outside/screen.json"))
+        with self.assertRaisesRegex(ValueError, "после screen/holdout"):
+            self.run_refinement()
+        self.assertEqual(FakeModel.calls, [])
+        self.assertEqual(self.active(), self.initial_active)
+
+    def test_completed_selection_resume_after_marker_does_not_refit(self):
+        selected = self.run_refinement()
+        active = self.active()
+        self.write(self.root / "evaluation-started.json", dict(stage="screen", output="/outside/screen.json"))
+        self.assertEqual(self.run_refinement(resume=True), selected)
+        self.assertEqual(FakeModel.calls, [2.0, 10.0])
+        self.assertEqual(self.active(), active)
+
     def test_negative_gate_keeps_active_v1_byte_identical(self):
         FakeModel.values = {2.0: 0.1999, 10.0: 0.1995}
         result = self.run_refinement()
