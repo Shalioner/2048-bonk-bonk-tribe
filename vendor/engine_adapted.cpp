@@ -686,6 +686,101 @@ extern "C" int solve_budget(board_t board, int allowed, int depth, const float *
     return best_move;
 }
 
+/* Opt-in последовательное углубление. API2 и solve_budget остаются прежними.
+ * Сначала готовится depth1, затем целиком завершаются уровни 2..depth при первом
+ * пороге. Уточнение остальных порогов начинается лишь после достижения depth.
+ * Незавершённый проход не заменяет сохранённый результат. info[0..7] имеют тот
+ * же смысл, что в solve_budget; info[8] — возвращённая глубина, info[9] — запрос. */
+extern "C" int solve_budget_progressive(board_t board, int allowed, int depth, const float *thresholds,
+                                        int n_thresholds, double budget_s, double growth, double *info) {
+    typedef std::chrono::steady_clock clock_t_;
+    const clock_t_::time_point start = clock_t_::now();
+    budget_s = std::max(0.0, std::min(budget_s, 1e6));
+    const double margin = std::min(1.0, 0.25 * budget_s);
+    const clock_t_::time_point deadline = start + std::chrono::duration_cast<clock_t_::duration>(
+        std::chrono::duration<double>(budget_s - margin));
+    const int target = std::max(1, depth);
+    const float first_thresh = n_thresholds > 0 ? thresholds[0] : 0.0001f;
+    int best_move = -1, reached_depth = 1;
+    int completed = 0, cut = 0, skipped = 0;
+    double positions = 0, last_pass = 0, last_thresh = 0;
+
+    float fallback_best = -1;
+    for (int d = 0; d < 4; ++d) {
+        if (!(allowed & (1 << d))) continue;
+        eval_state st;
+        st.depth_limit = 1;
+        st.cprob_thresh = first_thresh;
+        const float score = _score_toplevel_move(st, board, d);
+        positions += st.moves_evaled;
+        if (score > fallback_best) { fallback_best = score; best_move = d; }
+    }
+
+    // Один проход оценивает все разрешённые направления на одной глубине.
+    const auto pass = [&](int pass_depth, float threshold) -> bool {
+        const clock_t_::time_point pass_start = clock_t_::now();
+        const double elapsed = std::chrono::duration<double>(pass_start - start).count();
+        if (pass_start >= deadline ||
+            (completed > 0 && elapsed + last_pass * growth > budget_s - margin)) {
+            skipped = 1;
+            return false;
+        }
+        std::atomic<bool> stop(false);
+        float scores[4] = {0, 0, 0, 0};
+        unsigned long evaled[4] = {0, 0, 0, 0};
+        bool aborted[4] = {false, false, false, false};
+        std::vector<std::thread> workers;
+        for (int d = 0; d < 4; ++d) {
+            if (!(allowed & (1 << d))) continue;
+            workers.push_back(std::thread([&, d, pass_depth, threshold]() {
+                if (clock_t_::now() >= deadline) { aborted[d] = true; stop.store(true); return; }
+                eval_state st;
+                st.depth_limit = pass_depth;
+                st.cprob_thresh = threshold;
+                st.has_deadline = true;
+                st.deadline = deadline;
+                st.stop = &stop;
+                scores[d] = _score_toplevel_move(st, board, d);
+                evaled[d] = st.moves_evaled;
+                // Последний короткий фрагмент может не попасть на periodic check.
+                aborted[d] = st.aborted || clock_t_::now() >= deadline;
+                if (aborted[d]) stop.store(true);
+            }));
+        }
+        for (size_t w = 0; w < workers.size(); ++w) workers[w].join();
+        bool any_abort = false;
+        for (int d = 0; d < 4; ++d) { positions += evaled[d]; any_abort = any_abort || aborted[d]; }
+        if (any_abort) { cut = 1; return false; }
+        float best = -1;
+        int move = -1;
+        for (int d = 0; d < 4; ++d)
+            if ((allowed & (1 << d)) && scores[d] > best) { best = scores[d]; move = d; }
+        best_move = move;
+        reached_depth = pass_depth;
+        completed++;
+        last_thresh = threshold;
+        last_pass = std::chrono::duration<double>(clock_t_::now() - pass_start).count();
+        return true;
+    };
+
+    bool target_complete = target == 1;
+    for (int level = 2; level <= target; ++level) {
+        if (!pass(level, first_thresh)) break;
+        target_complete = level == target;
+    }
+    if (target_complete && !cut && !skipped) {
+        for (int k = 1; k < n_thresholds; ++k)
+            if (!pass(target, thresholds[k])) break;
+    }
+    if (info) {
+        info[0] = completed; info[1] = last_thresh; info[2] = positions;
+        info[3] = std::chrono::duration<double>(clock_t_::now() - start).count();
+        info[4] = cut; info[5] = skipped; info[6] = last_pass; info[7] = completed == 0;
+        info[8] = reached_depth; info[9] = depth;
+    }
+    return best_move;
+}
+
 // probs: stages x levels row-major; row s is used when the maximum rank after the move is s.
 // Rows are normalized. Returns 0 on success, -1 on invalid input (table unchanged).
 extern "C" int set_spawn_table(const float *probs, int stages, int levels) {
