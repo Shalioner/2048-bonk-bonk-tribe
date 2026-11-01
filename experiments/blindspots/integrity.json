@@ -79,9 +79,73 @@
       "goals": 5,
       "clips": 349627087,
       "nodes": 7089874042
+    },
+    {
+      "variant": "focus4",
+      "stage": "training",
+      "games": 12,
+      "goals": 3,
+      "clips": 264941823,
+      "nodes": 6472244717
+    },
+    {
+      "variant": "focus6",
+      "stage": "training",
+      "games": 12,
+      "goals": 4,
+      "clips": 357275425,
+      "nodes": 7119785173
+    },
+    {
+      "variant": "focus2",
+      "stage": "training",
+      "games": 12,
+      "goals": 2,
+      "clips": 149758785,
+      "nodes": 5518212976
+    },
+    {
+      "variant": "focus7",
+      "stage": "training",
+      "games": 12,
+      "goals": 6,
+      "clips": 433547853,
+      "nodes": 7638686709
+    },
+    {
+      "variant": "focus8",
+      "stage": "training",
+      "games": 12,
+      "goals": 5,
+      "clips": 401515015,
+      "nodes": 7390510988
+    },
+    {
+      "variant": "focus9",
+      "stage": "training",
+      "games": 12,
+      "goals": 5,
+      "clips": 401515015,
+      "nodes": 7390510988
+    },
+    {
+      "variant": "focus10",
+      "stage": "training",
+      "games": 12,
+      "goals": 5,
+      "clips": 401515015,
+      "nodes": 7390510988
+    },
+    {
+      "variant": "focus11",
+      "stage": "training",
+      "games": 12,
+      "goals": 5,
+      "clips": 401515015,
+      "nodes": 7390510988
     }
   ],
-  "total_games": 120,
+  "total_games": 216,
   "rounds": [
     {
       "variants": {
@@ -112,9 +176,45 @@
       "incumbent": "focus5",
       "goals": 5,
       "no_gain_streak": 0
+    },
+    {
+      "variants": {
+        "focus4": 3,
+        "focus6": 4
+      },
+      "incumbent": "focus5",
+      "goals": 5,
+      "no_gain_streak": 1
+    },
+    {
+      "variants": {
+        "focus2": 2,
+        "focus7": 6
+      },
+      "incumbent": "focus7",
+      "goals": 6,
+      "no_gain_streak": 0
+    },
+    {
+      "variants": {
+        "focus8": 5,
+        "focus9": 5
+      },
+      "incumbent": "focus7",
+      "goals": 6,
+      "no_gain_streak": 1
+    },
+    {
+      "variants": {
+        "focus10": 5,
+        "focus11": 5
+      },
+      "incumbent": "focus7",
+      "goals": 6,
+      "no_gain_streak": 2
     }
   ],
-  "incumbent": "focus5",
-  "training_goals": 5,
-  "plateau": false
+  "incumbent": "focus7",
+  "training_goals": 6,
+  "plateau": true
 }

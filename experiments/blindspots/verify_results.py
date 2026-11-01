@@ -57,6 +57,14 @@ for name,params in variants.items():
             for caps,board in g["cap_boards"].items():
                 assert board.count(11)==int(caps)
                 assert 1<=g["cap_reached_at"][caps]<=g["moves"]
+            if "focus_empty" in params:
+                base=json.loads((ROOT/"baseline"/(stage+".json")).read_text())
+                baseline=next(b for b in base["games"] if b["seed"]==g["seed"])
+                for caps in ("1","2"):
+                    assert g["cap_boards"].get(caps)==baseline["cap_boards"].get(caps)
+                    assert g["cap_reached_at"].get(caps)==baseline["cap_reached_at"].get(caps)
+                if "2" not in g["cap_boards"]:
+                    assert g["depth_counts"].get("4",0)==0
         files.append(dict(variant=name,stage=stage,games=len(rows),goals=data["summary"]["goals"],
                           clips=sum(g["clipped_nodes"] for g in rows),nodes=sum(g["nodes"] for g in rows)))
 
@@ -77,4 +85,4 @@ for names in round_plan:
 result=dict(files=files,total_games=sum(x["games"] for x in files),rounds=rounds,
             incumbent=incumbent,training_goals=best_goals,plateau=(len(rounds)>=3 and no_gain>=2) or len(rounds)==len(round_plan) and len(round_plan)>3)
 (ROOT/"integrity.json").write_text(json.dumps(result,indent=2)+"\n")
-print(json.dumps(result,indent=2))
+print(json.dumps({key:result[key] for key in ("total_games","incumbent","training_goals","plateau")},indent=2))

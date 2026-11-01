@@ -1,0 +1,11 @@
+{
+  "variant": "focus11",
+  "parameters": {
+    "focus_empty": 11
+  },
+  "baseline_commit": "61158f580e53f06b3188c0ea02a094446dc40bc0",
+  "cpp_sha256": "028a1534631bc6e7386326a09156f4cfc9acb96c899ac5744d23ed73337fc657",
+  "engine_sha256": "c4d74e69634bf5a0340cb80a434364188b5f24eb26a4384dc1ad498cb6973d1c",
+  "runner_sha256": "11f9b6767f757fbf0c247516f535857581000c0ba91d4c632323d3bc837e6fdb",
+  "baseline_cpp_sha256": "583a27980489193d30a40e6a9ce7ffafa736562691f6bc1c6d8a7a15346f27a7"
+}

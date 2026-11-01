@@ -11,5 +11,5 @@
   ],
   "source_origin": "experiments/strategy/baseline.cpp equals vendor/engine_adapted.cpp at baseline; original MIT sources and SHA in vendor/SOURCE.md",
   "offline": true,
-  "max_parallel_processes": 2
+  "max_parallel_full_game_processes": 2
 }
