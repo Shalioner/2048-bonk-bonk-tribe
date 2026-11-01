@@ -1,0 +1,120 @@
+{
+  "files": [
+    {
+      "variant": "baseline",
+      "stage": "training",
+      "games": 12,
+      "goals": 2,
+      "clips": 48369040,
+      "nodes": 4122998382
+    },
+    {
+      "variant": "progress20000",
+      "stage": "training",
+      "games": 12,
+      "goals": 2,
+      "clips": 38434579,
+      "nodes": 4071780324
+    },
+    {
+      "variant": "mobility2000",
+      "stage": "training",
+      "games": 12,
+      "goals": 4,
+      "clips": 47379654,
+      "nodes": 4130955388
+    },
+    {
+      "variant": "focus3",
+      "stage": "training",
+      "games": 12,
+      "goals": 4,
+      "clips": 281722017,
+      "nodes": 6521496736
+    },
+    {
+      "variant": "progress10000",
+      "stage": "training",
+      "games": 12,
+      "goals": 3,
+      "clips": 45697525,
+      "nodes": 4167663241
+    },
+    {
+      "variant": "mobility1000",
+      "stage": "training",
+      "games": 12,
+      "goals": 1,
+      "clips": 43274243,
+      "nodes": 4097500338
+    },
+    {
+      "variant": "focus1",
+      "stage": "training",
+      "games": 12,
+      "goals": 2,
+      "clips": 87520289,
+      "nodes": 4658635034
+    },
+    {
+      "variant": "progress40000",
+      "stage": "training",
+      "games": 12,
+      "goals": 4,
+      "clips": 37110799,
+      "nodes": 4263412610
+    },
+    {
+      "variant": "mobility4000",
+      "stage": "training",
+      "games": 12,
+      "goals": 4,
+      "clips": 46231988,
+      "nodes": 4174878201
+    },
+    {
+      "variant": "focus5",
+      "stage": "training",
+      "games": 12,
+      "goals": 5,
+      "clips": 349627087,
+      "nodes": 7089874042
+    }
+  ],
+  "total_games": 120,
+  "rounds": [
+    {
+      "variants": {
+        "progress20000": 2,
+        "mobility2000": 4,
+        "focus3": 4
+      },
+      "incumbent": "mobility2000",
+      "goals": 4,
+      "no_gain_streak": 0
+    },
+    {
+      "variants": {
+        "progress10000": 3,
+        "mobility1000": 1,
+        "focus1": 2
+      },
+      "incumbent": "mobility2000",
+      "goals": 4,
+      "no_gain_streak": 1
+    },
+    {
+      "variants": {
+        "progress40000": 4,
+        "mobility4000": 4,
+        "focus5": 5
+      },
+      "incumbent": "focus5",
+      "goals": 5,
+      "no_gain_streak": 0
+    }
+  ],
+  "incumbent": "focus5",
+  "training_goals": 5,
+  "plateau": false
+}

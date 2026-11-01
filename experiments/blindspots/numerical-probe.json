@@ -1,0 +1,208 @@
+{
+  "source_sha256": "8db506e45757283edeb34292de9c7ae52caab64e708de8299505def8c01959a1",
+  "engine_sha256": "5faf727697a0fb4377b0e8d6192624882f16d8cc5a6215910d039029d61bfc69",
+  "policy": "signed child maximum; terminal no-legal-move=-1e9; goal=+1e9; root accepts negative scores. Diagnostic changes loss semantics; not a pure numerical patch.",
+  "corpus": "first <=3 completed baseline training games, first/second cap snapshots; no control; exact boards included",
+  "rows": [
+    {
+      "seed": 202611010,
+      "caps": 1,
+      "board": [
+        0,
+        0,
+        0,
+        2,
+        1,
+        1,
+        3,
+        5,
+        0,
+        3,
+        5,
+        3,
+        0,
+        0,
+        1,
+        11
+      ],
+      "scores": {
+        "baseline": {
+          "0": 1255070.875,
+          "1": 1427800.875,
+          "2": 1429221.875,
+          "3": 1427327.375
+        },
+        "signed": {
+          "0": 1255070.875,
+          "1": 1427800.875,
+          "2": 1429221.875,
+          "3": 1427327.375
+        }
+      },
+      "choices": {
+        "baseline": 2,
+        "signed": 2
+      },
+      "changed": false
+    },
+    {
+      "seed": 202611011,
+      "caps": 1,
+      "board": [
+        1,
+        2,
+        4,
+        11,
+        1,
+        0,
+        5,
+        1,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "scores": {
+        "baseline": {
+          "0": 1458320.5,
+          "1": 1454574.875,
+          "2": 1448783.0,
+          "3": 1302550.25
+        },
+        "signed": {
+          "0": 1458320.5,
+          "1": 1454574.875,
+          "2": 1448783.0,
+          "3": 1302550.25
+        }
+      },
+      "choices": {
+        "baseline": 0,
+        "signed": 0
+      },
+      "changed": false
+    },
+    {
+      "seed": 202611011,
+      "caps": 2,
+      "board": [
+        0,
+        6,
+        1,
+        11,
+        1,
+        4,
+        5,
+        11,
+        0,
+        2,
+        4,
+        3,
+        1,
+        2,
+        3,
+        1
+      ],
+      "scores": {
+        "baseline": {
+          "0": 681413.3125,
+          "2": 1283493.125,
+          "3": 1278977.0
+        },
+        "signed": {
+          "0": 678394.5625,
+          "2": 1283493.125,
+          "3": 1278977.0
+        }
+      },
+      "choices": {
+        "baseline": 2,
+        "signed": 2
+      },
+      "changed": false
+    },
+    {
+      "seed": 202611012,
+      "caps": 1,
+      "board": [
+        3,
+        4,
+        1,
+        0,
+        1,
+        5,
+        2,
+        0,
+        3,
+        3,
+        1,
+        0,
+        11,
+        1,
+        2,
+        0
+      ],
+      "scores": {
+        "baseline": {
+          "0": 1430859.5,
+          "1": 1339270.0
+        },
+        "signed": {
+          "0": 1430859.5,
+          "1": 1339270.0
+        }
+      },
+      "choices": {
+        "baseline": 0,
+        "signed": 0
+      },
+      "changed": false
+    },
+    {
+      "seed": 202611012,
+      "caps": 2,
+      "board": [
+        3,
+        0,
+        0,
+        0,
+        6,
+        2,
+        1,
+        0,
+        11,
+        4,
+        0,
+        5,
+        11,
+        4,
+        1,
+        0
+      ],
+      "scores": {
+        "baseline": {
+          "0": 1376936.625,
+          "1": 1059634.375,
+          "2": 1365055.625,
+          "3": 1363090.5
+        },
+        "signed": {
+          "0": 1376936.625,
+          "1": 1051422.375,
+          "2": 1365055.625,
+          "3": 1363090.5
+        }
+      },
+      "choices": {
+        "baseline": 0,
+        "signed": 0
+      },
+      "changed": false
+    }
+  ],
+  "changed": 0
+}

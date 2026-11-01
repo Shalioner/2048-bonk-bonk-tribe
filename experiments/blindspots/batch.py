@@ -10,9 +10,10 @@ ap = argparse.ArgumentParser(description=__doc__)
 ap.add_argument("variants", nargs="+")
 ap.add_argument("--stage", choices=["training","holdout"], default="training")
 ap.add_argument("--resume", action="store_true")
+ap.add_argument("--runner", choices=["lab.py","extension.py"], default="lab.py")
 args = ap.parse_args()
 def run(name):
-    command = [sys.executable,str(ROOT/"lab.py"),"run",name,"--stage",args.stage]
+    command = [sys.executable,str(ROOT/args.runner),"run",name,"--stage",args.stage]
     if args.resume:
         command.append("--resume")
     with (ROOT/(name+"-"+args.stage+".log")).open("w") as log:
