@@ -428,10 +428,12 @@ def evaluate(stage, resume=False, out=None, solver_table=None, environment_table
     validate_table(environment)
     sources = source_hashes(config["arms"], include_model="value_progressive" in config["arms"])
     path = Path(out or ROOT / (stage + ".json"))
+    marker = ROOT / "evaluation-started.json"
+    if path.resolve() == marker.resolve():
+        raise ValueError("Путь результата зарезервирован для маркера начала evaluation")
     data = checkpoint(path, stage, config, sources, solver, environment, schedule, resume)
     reject_limits(data)
     # Не зависит от --out: даже прерванная первая партия закрывает обучение.
-    marker = ROOT / "evaluation-started.json"
     if not marker.exists():
         benchmark.save_checkpoint(marker, dict(stage=stage, output=str(path.resolve())))
     if not path.exists():

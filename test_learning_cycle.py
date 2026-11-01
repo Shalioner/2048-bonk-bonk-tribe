@@ -137,6 +137,13 @@ class CycleTests(unittest.TestCase):
             self.assertEqual(marker["output"], str(output.resolve()))
             self.assertFalse((self.root / "screen.json").exists())
 
+    def test_evaluation_output_cannot_replace_its_own_marker(self):
+        marker = self.root / "evaluation-started.json"
+        with patch.object(cycle, "play", side_effect=AssertionError("Не начинать партии")):
+            with self.assertRaisesRegex(ValueError, "зарезервирован"):
+                cycle.evaluate("screen", out=marker)
+        self.assertFalse(marker.exists())
+
     def test_initial_fit_after_external_evaluation_is_refused_even_with_resume(self):
         self.prepare_teacher("train")
         self.prepare_teacher("validation")
