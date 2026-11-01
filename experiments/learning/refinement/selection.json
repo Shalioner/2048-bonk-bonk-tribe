@@ -1,0 +1,56 @@
+{
+  "archives": {
+    "metrics": "e6134b6cab65b815319137c8f76ce38ba26bc934db40485ae2fbd60a0f930b14",
+    "model": "27e4b7cedde1f98beed6af7814886f4b98bb293ecd602f364d1e5ce1ceaec158"
+  },
+  "best_variant": "lr10",
+  "candidates": [
+    {
+      "gate": {
+        "brier": 0.10452683953202536,
+        "improvement": 0.0002981993959434992,
+        "passed": false,
+        "required_improvement": 0.001,
+        "stage_prior_brier": 0.10482503892796886
+      },
+      "metrics_sha256": "eb78781c6d2b31340475418b932df0101d1d62b0f31d1a30fa5c4c1a6a1931e6",
+      "model_sha256": "d746a3a898f4973d0e0213df1dff27a0affe069d35aafc30a80797e39fb890ea",
+      "module_gate_passed": true,
+      "name": "lr2"
+    },
+    {
+      "gate": {
+        "brier": 0.1035503509146113,
+        "improvement": 0.001274688013357561,
+        "passed": true,
+        "required_improvement": 0.001,
+        "stage_prior_brier": 0.10482503892796886
+      },
+      "metrics_sha256": "de5a954f68a02346490da882a4d8691ca600669e0821593b5d1cfe150319e77e",
+      "model_sha256": "7c714d2bfb177fe88d411b4a411d60a166a76e9a4400972b8e59c3cad2f8e439",
+      "module_gate_passed": true,
+      "name": "lr10"
+    }
+  ],
+  "checkpoint_version": 1,
+  "datasets": {
+    "train": "57feeaeef57594a289c155f821c2ff1bf53eb519e358a834ae29b63718fbc7c0",
+    "validation": "38d593d8b14879a78dc819494a7f338ae85217bd4007c84452d802c6745c63b6"
+  },
+  "desired_active": {
+    "metrics": "de5a954f68a02346490da882a4d8691ca600669e0821593b5d1cfe150319e77e",
+    "model": "7c714d2bfb177fe88d411b4a411d60a166a76e9a4400972b8e59c3cad2f8e439"
+  },
+  "kind": "model_round2_selection",
+  "required_improvement": 0.001,
+  "selected_variant": "lr10",
+  "source_hashes": {
+    "cycle": "02de337ee01bffdd4b4255d632c6906853580cce258846743855bec56ef174cd",
+    "plan": "0880c0aa7c14e54225686b36a66e8cc3ea11bc14f387ecdc6f3aaa5d6f9e9d65",
+    "refinement_plan": "78c3844c2ced1f51e8fa9ceb06577aa1f28703bae7bc27ee8c65e148ab079a68",
+    "refinement_runner": "7c0ab986348fc4d48a117c2e1f3b4213e305061c5f3f3ee81b0f3fbe667e92eb",
+    "value_model": "992cd3fd91c1537fd574a00c75a1f5850bc2bf1d6fb8ef17c47c94a2d4c00802"
+  },
+  "status": "selected",
+  "v1_brier": 0.10482503875332778
+}
