@@ -1,0 +1,33 @@
+{
+  "baseline_build": {
+    "commit": "9b4120f1c2f1943b491d7378bcea18efd15a2350",
+    "source_sha256": "583a27980489193d30a40e6a9ce7ffafa736562691f6bc1c6d8a7a15346f27a7",
+    "engine_sha256": "790ec184a4143c10659f96122e35efc1d8bf8efa522f827efcbdb24f659c3005",
+    "headers": {
+      "2048.h": "2597ae4726e872494bb57997154fdb0279cfc706bb0aad7dcb758be5231ec85d",
+      "config.h": "5bbfde3aedbd34414eb6a7c1fb1a8b7f5fb2b76b66bb014318be496f24c7bda1",
+      "platdefs.h": "5b3923979efb21112335319ff92a807cf47620002b446864eddea5f9925d983c"
+    },
+    "flags": [
+      "clang++",
+      "-O3",
+      "-std=c++11",
+      "-dynamiclib"
+    ]
+  },
+  "platform": "macOS-15.7.9-arm64-arm-64bit",
+  "engines": {
+    "baseline": {
+      "source": "experiments/learning/build/baseline/engine.dylib",
+      "backup": "../native-engines/baseline.dylib",
+      "sha256": "790ec184a4143c10659f96122e35efc1d8bf8efa522f827efcbdb24f659c3005"
+    },
+    "candidate": {
+      "source": "vendor/engine.dylib",
+      "backup": "../native-engines/candidate.dylib",
+      "sha256": "d7dedbfdfb0f1e83f706aa874ef47e23fd24c585f9e49f43f31f2932620f6e95"
+    }
+  },
+  "experiment_freeze": "75764b4",
+  "note": "Locally compiled libraries retained outside Git; no downloaded binary was executed."
+}
