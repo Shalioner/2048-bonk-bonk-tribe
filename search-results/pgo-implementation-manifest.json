@@ -1,0 +1,123 @@
+{
+  "source_sha256": "1bf6013b9ff42b6b030766549b4189a2debfb9a341d14756b82df02fba9e464e",
+  "flags": [
+    "-O3",
+    "-std=c++11",
+    "-dynamiclib"
+  ],
+  "training_command": [
+    "clang++",
+    "-O3",
+    "-std=c++11",
+    "-dynamiclib",
+    "-fprofile-generate=/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/profiles",
+    "-fprofile-update=atomic",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/engine_adapted.cpp",
+    "-o",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/training.dylib"
+  ],
+  "training_seed": 2048,
+  "holdout_seed": 809,
+  "holdout_limit": 15,
+  "purpose": "PGO experiment only; instrumented timings are not performance evidence",
+  "selection_rule": "Exact scores/moves/positions; >=5% lower raw median and p95, no maximum regression, balanced 6 repeats; contradictory data require control.",
+  "profile_sha256": "03732b27e7a4c01090c6ff1bb6f382262c154ff1d73f9ca0c0050ed262ebbbd1",
+  "raw_profile_hashes": {
+    "default_6926230601195283074_0.profraw": "d6ce43e79b078f9ec72f722e10d5af27b731a5f8b06cdae3892d1c29ee7c9637"
+  },
+  "training_boards": [
+    "0000010012003111",
+    "2000200042005211",
+    "0000401053006221",
+    "1211413353017100",
+    "3100521165207620",
+    "2002410074438511",
+    "0002100074209322",
+    "1012213134439864",
+    "321143306400a101",
+    "423054209511a622",
+    "101203229734a875",
+    "6620210020101000",
+    "8741653154213210",
+    "a421331010100000",
+    "4220321020010000",
+    "123423453456456b",
+    "11223344556677bb",
+    "123456789abbb000",
+    "123456789abcdef0",
+    "0000000000000011",
+    "1234123412341234"
+  ],
+  "holdout_boards": [
+    "0223001100100000",
+    "4101123112311231",
+    "2001410032016432",
+    "7522432132002010",
+    "0000411043208532",
+    "0001100210448763",
+    "3200541164309410",
+    "2213032184219643",
+    "310054006411a430",
+    "600076138232a210",
+    "131124449720a805",
+    "2100421254308431",
+    "1000310083209135",
+    "140021101650a841",
+    "12012752a8521519"
+  ],
+  "training_holdout_disjoint": true,
+  "portable_profile_sha256": "b9a1b6cf2f62d4451e723343907aa2c54d0b63e8153554c39b24c8ceb1d1a0e4",
+  "remapped_static_function_count": 5,
+  "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin24.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "architecture": "arm64",
+  "input_hashes": {
+    "engine_adapted.cpp": "1bf6013b9ff42b6b030766549b4189a2debfb9a341d14756b82df02fba9e464e",
+    "2048.h": "2597ae4726e872494bb57997154fdb0279cfc706bb0aad7dcb758be5231ec85d",
+    "config.h": "5bbfde3aedbd34414eb6a7c1fb1a8b7f5fb2b76b66bb014318be496f24c7bda1",
+    "platdefs.h": "5b3923979efb21112335319ff92a807cf47620002b446864eddea5f9925d983c"
+  },
+  "local_selected_binary_sha256": "42a92a1028c143681c210a48ca16d4991021caf7aabf4794205df9f19bf7f49c",
+  "selected_local_build_command": [
+    "sh",
+    "vendor/build.sh"
+  ],
+  "selected_matches_strict_score_candidate": false,
+  "selected_matches_original_measured_text": false,
+  "experiment_variant": "v2",
+  "training_thresholds": [
+    0.0001,
+    1e-05,
+    1e-06
+  ],
+  "additional_training_boards": [
+    "0000010012003111",
+    "2000200042005211"
+  ],
+  "selection_status": "rejected_for_default",
+  "default_selection": "ordinary -O3 with finite model validation",
+  "rejection_reasons": {
+    "v1": "Final portable build aggregate median improved4.734% (<5% rule); production-policy maximum regressed. Initial-layout figures are separate.",
+    "v2": "All-threshold training: holdout median regressed0.164%, p95 improved3.456% (<5% rule), maximum improved14.75%; no repeat or default promotion justified."
+  },
+  "pgo_enabled_by_default": false,
+  "next_step": "Use measured full-cycle phase data before changing safe wait schedule or cache layout.",
+  "final_default_binary_sha256": "42a92a1028c143681c210a48ca16d4991021caf7aabf4794205df9f19bf7f49c",
+  "final_default_build_command": [
+    "sh",
+    "vendor/build.sh"
+  ],
+  "final_default_source_sha256": "1bf6013b9ff42b6b030766549b4189a2debfb9a341d14756b82df02fba9e464e",
+  "final_note": "Default is normal O3. PGO candidates/profiles are retained experiments, not installed in live bot.",
+  "v1_layout_note": "Stable @rpath install name moves __text start from0x5d0 to0x580; same size0x3a20. Rebenchmark final selected artifact separately; do not transfer old percentages blindly.",
+  "v1_archive": {
+    "manifest": "pgo-v1-manifest.json",
+    "profile": "pgo-v1-profile.profdata"
+  },
+  "v2_candidate_binary_sha256": "af98d10c970807ad914aeae1dcf5f90871abbfdc3e35fb92583b08e847034e49",
+  "v2_build_command": [
+    "python3",
+    "build_search_pgo.py",
+    "--out",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/candidate-v2/engine.dylib"
+  ]
+}

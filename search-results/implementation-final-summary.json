@@ -1,0 +1,47 @@
+{
+  "baseline": "6abac9b",
+  "source_hashes": {
+    "bot.py": "9c31c4fc0724315efacc4bd683dba0d30d6e42cbe629370905c089050ac190b3",
+    "vendor/engine_adapted.cpp": "1bf6013b9ff42b6b030766549b4189a2debfb9a341d14756b82df02fba9e464e",
+    "test_cycle.py": "b658634738dd8f362ddcf914501043c677510b1abf05c9884f5ce218f0d6cc8a",
+    "test_spawn_validation.py": "163c610293a147f20d4ea933c713de4d96e1d9e96290f244573bdf19652dca7f",
+    "build_search_pgo.py": "68ab1c80240dcd33c90dfd1829223194735a93d7aa8b67d9903392731bb9d943",
+    "search_benchmark.py": "d328644725d326c5437c5b523c09664d0b0208846fbb863dbb6ad4450c52e386"
+  },
+  "default_binary_sha256": "42a92a1028c143681c210a48ca16d4991021caf7aabf4794205df9f19bf7f49c",
+  "gates": {
+    "unit_tests": 64,
+    "randomized_scores": 800,
+    "allowed_mask_decisions": 200,
+    "depth8_1e4_positions": 21,
+    "depth8_1e5_positions": 4,
+    "depth8_1e6_positions": 2
+  },
+  "pgo_default": false,
+  "live_bot_changed": false,
+  "geometry_decode_count": {
+    "before": 3,
+    "after": 2,
+    "observations": 2,
+    "fixture_dimensions": [
+      [
+        1440,
+        3040
+      ],
+      [
+        1441,
+        3041
+      ]
+    ]
+  },
+  "review_findings_closed": [
+    "diagnostic-write failure blocked recovery",
+    "relative compiler path changed meaning after cwd"
+  ],
+  "limits": [
+    "No live ADB/phone acceptance",
+    "Default wait schedule unchanged",
+    "No total wall-clock deadline for whole cycle",
+    "Fresh focus check adds one ADB round trip"
+  ]
+}

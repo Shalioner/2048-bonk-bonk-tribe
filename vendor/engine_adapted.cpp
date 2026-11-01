@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <atomic>
 #include <chrono>
+#include <cmath>
 #include <thread>
 #include <vector>
 
@@ -738,8 +739,11 @@ extern "C" int set_spawn_table(const float *probs, int stages, int levels) {
     float tmp[16][15];
     for (int s = 0; s < 16; ++s) {
         float sum = 0;
-        for (int r = 0; r < levels; ++r) { if (probs[s*levels+r] < 0) return -1; sum += probs[s*levels+r]; }
-        if (sum <= 0) return -1;
+        for (int r = 0; r < levels; ++r) {
+            if (!std::isfinite(probs[s*levels+r]) || probs[s*levels+r] < 0) return -1;
+            sum += probs[s*levels+r];
+        }
+        if (!std::isfinite(sum) || sum <= 0) return -1;
         for (int r = 0; r < 15; ++r) tmp[s][r] = r < levels ? probs[s*levels+r] / sum : 0.0f;
     }
     memcpy(spawn_table, tmp, sizeof(tmp));

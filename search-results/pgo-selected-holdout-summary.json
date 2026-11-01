@@ -1,0 +1,24 @@
+{
+  "files": [
+    "pgo-selected-holdout-budget.json",
+    "pgo-selected-holdout-control.json"
+  ],
+  "measurements_per_engine": 180,
+  "summary": [
+    {
+      "median": 0.13474602100000155,
+      "p95": 0.6174779579999949,
+      "maximum": 1.4085787500000002
+    },
+    {
+      "median": 0.1283670834999997,
+      "p95": 0.49570562500000026,
+      "maximum": 0.917617583000002
+    }
+  ],
+  "percent_reduction": {
+    "median": 4.734045170804546,
+    "p95": 19.72091981945624,
+    "maximum": 34.8550740950762
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "mode": "budget",
+  "depth": 8,
+  "threshold": 1e-06,
+  "repeats": 1,
+  "seed": 2048,
+  "thresholds": [
+    1e-06
+  ],
+  "budget_seconds": 60.0,
+  "growth": 5.0,
+  "hashes": {
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/regular.dylib": "42a92a1028c143681c210a48ca16d4991021caf7aabf4794205df9f19bf7f49c",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/training.dylib": "f67b242a5197dfaf120038257359eb15d85f66ac5117c5d44963f6caf1b9256b"
+  },
+  "hashes_after": {
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/regular.dylib": "42a92a1028c143681c210a48ca16d4991021caf7aabf4794205df9f19bf7f49c",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/training.dylib": "f67b242a5197dfaf120038257359eb15d85f66ac5117c5d44963f6caf1b9256b"
+  },
+  "model_sha256": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+  "benchmark_sha256": "d328644725d326c5437c5b523c09664d0b0208846fbb863dbb6ad4450c52e386",
+  "command": [
+    "search_benchmark.py",
+    "--baseline",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/regular.dylib",
+    "--candidate",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/training.dylib",
+    "--out",
+    "search-results/pgo-v2-training-1e6-not-performance.json",
+    "--repeats",
+    "1",
+    "--mode",
+    "budget",
+    "--threshold",
+    "1e-6",
+    "--board",
+    "0000010012003111",
+    "--board",
+    "2000200042005211"
+  ],
+  "platform": "macOS-15.7.9-arm64-arm-64bit",
+  "summary": [
+    {
+      "median": 0.8921916669999999,
+      "p95": 1.009146625,
+      "maximum": 1.009146625
+    },
+    {
+      "median": 7.08198,
+      "p95": 11.173107208,
+      "maximum": 11.173107208
+    }
+  ],
+  "per_position_medians": [
+    {
+      "median": 0.8921916669999999,
+      "p95": 1.009146625,
+      "maximum": 1.009146625
+    },
+    {
+      "median": 7.08198,
+      "p95": 11.173107208,
+      "maximum": 11.173107208
+    }
+  ],
+  "rows": [
+    {
+      "board": "0000010012003111",
+      "scores": null,
+      "move": 3,
+      "seconds": [
+        [
+          1.009146625
+        ],
+        [
+          2.9908527919999996
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999974752427e-07,
+            "positions": 20093000,
+            "native_seconds": 1.008981792,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 1.008949292,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999974752427e-07,
+            "positions": 20093000,
+            "native_seconds": 2.990612959,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 2.990453916,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "2000200042005211",
+      "scores": null,
+      "move": 1,
+      "seconds": [
+        [
+          0.7752367089999996
+        ],
+        [
+          11.173107208
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999974752427e-07,
+            "positions": 63669200,
+            "native_seconds": 0.775186334,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.775100292,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999974752427e-07,
+            "positions": 63669200,
+            "native_seconds": 11.172896,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 11.172836875,
+            "fallback": false
+          }
+        ]
+      ]
+    }
+  ],
+  "exact_parity": true,
+  "equal_completed_work_move_parity": true,
+  "score_parity": false
+}

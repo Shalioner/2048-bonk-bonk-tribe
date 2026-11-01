@@ -1,0 +1,10 @@
+test_finite_sum_overflow_rejected_atomically (test_spawn_validation.SpawnValidationTests) ... ok
+test_invalid_dimensions_preserve_model (test_spawn_validation.SpawnValidationTests) ... ok
+test_negative_and_empty_rows_preserve_model (test_spawn_validation.SpawnValidationTests) ... ok
+test_nonfinite_weights_rejected_atomically (test_spawn_validation.SpawnValidationTests) ... ok
+test_valid_rows_keep_float_normalization (test_spawn_validation.SpawnValidationTests) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 3.061s
+
+OK

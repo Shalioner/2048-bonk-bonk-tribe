@@ -1,0 +1,16 @@
+test_capture_timeout_or_exit_error_uses_one_full_frame_fallback (test_cycle.CycleTests) ... ok
+test_cycle_metrics_partition_full_steady_path_and_keep_legacy_fields (test_cycle.CycleTests) ... ok
+test_failed_diagnostic_write_and_bad_full_frame_preserve_cause_and_never_move (test_cycle.CycleTests) ... ok
+test_failed_diagnostic_write_does_not_block_full_frame_recovery (test_cycle.CycleTests) ... ok
+test_focus_change_after_search_never_sends_gesture (test_cycle.CycleTests) ... ok
+test_incomplete_crop_retries_full_frame_once_then_confirms (test_cycle.CycleTests) ... ok
+test_nested_ocr_time_is_not_counted_twice_in_recognition (test_cycle.CycleTests) ... ok
+test_ocr_timeout_and_exit_errors_become_bounded_observation_errors (test_cycle.CycleTests) ... ok
+test_repeated_bad_observations_are_bounded_and_never_move (test_cycle.CycleTests) ... ok
+test_stale_and_transient_frames_do_not_repeat_gesture (test_cycle.CycleTests) ... ok
+test_stop_during_search_or_last_focus_never_sends_gesture (test_cycle.CycleTests) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.133s
+
+OK

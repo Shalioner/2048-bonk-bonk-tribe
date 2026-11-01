@@ -1,0 +1,115 @@
+{
+  "mode": "scores",
+  "depth": 8,
+  "threshold": 1e-06,
+  "repeats": 1,
+  "seed": 2048,
+  "thresholds": [
+    1e-06
+  ],
+  "budget_seconds": null,
+  "growth": null,
+  "hashes": {
+    "vendor/session-start.dylib": "da7ec1d720c75bcab842d02add38a6bd59cbd81e78cf812822a03a961ba6acd4",
+    "vendor/engine.dylib": "42a92a1028c143681c210a48ca16d4991021caf7aabf4794205df9f19bf7f49c"
+  },
+  "hashes_after": {
+    "vendor/session-start.dylib": "da7ec1d720c75bcab842d02add38a6bd59cbd81e78cf812822a03a961ba6acd4",
+    "vendor/engine.dylib": "42a92a1028c143681c210a48ca16d4991021caf7aabf4794205df9f19bf7f49c"
+  },
+  "model_sha256": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+  "benchmark_sha256": "d328644725d326c5437c5b523c09664d0b0208846fbb863dbb6ad4450c52e386",
+  "command": [
+    "search_benchmark.py",
+    "--baseline",
+    "vendor/session-start.dylib",
+    "--candidate",
+    "vendor/engine.dylib",
+    "--out",
+    "search-results/implementation-final-1e6-scores.json",
+    "--repeats",
+    "1",
+    "--mode",
+    "scores",
+    "--threshold",
+    "1e-6",
+    "--board",
+    "0000010012003111",
+    "--board",
+    "2000200042005211"
+  ],
+  "platform": "macOS-15.7.9-arm64-arm-64bit",
+  "summary": [
+    {
+      "median": 1.0223455414999998,
+      "p95": 1.6285417919999996,
+      "maximum": 1.6285417919999996
+    },
+    {
+      "median": 1.3619654169999997,
+      "p95": 2.2565870419999996,
+      "maximum": 2.2565870419999996
+    }
+  ],
+  "per_position_medians": [
+    {
+      "median": 1.0223455414999998,
+      "p95": 1.6285417919999996,
+      "maximum": 1.6285417919999996
+    },
+    {
+      "median": 1.3619654169999997,
+      "p95": 2.2565870419999996,
+      "maximum": 2.2565870419999996
+    }
+  ],
+  "rows": [
+    {
+      "board": "0000010012003111",
+      "scores": [
+        0.0,
+        1604045.625,
+        1604158.25,
+        1604263.25
+      ],
+      "move": 3,
+      "seconds": [
+        [
+          0.41614929100000003
+        ],
+        [
+          0.467343792
+        ]
+      ],
+      "details": [
+        [],
+        []
+      ]
+    },
+    {
+      "board": "2000200042005211",
+      "scores": [
+        1594481.25,
+        1594650.25,
+        1593122.375,
+        1594392.125
+      ],
+      "move": 1,
+      "seconds": [
+        [
+          1.6285417919999996
+        ],
+        [
+          2.2565870419999996
+        ]
+      ],
+      "details": [
+        [],
+        []
+      ]
+    }
+  ],
+  "exact_parity": true,
+  "equal_completed_work_move_parity": true,
+  "score_parity": true
+}

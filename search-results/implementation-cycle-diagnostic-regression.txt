@@ -1,0 +1,38 @@
+test_failed_diagnostic_write_does_not_block_full_frame_recovery (test_cycle.CycleTests) ... test_failed_diagnostic_write_and_bad_full_frame_preserve_cause_and_never_move (test_cycle.CycleTests) ... FAIL
+
+======================================================================
+FAIL: test_failed_diagnostic_write_does_not_block_full_frame_recovery (test_cycle.CycleTests) (error=28)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/cycle/test_cycle.py", line 174, in test_failed_diagnostic_write_does_not_block_full_frame_recovery
+    self.assertIsNone(error)
+AssertionError: OSError(28, 'disk full') is not None
+
+======================================================================
+FAIL: test_failed_diagnostic_write_does_not_block_full_frame_recovery (test_cycle.CycleTests) (error=30)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/cycle/test_cycle.py", line 174, in test_failed_diagnostic_write_does_not_block_full_frame_recovery
+    self.assertIsNone(error)
+AssertionError: OSError(30, 'read-only') is not None
+
+======================================================================
+FAIL: test_failed_diagnostic_write_does_not_block_full_frame_recovery (test_cycle.CycleTests) (error=21)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/cycle/test_cycle.py", line 174, in test_failed_diagnostic_write_does_not_block_full_frame_recovery
+    self.assertIsNone(error)
+AssertionError: IsADirectoryError(21, 'path is a directory') is not None
+
+======================================================================
+FAIL: test_failed_diagnostic_write_and_bad_full_frame_preserve_cause_and_never_move (test_cycle.CycleTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/cycle/test_cycle.py", line 186, in test_failed_diagnostic_write_and_bad_full_frame_preserve_cause_and_never_move
+    self.assertIsInstance(error, RuntimeError)
+AssertionError: OSError(28, 'disk full') is not an instance of <class 'RuntimeError'>
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.028s
+
+FAILED (failures=4)

@@ -1,0 +1,222 @@
+{
+  "session-empty-budget.json": {
+    "mode": "budget",
+    "measurements_per_engine": 126,
+    "summary": [
+      {
+        "median": 0.04140989599999845,
+        "p95": 0.4407460830000005,
+        "maximum": 0.9407067090000005
+      },
+      {
+        "median": 0.04101606250000067,
+        "p95": 0.4607972920000023,
+        "maximum": 0.7137109590000001
+      }
+    ],
+    "percent_reduction": {
+      "median": 0.9510613115227051,
+      "p95": -4.5493788313489825,
+      "maximum": 24.130342414726012
+    },
+    "exact_parity": true
+  },
+  "session-final-policy.json": {
+    "mode": "policy",
+    "measurements_per_engine": 16,
+    "summary": [
+      {
+        "median": 0.9458716459999998,
+        "p95": 4.081678917000001,
+        "maximum": 4.081678917000001
+      },
+      {
+        "median": 0.7533965414999995,
+        "p95": 3.020384542000002,
+        "maximum": 3.020384542000002
+      }
+    ],
+    "percent_reduction": {
+      "median": 20.348966512946987,
+      "p95": 26.001417470143416,
+      "maximum": 26.001417470143416
+    },
+    "exact_parity": null
+  },
+  "session-final-scores.json": {
+    "mode": "scores",
+    "measurements_per_engine": 42,
+    "summary": [
+      {
+        "median": 0.0678882914999992,
+        "p95": 0.9694283329999998,
+        "maximum": 1.0569239579999987
+      },
+      {
+        "median": 0.05876583300000071,
+        "p95": 0.7874969159999985,
+        "maximum": 0.8535479590000001
+      }
+    ],
+    "percent_reduction": {
+      "median": 13.437454822380667,
+      "p95": 18.76687639580278,
+      "maximum": 19.24225460692971
+    },
+    "exact_parity": true
+  },
+  "session-goal-budget.json": {
+    "mode": "budget",
+    "measurements_per_engine": 105,
+    "summary": [
+      {
+        "median": 0.037514916999999315,
+        "p95": 0.4903129170000007,
+        "maximum": 0.9175341669999995
+      },
+      {
+        "median": 0.034056124999999327,
+        "p95": 0.4581047079999996,
+        "maximum": 0.6796813749999977
+      }
+    ],
+    "percent_reduction": {
+      "median": 9.219777828643604,
+      "p95": 6.56890893208939,
+      "maximum": 25.923044672842344
+    },
+    "exact_parity": true
+  },
+  "session-goal-control.json": {
+    "mode": "budget",
+    "measurements_per_engine": 126,
+    "summary": [
+      {
+        "median": 0.025750374999999243,
+        "p95": 0.3983508750000002,
+        "maximum": 0.5297881249999996
+      },
+      {
+        "median": 0.026263853999999753,
+        "p95": 0.41501045800000025,
+        "maximum": 0.6807652500000003
+      }
+    ],
+    "percent_reduction": {
+      "median": -1.9940641641161605,
+      "p95": -4.182137920495355,
+      "maximum": -28.497642335792417
+    },
+    "exact_parity": true
+  },
+  "session-goal-leaf-budget.json": {
+    "mode": "budget",
+    "measurements_per_engine": 126,
+    "summary": [
+      {
+        "median": 0.026456771499999476,
+        "p95": 0.3984728329999996,
+        "maximum": 0.43357483400000163
+      },
+      {
+        "median": 0.024178582999997644,
+        "p95": 0.38392754100000026,
+        "maximum": 0.42160991599999775
+      }
+    ],
+    "percent_reduction": {
+      "median": 8.61098452621809,
+      "p95": 3.6502593892014046,
+      "maximum": 2.759596974210876
+    },
+    "exact_parity": true
+  },
+  "session-goal-leaf-control.json": {
+    "mode": "budget",
+    "measurements_per_engine": 126,
+    "summary": [
+      {
+        "median": 0.02814670850000134,
+        "p95": 0.3542312919999979,
+        "maximum": 0.39592558400000044
+      },
+      {
+        "median": 0.02812208299999952,
+        "p95": 0.31870320799999874,
+        "maximum": 0.38351783300000264
+      }
+    ],
+    "percent_reduction": {
+      "median": 0.08748980365436143,
+      "p95": 10.029628890041531,
+      "maximum": 3.133859366864711
+    },
+    "exact_parity": true
+  },
+  "session-hash-budget.json": {
+    "mode": "budget",
+    "measurements_per_engine": 126,
+    "summary": [
+      {
+        "median": 0.02801095849999946,
+        "p95": 0.42657408299999844,
+        "maximum": 0.49302524999999875
+      },
+      {
+        "median": 0.027706583500000548,
+        "p95": 0.3914591670000007,
+        "maximum": 0.482549125000002
+      }
+    ],
+    "percent_reduction": {
+      "median": 1.0866282922768256,
+      "p95": 8.231844689917045,
+      "maximum": 2.124865815695398
+    },
+    "exact_parity": true
+  },
+  "session-leaf-budget.json": {
+    "mode": "budget",
+    "measurements_per_engine": 105,
+    "summary": [
+      {
+        "median": 0.029484917,
+        "p95": 0.7732186250000019,
+        "maximum": 1.3524062920000013
+      },
+      {
+        "median": 0.03317008300000168,
+        "p95": 0.6653870839999989,
+        "maximum": 1.2565473340000004
+      }
+    ],
+    "percent_reduction": {
+      "median": -12.49847845934815,
+      "p95": 13.945802327252888,
+      "maximum": 7.088029578614297
+    },
+    "exact_parity": true
+  },
+  "session-reuse-hash-budget.json": {
+    "mode": "budget",
+    "measurements_per_engine": 126,
+    "summary": [
+      {
+        "median": 0.02780177099999992,
+        "p95": 0.38397250000000227,
+        "maximum": 0.40766975000000016
+      },
+      {
+        "median": 0.02509908399999894,
+        "p95": 0.3795774999999999,
+        "maximum": 0.45011033300000136
+      }
+    ],
+    "percent_reduction": {
+      "median": 9.721276389194733,
+      "p95": 1.144613220999513,
+      "maximum": -10.410530337362832
+    },
+    "exact_parity": true
+  }
+}

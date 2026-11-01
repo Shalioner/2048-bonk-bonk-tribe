@@ -1,0 +1,74 @@
+test_cycle_metrics_partition_full_steady_path_and_keep_legacy_fields (test_cycle.CycleTests) ... ERROR
+test_focus_change_after_search_never_sends_gesture (test_cycle.CycleTests) ... FAIL
+test_incomplete_crop_retries_full_frame_once_then_confirms (test_cycle.CycleTests) ... FAIL
+test_ocr_timeout_and_exit_errors_become_bounded_observation_errors (test_cycle.CycleTests) ... test_repeated_bad_observations_are_bounded_and_never_move (test_cycle.CycleTests) ... ok
+test_stale_and_transient_frames_do_not_repeat_gesture (test_cycle.CycleTests) ... ok
+test_stop_during_search_or_last_focus_never_sends_gesture (test_cycle.CycleTests) ...
+======================================================================
+ERROR: test_cycle_metrics_partition_full_steady_path_and_keep_legacy_fields (test_cycle.CycleTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/cycle/test_cycle.py", line 129, in test_cycle_metrics_partition_full_steady_path_and_keep_legacy_fields
+    cycle = next(row['cycle_metrics'] for row in rows if 'cycle_metrics' in row)
+StopIteration
+
+======================================================================
+ERROR: test_ocr_timeout_and_exit_errors_become_bounded_observation_errors (test_cycle.CycleTests) (error='TimeoutExpired')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/cycle/test_cycle.py", line 152, in test_ocr_timeout_and_exit_errors_become_bounded_observation_errors
+    bot.read_board(b'frame')
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/cycle/bot.py", line 127, in read_board
+    result=subprocess.run(["tesseract",f.name,"stdout","--psm","6","-l","eng"],capture_output=True,text=True,check=True).stdout.strip()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/mock.py", line 1093, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/mock.py", line 1097, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/mock.py", line 1152, in _execute_mock_call
+    raise effect
+subprocess.TimeoutExpired: Command 'tesseract' timed out after 3 seconds
+
+======================================================================
+ERROR: test_ocr_timeout_and_exit_errors_become_bounded_observation_errors (test_cycle.CycleTests) (error='CalledProcessError')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/cycle/test_cycle.py", line 152, in test_ocr_timeout_and_exit_errors_become_bounded_observation_errors
+    bot.read_board(b'frame')
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/cycle/bot.py", line 127, in read_board
+    result=subprocess.run(["tesseract",f.name,"stdout","--psm","6","-l","eng"],capture_output=True,text=True,check=True).stdout.strip()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/mock.py", line 1093, in __call__
+    return self._mock_call(*args, **kwargs)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/mock.py", line 1097, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/mock.py", line 1152, in _execute_mock_call
+    raise effect
+subprocess.CalledProcessError: Command 'tesseract' returned non-zero exit status 1.
+
+======================================================================
+FAIL: test_focus_change_after_search_never_sends_gesture (test_cycle.CycleTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/cycle/test_cycle.py", line 96, in test_focus_change_after_search_never_sends_gesture
+    self.assertIsInstance(error, RuntimeError)
+AssertionError: None is not an instance of <class 'RuntimeError'>
+
+======================================================================
+FAIL: test_incomplete_crop_retries_full_frame_once_then_confirms (test_cycle.CycleTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/cycle/test_cycle.py", line 91, in test_incomplete_crop_retries_full_frame_once_then_confirms
+    self.assertIsNone(error)
+AssertionError: RuntimeError('Неполный кадр значков') is not None
+
+======================================================================
+FAIL: test_stop_during_search_or_last_focus_never_sends_gesture (test_cycle.CycleTests) (when='stop_in_focus')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/cycle/test_cycle.py", line 105, in test_stop_during_search_or_last_focus_never_sends_gesture
+    self.assertEqual(state['gestures'], 0)
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.093s
+
+FAILED (failures=3, errors=3)

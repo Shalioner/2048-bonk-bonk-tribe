@@ -1,0 +1,527 @@
+{
+  "mode": "policy",
+  "depth": 8,
+  "threshold": 0.0001,
+  "repeats": 4,
+  "seed": 2048,
+  "thresholds": [
+    0.0001,
+    1e-05,
+    1e-06
+  ],
+  "budget_seconds": 10.0,
+  "growth": 5.0,
+  "hashes": {
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/regular.dylib": "42a92a1028c143681c210a48ca16d4991021caf7aabf4794205df9f19bf7f49c",
+    "vendor/engine.dylib": "d07a9423659743a454b9cccaf17d39584b17793ce2f9b7fc21a62823fa69bc6a"
+  },
+  "hashes_after": {
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/regular.dylib": "42a92a1028c143681c210a48ca16d4991021caf7aabf4794205df9f19bf7f49c",
+    "vendor/engine.dylib": "d07a9423659743a454b9cccaf17d39584b17793ce2f9b7fc21a62823fa69bc6a"
+  },
+  "model_sha256": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+  "benchmark_sha256": "d328644725d326c5437c5b523c09664d0b0208846fbb863dbb6ad4450c52e386",
+  "command": [
+    "search_benchmark.py",
+    "--baseline",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/regular.dylib",
+    "--candidate",
+    "vendor/engine.dylib",
+    "--out",
+    "search-results/pgo-selected-policy.json",
+    "--repeats",
+    "4",
+    "--mode",
+    "policy",
+    "--board",
+    "0000010012003111",
+    "--board",
+    "4220321020010000",
+    "--board",
+    "423054209511a622",
+    "--board",
+    "123423453456456b"
+  ],
+  "platform": "macOS-15.7.9-arm64-arm-64bit",
+  "summary": [
+    {
+      "median": 0.8152249375,
+      "p95": 5.400362041999999,
+      "maximum": 5.400362041999999
+    },
+    {
+      "median": 0.7500516454999999,
+      "p95": 5.8736485840000014,
+      "maximum": 5.8736485840000014
+    }
+  ],
+  "per_position_medians": [
+    {
+      "median": 0.8509076874999999,
+      "p95": 4.8851152914999965,
+      "maximum": 4.8851152914999965
+    },
+    {
+      "median": 0.7627069272499996,
+      "p95": 4.9806969999999975,
+      "maximum": 4.9806969999999975
+    }
+  ],
+  "rows": [
+    {
+      "board": "0000010012003111",
+      "scores": null,
+      "move": null,
+      "seconds": [
+        [
+          0.18205320900000022,
+          0.44330499999999984,
+          0.1921124999999999,
+          0.453720208
+        ],
+        [
+          0.24597562500000003,
+          0.271002167,
+          0.18596654200000007,
+          0.30115670800000016
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 25418136,
+            "native_seconds": 0.181991792,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.141975,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 25418136,
+            "native_seconds": 0.443273125,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.27348475,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 25418136,
+            "native_seconds": 0.192091333,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.149493125,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 25418136,
+            "native_seconds": 0.453624458,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.372559667,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 25418136,
+            "native_seconds": 0.245948959,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.198105,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 25418136,
+            "native_seconds": 0.27097675,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.223763542,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 25418136,
+            "native_seconds": 0.185945667,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.144728917,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 25418136,
+            "native_seconds": 0.30102125,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.255354458,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "4220321020010000",
+      "scores": null,
+      "move": null,
+      "seconds": [
+        [
+          1.3909211249999993,
+          1.3772921250000003,
+          1.4243356659999993,
+          1.176729667
+        ],
+        [
+          1.3162476249999995,
+          1.3580445,
+          1.1989465829999997,
+          1.2176022919999987
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 118826640,
+            "native_seconds": 1.390882875,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 1.167326541,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 118826640,
+            "native_seconds": 1.377258333,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 1.169990084,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 118826640,
+            "native_seconds": 1.424304666,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 1.191014375,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 118826640,
+            "native_seconds": 1.176698042,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.990977583,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 118826640,
+            "native_seconds": 1.316200875,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 1.089641875,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 118826640,
+            "native_seconds": 1.358001917,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 1.134225209,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 118826640,
+            "native_seconds": 1.1989165,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.991863875,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 3,
+            "threshold": 9.999999974752427e-07,
+            "positions": 118826640,
+            "native_seconds": 1.217554875,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 1.065282334,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "423054209511a622",
+      "scores": null,
+      "move": null,
+      "seconds": [
+        [
+          5.400362041999999,
+          3.6734471660000025,
+          5.026734124999997,
+          4.743496457999996
+        ],
+        [
+          5.8736485840000014,
+          5.083410167,
+          4.877983832999995,
+          4.385920333000001
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 1,
+            "passes": 2,
+            "threshold": 9.999999747378752e-06,
+            "positions": 233577440,
+            "native_seconds": 5.400051709,
+            "cut": false,
+            "skipped": true,
+            "last_pass_seconds": 5.0567505,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 2,
+            "threshold": 9.999999747378752e-06,
+            "positions": 233577440,
+            "native_seconds": 3.67309225,
+            "cut": false,
+            "skipped": true,
+            "last_pass_seconds": 3.175933833,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 2,
+            "threshold": 9.999999747378752e-06,
+            "positions": 233577440,
+            "native_seconds": 5.026435958,
+            "cut": false,
+            "skipped": true,
+            "last_pass_seconds": 4.597402958,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 2,
+            "threshold": 9.999999747378752e-06,
+            "positions": 233577440,
+            "native_seconds": 4.742831458,
+            "cut": false,
+            "skipped": true,
+            "last_pass_seconds": 4.189475667,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 1,
+            "passes": 2,
+            "threshold": 9.999999747378752e-06,
+            "positions": 233577440,
+            "native_seconds": 5.87254075,
+            "cut": false,
+            "skipped": true,
+            "last_pass_seconds": 5.23739375,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 2,
+            "threshold": 9.999999747378752e-06,
+            "positions": 233577440,
+            "native_seconds": 5.083068667,
+            "cut": false,
+            "skipped": true,
+            "last_pass_seconds": 4.229498292,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 2,
+            "threshold": 9.999999747378752e-06,
+            "positions": 233577440,
+            "native_seconds": 4.877074666,
+            "cut": false,
+            "skipped": true,
+            "last_pass_seconds": 4.08349775,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 2,
+            "threshold": 9.999999747378752e-06,
+            "positions": 233577440,
+            "native_seconds": 4.385068959,
+            "cut": false,
+            "skipped": true,
+            "last_pass_seconds": 3.762948667,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "123423453456456b",
+      "scores": null,
+      "move": null,
+      "seconds": [
+        [
+          1.6250000030026968e-06,
+          1.0830000007899798e-06,
+          9.17000001265933e-07,
+          9.159999976304789e-07
+        ],
+        [
+          1.9249999994030986e-05,
+          9.999999974752427e-07,
+          9.17000001265933e-07,
+          1.0830000007899798e-06
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": -1,
+            "passes": 0,
+            "threshold": 0.0,
+            "positions": 0,
+            "native_seconds": 0.0,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0,
+            "fallback": false
+          },
+          {
+            "move": -1,
+            "passes": 0,
+            "threshold": 0.0,
+            "positions": 0,
+            "native_seconds": 0.0,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0,
+            "fallback": false
+          },
+          {
+            "move": -1,
+            "passes": 0,
+            "threshold": 0.0,
+            "positions": 0,
+            "native_seconds": 0.0,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0,
+            "fallback": false
+          },
+          {
+            "move": -1,
+            "passes": 0,
+            "threshold": 0.0,
+            "positions": 0,
+            "native_seconds": 0.0,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": -1,
+            "passes": 0,
+            "threshold": 0.0,
+            "positions": 0,
+            "native_seconds": 0.0,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0,
+            "fallback": false
+          },
+          {
+            "move": -1,
+            "passes": 0,
+            "threshold": 0.0,
+            "positions": 0,
+            "native_seconds": 0.0,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0,
+            "fallback": false
+          },
+          {
+            "move": -1,
+            "passes": 0,
+            "threshold": 0.0,
+            "positions": 0,
+            "native_seconds": 0.0,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0,
+            "fallback": false
+          },
+          {
+            "move": -1,
+            "passes": 0,
+            "threshold": 0.0,
+            "positions": 0,
+            "native_seconds": 0.0,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0,
+            "fallback": false
+          }
+        ]
+      ]
+    }
+  ],
+  "exact_parity": null,
+  "equal_completed_work_move_parity": true,
+  "score_parity": false
+}

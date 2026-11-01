@@ -11,6 +11,62 @@ PACKAGE="com.global.sgdbzseaeu"
 # Правила режима: плитки уровня CAP (2048) не сливаются; цель — GOAL_COUNT таких плиток.
 CAP=11
 GOAL_COUNT=3
+OCR_TIMEOUT=3.0
+OBSERVATION_ERRORS=(RuntimeError, OSError, ValueError, struct.error,
+                    subprocess.TimeoutExpired, subprocess.CalledProcessError)
+
+class CycleMetrics:
+    """Exclusive stage times: nested OCR is excluded from recognition time."""
+    def __init__(self):
+        self.started=time.monotonic()
+        self.seconds={}
+        self.counts={"captures":0,"ocr_calls":0,"full_frame_fallbacks":0,"observations":0}
+        self.stack=[]
+        self.first_capture_at=None
+        self.frame_size=None
+
+    def call(self,name,fn,*args,**kwargs):
+        frame=[time.monotonic(),0.0]
+        self.stack.append(frame)
+        try:return fn(*args,**kwargs)
+        finally:
+            elapsed=time.monotonic()-frame[0]
+            self.stack.pop()
+            self.seconds[name]=self.seconds.get(name,0.0)+max(0.0,elapsed-frame[1])
+            if self.stack:self.stack[-1][1]+=elapsed
+
+    def snapshot(self,outcome):
+        total=time.monotonic()-self.started
+        return {"outcome":outcome,"total_s":round(total,6),
+                "seconds":{k:round(v,6) for k,v in self.seconds.items()},
+                "other_s":round(max(0.0,total-sum(self.seconds.values())),6),
+                "counts":dict(self.counts)}
+
+def _timed(metrics,name,fn,*args,**kwargs):
+    return metrics.call(name,fn,*args,**kwargs) if metrics is not None else fn(*args,**kwargs)
+
+def _save_failed_observation(data,metrics=None):
+    try:
+        _timed(metrics,"diagnostic_write",(ROOT/"failed-observation.bin").write_bytes,data)
+    except OSError as exc:
+        if metrics is not None:
+            metrics.counts["diagnostic_write_errors"]=metrics.counts.get("diagnostic_write_errors",0)+1
+        print(json.dumps({"diagnostic_error":str(exc),"artifact":"failed-observation.bin",
+                          "action":"continue_observation"},ensure_ascii=False),flush=True)
+
+def _ocr(canvas,psm,metrics=None):
+    with tempfile.NamedTemporaryFile(suffix=".png",dir=ROOT) as f:
+        canvas.save(f.name)
+        command=["tesseract",f.name,"stdout","--psm",str(psm),"-l","eng"]
+        if psm==13:command.extend(["-c","tessedit_char_whitelist=0123456789"])
+        if metrics is not None:metrics.counts["ocr_calls"]+=1
+        try:
+            return _timed(metrics,"ocr",subprocess.run,command,capture_output=True,
+                          text=True,check=True,timeout=OCR_TIMEOUT).stdout.strip()
+        except subprocess.TimeoutExpired as exc:
+            raise RuntimeError(f"OCR превысил лимит {OCR_TIMEOUT:g} с") from exc
+        except (subprocess.CalledProcessError,OSError) as exc:
+            raise RuntimeError(f"Ошибка OCR: {exc}") from exc
 
 def mask(im,r,c,raw=False):
     # Геометрия при 1440x3040; координаты нормализованы в read_board.
@@ -104,8 +160,10 @@ def icon_level(im,r,c):
     best,second=ranked[:2]
     return best if scores[best]>=.94 and scores[best]-scores[second]>=.12 else None
 
-def read_board(data):
-    im=decode_screen(data).resize((1440,3040))
+def read_board(data,metrics=None):
+    im=decode_screen(data)
+    if metrics is not None:metrics.frame_size=im.size
+    im=im.resize((1440,3040))
     # Борд должен быть виден; интерфейс проверяется до каждого жеста.
     board=[]
     for r in range(4):
@@ -122,27 +180,57 @@ def read_board(data):
             if errors[v]>.18 or ranked[1]-ranked[0]<.06:
                 pic=Image.fromarray(255-m).resize((128,160))
                 canvas=Image.new("L",(168,200),255);canvas.paste(pic,(20,20))
-                with tempfile.NamedTemporaryFile(suffix=".png",dir=ROOT) as f:
-                    canvas.save(f.name)
-                    result=subprocess.run(["tesseract",f.name,"stdout","--psm","6","-l","eng"],capture_output=True,text=True,check=True).stdout.strip()
+                result=_ocr(canvas,6,metrics)
                 if not result.isdigit():
-                    with tempfile.NamedTemporaryFile(suffix=".png",dir=ROOT) as f:
-                        canvas.save(f.name)
-                        result=subprocess.run(["tesseract",f.name,"stdout","--psm","13","-l","eng","-c","tessedit_char_whitelist=0123456789"],capture_output=True,text=True,check=True).stdout.strip()
+                    result=_ocr(canvas,13,metrics)
                 if not result.isdigit() or not 1<=int(result)<=20:raise RuntimeError(f"Не распознан уровень ({r},{c}): {result!r}, ошибка {errors[v]:.2f}")
                 v=int(result);TEMPLATES[v]=m
             board.append(v)
     if not any(board):raise RuntimeError("Поле не найдено")
     return tuple(board)
 
-def read_with_fallback(data,full_capture):
+def read_observation(capture,full_capture,full_mode=False,metrics=None):
+    """One acquisition+decode attempt, with at most one full-frame fallback."""
+    data=None
+    captured=None
+    def acquire(full):
+        nonlocal captured
+        if metrics is not None:metrics.counts["captures"]+=1
+        frame=_timed(metrics,"capture",full_capture if full else capture)
+        if captured is None:captured=time.monotonic()
+        if metrics is not None and metrics.first_capture_at is None:
+            metrics.first_capture_at=captured
+        return frame
+    def recognize(frame):
+        if metrics is None:return read_board(frame)
+        metrics.frame_size=None
+        return metrics.call("recognize",read_board,frame,metrics=metrics)
     try:
-        return read_board(data),data,False
-    except RuntimeError as exc:
-        (ROOT/"failed-observation.bin").write_bytes(data)
+        data=acquire(full_mode)
+        return recognize(data),data,full_mode,captured
+    except OBSERVATION_ERRORS as exc:
+        if data is not None:
+            _save_failed_observation(data,metrics)
+        if full_mode:raise RuntimeError(f"Не удалось прочитать полный кадр: {exc}") from exc
+        if metrics is not None:metrics.counts["full_frame_fallbacks"]+=1
         print(json.dumps({"observation_error":str(exc),"action":"retry_full_frame"},ensure_ascii=False),flush=True)
-        full=full_capture()
-        return read_board(full),full,True
+        full=None
+        try:
+            full=acquire(True)
+            return recognize(full),full,True,captured
+        except OBSERVATION_ERRORS as full_exc:
+            if full is not None:
+                _save_failed_observation(full,metrics)
+            raise RuntimeError(f"Не удалось прочитать полный кадр после {exc}: {full_exc}") from full_exc
+
+def read_with_fallback(data,full_capture):
+    board,frame,used_full,_=read_observation(lambda:data,full_capture)
+    return board,frame,used_full
+
+def ensure_game_focus(adb):
+    focus=adb("shell","dumpsys","window").decode(errors="replace")
+    if not any(PACKAGE in line for line in focus.splitlines() if "mCurrentFocus" in line):
+        raise RuntimeError("Игра не в фокусе")
 
 def move(board,d):
     out=list(board)
@@ -365,68 +453,88 @@ def main():
     last=None;expected=None;stuck=0
     for step in range(args.steps):
         if (ROOT/"STOP").exists():print("Остановлено файлом STOP",flush=True);break
-        started=time.monotonic()
+        metrics=CycleMetrics()
+        started=metrics.started
         if step:print(json.dumps({"cycle_s":round(started-previous_started,3)}),flush=True)
         previous_started=started
-        focus=adb("shell","dumpsys","window").decode(errors="replace")
-        if not any(PACKAGE in line for line in focus.splitlines() if "mCurrentFocus" in line):
-            raise RuntimeError("Игра не в фокусе")
-        data=capture()
-        captured=time.monotonic()
-        previous_observation=None
-        full_mode=False
-        last_observation_error=None
-        for attempt in range(15):
-            if (ROOT/"STOP").exists():print("Остановлено при ожидании кадра",flush=True);return
-            try:
-                b,data,used_full=read_with_fallback(data,lambda:adb("exec-out","screencap"))
-                full_mode=full_mode or used_full
-                if observation_ready(b,previous_observation,expected,last):
-                    if expected is not None:
-                        rank=next(b[i] for i in range(16) if b[i]!=expected[i])
-                        if NATIVE.get_spawn_prob(max(expected),rank)==0:print(json.dumps({"confirmed_new_spawn":rank,"stage":max(expected)}),flush=True)
-                    break
-                if expected is not None and b!=last and not valid_successor(expected,b):
-                    if not full_mode:print(json.dumps({"action":"retry_full_frame","reason":"transition_mismatch"}),flush=True)
+        outcome="error"
+        data=None
+        try:
+            metrics.call("focus",ensure_game_focus,adb)
+            previous_observation=None
+            full_mode=False
+            last_observation_error=None
+            for attempt in range(15):
+                if (ROOT/"STOP").exists():
+                    outcome="stopped"
+                    print("Остановлено при ожидании кадра",flush=True);return
+                metrics.counts["observations"]+=1
+                try:
+                    b,data,used_full,_=read_observation(capture,lambda:adb("exec-out","screencap"),full_mode,metrics)
+                    full_mode=full_mode or used_full
+                    if observation_ready(b,previous_observation,expected,last):
+                        if expected is not None:
+                            rank=next(b[i] for i in range(16) if b[i]!=expected[i])
+                            if NATIVE.get_spawn_prob(max(expected),rank)==0:print(json.dumps({"confirmed_new_spawn":rank,"stage":max(expected)}),flush=True)
+                        break
+                    if expected is not None and b!=last and not valid_successor(expected,b):
+                        if not full_mode:print(json.dumps({"action":"retry_full_frame","reason":"transition_mismatch"}),flush=True)
+                        full_mode=True
+                    previous_observation=b
+                except RuntimeError as exc:
+                    previous_observation=None
                     full_mode=True
-                previous_observation=b
-            except RuntimeError as exc:
-                previous_observation=None
-                full_mode=True
-                last_observation_error=str(exc)
-                print(json.dumps({"observation_error":str(exc),"attempt":attempt},ensure_ascii=False),flush=True)
-            if attempt==14:
-                decode_screen(adb("exec-out","screencap")).save(ROOT/"recognition-error.png")
-                raise RuntimeError("Не дождался стабильного результата хода; повторный жест не отправлялся. "+json.dumps({"expected":expected,"actual":previous_observation,"recognition_error":last_observation_error}))
-            time.sleep(.15)
-            data=adb("exec-out","screencap") if full_mode else capture()
-        if expected is not None and b!=last:
-            index=next(i for i in range(16) if b[i]!=expected[i])
-            rank=b[index];stage=max(expected)
-            record_spawn(model,stage,rank)
-            apply_spawn_model(model)
-            save_spawn_model(model)
-            print(json.dumps({"spawn_level":rank,"cell":index,"stage":stage,"stage_counts":model["stages"][str(stage)][:6]}),flush=True)
-        if reached_goal(b):
-            decode_screen(adb("exec-out","screencap")).save(ROOT/"goal.png")
-            print(f"ЦЕЛЬ ДОСТИГНУТА: {GOAL_COUNT} плитки уровня {CAP} одновременно. "+str(b),flush=True);break
-        search={}
-        d=choose(b,args.depth,args.think,search)
-        print(json.dumps({"step":step,"board":b,"direction":None if d is None else ["left","right","up","down"][d],"capture_s":round(captured-started,3),"think_s":round(time.monotonic()-captured,3),"search":search},ensure_ascii=False),flush=True)
-        if args.dry_run or d is None:
-            decode_screen(data).save(ROOT/"latest.png");break
-        stuck=stuck+1 if b==last else 0
-        if stuck>=2:
-            decode_screen(data).save(ROOT/"latest.png")
-            raise RuntimeError("Поле не меняется: энергия закончилась или появился диалог. Остановка.")
-        last=b
-        expected=move(b,d)
-        w,h=decode_screen(data).size
-        coords=[(.77,.58,.28,.58),(.28,.58,.77,.58),(.50,.72,.50,.43),(.50,.43,.50,.72)][d]
-        xy=[round(v*(w if i%2==0 else h)) for i,v in enumerate(coords)]
-        if (ROOT/"STOP").exists():print("Остановлено перед жестом",flush=True);break
-        send_move(adb,xy)
-        time.sleep(max(.15,args.delay))
+                    last_observation_error=str(exc)
+                    metrics.counts["failed_observations"]=metrics.counts.get("failed_observations",0)+1
+                    print(json.dumps({"observation_error":str(exc),"attempt":attempt},ensure_ascii=False),flush=True)
+                if attempt==14:
+                    if data is not None:
+                        try:metrics.call("diagnostic_write",lambda:decode_screen(data).save(ROOT/"recognition-error.png"))
+                        except OBSERVATION_ERRORS:pass
+                    raise RuntimeError("Не дождался стабильного результата хода; повторный жест не отправлялся. "+json.dumps({"expected":expected,"actual":previous_observation,"recognition_error":last_observation_error}))
+                metrics.call("confirm_wait",time.sleep,.15)
+            if expected is not None and b!=last:
+                index=next(i for i in range(16) if b[i]!=expected[i])
+                rank=b[index];stage=max(expected)
+                def update_model():
+                    record_spawn(model,stage,rank)
+                    apply_spawn_model(model)
+                metrics.call("model_update",update_model)
+                metrics.call("model_write",save_spawn_model,model)
+                print(json.dumps({"spawn_level":rank,"cell":index,"stage":stage,"stage_counts":model["stages"][str(stage)][:6]}),flush=True)
+            if reached_goal(b):
+                metrics.call("diagnostic_write",lambda:decode_screen(adb("exec-out","screencap")).save(ROOT/"goal.png"))
+                outcome="goal"
+                print(f"ЦЕЛЬ ДОСТИГНУТА: {GOAL_COUNT} плитки уровня {CAP} одновременно. "+str(b),flush=True);break
+            search={}
+            d=metrics.call("choose",choose,b,args.depth,args.think,search)
+            captured=metrics.first_capture_at if metrics.first_capture_at is not None else started
+            print(json.dumps({"step":step,"board":b,"direction":None if d is None else ["left","right","up","down"][d],"capture_s":round(captured-started,3),"think_s":round(time.monotonic()-captured,3),"search":search},ensure_ascii=False),flush=True)
+            if args.dry_run or d is None:
+                metrics.call("diagnostic_write",lambda:decode_screen(data).save(ROOT/"latest.png"))
+                outcome="dry_run" if args.dry_run else "no_move"
+                break
+            stuck=stuck+1 if b==last else 0
+            if stuck>=2:
+                metrics.call("diagnostic_write",lambda:decode_screen(data).save(ROOT/"latest.png"))
+                raise RuntimeError("Поле не меняется: энергия закончилась или появился диалог. Остановка.")
+            last=b
+            expected=move(b,d)
+            w,h=metrics.frame_size if metrics.frame_size is not None else metrics.call("frame_geometry",lambda:decode_screen(data).size)
+            coords=[(.77,.58,.28,.58),(.28,.58,.77,.58),(.50,.72,.50,.43),(.50,.43,.50,.72)][d]
+            xy=[round(v*(w if i%2==0 else h)) for i,v in enumerate(coords)]
+            if (ROOT/"STOP").exists():
+                outcome="stopped"
+                print("Остановлено перед жестом",flush=True);break
+            metrics.call("focus",ensure_game_focus,adb)
+            if (ROOT/"STOP").exists():
+                outcome="stopped"
+                print("Остановлено перед жестом",flush=True);break
+            metrics.call("gesture",send_move,adb,xy)
+            outcome="moved"
+            metrics.call("post_move_wait",time.sleep,max(.15,args.delay))
+        finally:
+            print(json.dumps({"step":step,"cycle_metrics":metrics.snapshot(outcome)},ensure_ascii=False),flush=True)
     else:
         print("Достигнут лимит ходов",flush=True)
 

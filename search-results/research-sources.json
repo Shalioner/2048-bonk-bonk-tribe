@@ -1,0 +1,25 @@
+{
+  "accessed": "2026-11-01",
+  "scope": "Первичные источники для гипотез ускорения depth8; исходники проекта внешним источникам не передавались",
+  "context7": {
+    "resolved_name": "LLVM Clang",
+    "library_id": "/websites/clang_llvm_usersmanual",
+    "queries": [
+      "PGO/LTO для C++ на Apple Silicon/macOS с сохранением floating-point semantics без fast-math",
+      "Инструментационное PGO многопоточной dynamic library: atomic counters, LLVM_PROFILE_FILE, merge, profile use"
+    ],
+    "limitation": "Upstream docs не доказывают поддержку каждого флага локальным Apple clang17; локальная сборка в исследовании не запускалась"
+  },
+  "sources": [
+    {"id":"apple-cpu","title":"Optimize CPU performance with Instruments, WWDC25","url":"https://developer.apple.com/videos/play/wwdc2025/308/","publisher":"Apple","use":"CPU vs timer sampling, asymmetric CPUs, aliasing and CPU Counters","read":true},
+    {"id":"abseil-swiss","title":"Swiss Tables Design Notes","url":"https://abseil.io/about/design/swisstables","publisher":"Abseil authors","use":"Dense metadata, hash entropy, fingerprints followed by full equality; SSE example is not an arm64 implementation","read":true},
+    {"id":"clang-manual","title":"Clang Compiler User's Manual","url":"https://clang.llvm.org/docs/UsersManual.html","publisher":"LLVM Clang","use":"Instrumentation PGO, atomic counter updates, FP behavior and contraction caveats","read":true},
+    {"id":"llvm-lto","title":"LLVM Link Time Optimization: Design and Implementation","url":"https://llvm.org/docs/LinkTimeOptimization.html","publisher":"LLVM","use":"Intermodular scope of LTO; project-specific single-TU inference is local","read":true},
+    {"id":"llvm-profdata","title":"llvm-profdata: Profile data tool","url":"https://llvm.org/docs/CommandGuide/llvm-profdata.html","publisher":"LLVM","use":"Indexed merge profile and warning against sparse profiles for PGO","read":true},
+    {"id":"apple-threading","title":"Threading Programming Guide: Thread Management","url":"https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/CreatingThreads/CreatingThreads.html","publisher":"Apple","use":"Thread creation costs and reuse; historical Intel timing is explicitly not transferred to current machine","read":true},
+    {"id":"2048-upstream","title":"nneonneo/2048-ai: 2048.cpp","url":"https://github.com/nneonneo/2048-ai/blob/master/2048.cpp","publisher":"nneonneo/2048-ai authors","use":"Primary implementation of packed board, row LUT and depth-based cache; not evidence for arbitrary transformation parity","read":true,"revision_note":"master as fetched on access date, not a frozen project baseline"}
+  ],
+  "unusable_sources": [
+    {"url":"https://developer.apple.com/documentation/apple-silicon/tuning-your-code-s-performance-for-apple-silicon","reason":"HTML requires JavaScript; linked markdown rejected by web tool content-type. No report claim relies on its unread body."}
+  ]
+}
