@@ -1,4 +1,8 @@
-"""Opt-in banked_endgame: только измеренный профиль pure Bonk поиска.
+"""Opt-in banked_endgame: исторический режим или новый --merged-engine.
+
+--merged-engine использует текущий собранный движок с накоплением бюджета.
+Частота побед объединённого профиля пока не измерена; следующие цифры
+относятся только к историческому движку, доступному без этого флага.
 
 Контроль035e214:63/100 против49/100; wall/ход~1.595x, CPU/ход~1.562x.
 Это другая цена, не равный бюджет. Номинал10мс на вызов, до40мс при двух CAP
@@ -9,6 +13,7 @@
 import argparse
 import importlib
 import importlib.util
+import json
 import math
 from pathlib import Path
 import sys
@@ -53,8 +58,9 @@ def verified_profile(cycle):
 
 class BankedChooser:
     """One game/session ledger; reuse the frozen runner's allocation/charge math."""
-    def __init__(self, cycle, profile, choose):
+    def __init__(self, cycle, profile, choose, profile_name=ARM):
         self.cycle, self.profile, self.choose = cycle, dict(profile), choose
+        self.profile_name = profile_name
         self.credit = 0.0
 
     def __call__(self, board, depth=DEPTH, think=NOMINAL, info=None, policy=POLICY):
@@ -68,7 +74,7 @@ class BankedChooser:
             elapsed = time.monotonic() - started
             self.credit = self.cycle.charge_budget(self.credit, elapsed)
             if info is not None:
-                info.update(budget_profile=ARM, supplied_budget_s=budget,
+                info.update(budget_profile=self.profile_name, supplied_budget_s=budget,
                             external_choose_wall_s=elapsed, budget_credit_s=self.credit)
 
 
@@ -90,6 +96,8 @@ def launch(cycle, args):
             profile = verified_profile(cycle)
             bot = importlib.import_module("bot")
             previous = bot.choose, bot.NATIVE, bot.THRESHOLDS
+            if isinstance(bot.choose, BankedChooser):
+                raise ValueError("Banked chooser уже установлен; вложенный запуск запрещён")
             configured = cycle.configure(ARM)
             if configured is not bot or tuple(bot.THRESHOLDS) != THRESHOLDS or not hasattr(bot.NATIVE, "solve_budget_progressive"):
                 raise ValueError("Выбранный native engine/thresholds не поддерживают измеренный progressive")
@@ -102,22 +110,58 @@ def launch(cycle, args):
             bot.choose, bot.NATIVE, bot.THRESHOLDS = previous
 
 
+def launch_merged(cycle, args):
+    """New unmeasured profile: current build plus the unchanged budget ledger."""
+    bot = importlib.import_module("bot")
+    previous = bot.choose, bot.NATIVE, bot.THRESHOLDS
+    argv = sys.argv
+    try:
+        if isinstance(bot.choose, BankedChooser):
+            raise ValueError("Banked chooser уже установлен; вложенный запуск запрещён")
+        # Load the production path explicitly: never reuse an experimental library
+        # left in bot.NATIVE by another in-process caller.
+        native = bot.load_engine(bot.ENGINE)
+        if not hasattr(native, "solve_budget_progressive"):
+            raise ValueError("Текущий движок не поддерживает progressive: пересоберите sh vendor/build.sh")
+        bot.NATIVE, bot.THRESHOLDS = native, THRESHOLDS
+        bot.choose = BankedChooser(cycle, PROFILE, previous[0], profile_name="merged_banked_endgame")
+        sys.argv = forwarded_argv(args)
+        print(json.dumps(dict(search_profile="merged_banked_endgame", confirmed_improvement=False,
+                              nominal_budget_s=NOMINAL, two_cap_budget_s=PROFILE["two_cap_call_cap"],
+                              note="Частота побед объединённого профиля пока не измерена"), ensure_ascii=False), flush=True)
+        return bot.main()
+    finally:
+        sys.argv = argv
+        bot.choose, bot.NATIVE, bot.THRESHOLDS = previous
+
+
+def historical_error(exc):
+    return (str(exc) + "\nИсторический gate сохранён: для прежнего измеренного режима создайте "
+            "отдельную копию командой git worktree add --detach ../2048-banked-historical 078b51a; "
+            "в ней восстановите точные библиотеки через "
+            "python3 verification/search-alternatives/restore_build.py PATH_TO_ARCHIVED_LIBRARIES. "
+            "Для текущего объединённого движка есть явный --merged-engine; его частота побед ещё не измерена.")
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--serial", default=None)
     parser.add_argument("--steps", type=int, default=10000)
     parser.add_argument("--delay", type=float, default=.4)
     parser.add_argument("--dry-run", action="store_true")
-    parser.add_argument("--depth", type=int, default=DEPTH, help="только измеренное значение8")
+    parser.add_argument("--merged-engine", action="store_true",
+                        help="текущий движок + banked budget; новый профиль без подтверждённой частоты побед")
+    parser.add_argument("--depth", type=int, default=DEPTH, help="только значение8")
     parser.add_argument("--think", type=float, default=NOMINAL, help="только номинал0.01с; late-call cap0.04с с credit")
     parser.add_argument("--search-policy", choices=(POLICY,), default=POLICY)
     args = parser.parse_args(argv)
     if args.depth != DEPTH or not math.isfinite(args.think) or args.think != NOMINAL:
-        parser.error("Этот opt-in режим измерен только при --think 0.01 --depth 8 --search-policy progressive")
+        parser.error("Этот opt-in режим поддерживает только --think 0.01 --depth 8 --search-policy progressive")
     try:
-        return launch(load_cycle(), args)
+        cycle = load_cycle()
+        return launch_merged(cycle, args) if args.merged_engine else launch(cycle, args)
     except (OSError, ValueError, RuntimeError) as exc:
-        parser.error(str(exc))
+        parser.error(str(exc) if args.merged_engine else historical_error(exc))
 
 
 if __name__ == "__main__":

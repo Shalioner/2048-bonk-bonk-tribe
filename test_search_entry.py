@@ -26,9 +26,11 @@ class SearchEntryTests(unittest.TestCase):
         self.original_native = object()
         self.original_thresholds = (.7,)
         self.selected_native = SimpleNamespace(solve_budget_progressive=object())
+        self.merged_native = SimpleNamespace(solve_budget_progressive=object())
         self.bot = SimpleNamespace(choose=self.original_choose, NATIVE=self.original_native,
                                    THRESHOLDS=self.original_thresholds, DEFAULT_THINK=10., DEFAULT_DEPTH=8,
-                                   main=Mock(return_value="done"))
+                                   main=Mock(return_value="done"), ENGINE=Path("/mock/current/engine.dylib"),
+                                   load_engine=Mock(return_value=self.merged_native))
         self.summary = dict(finalist=entry.ARM, confirmed_improvement=True, paired=dict(improved=True, one_sided_p=.027),
                             freeze_sha256="frozen-sha", control_sha256="control-sha")
         self.plan = dict(search=dict(think=.01, depth=8, policy="progressive"), budget_profiles={entry.ARM:dict(entry.PROFILE)})
@@ -226,6 +228,99 @@ class SearchEntryTests(unittest.TestCase):
         self.bot.main.assert_not_called()
         self.original_choose.assert_not_called()
         self.assert_restored(before)
+
+    def test_merged_help_discloses_unmeasured_profile(self):
+        with redirect_stdout(io.StringIO()) as output, self.assertRaises(SystemExit) as stopped:
+            entry.main(["--help"])
+        self.assertEqual(stopped.exception.code, 0)
+        self.assertIn("--merged-engine", output.getvalue())
+        self.assertIn("Частота побед объединённого профиля пока не измерена", output.getvalue())
+
+    def test_merged_routes_current_build_without_historical_gate_or_native_reuse(self):
+        before = sys.argv
+        self.bot.NATIVE = self.selected_native  # Simulate a caller's historical library.
+        def main():
+            self.assertIs(self.bot.NATIVE, self.merged_native)
+            self.assertEqual(self.bot.THRESHOLDS, entry.THRESHOLDS)
+            self.assertNotIn("--merged-engine", sys.argv)
+            self.assertIn("--dry-run", sys.argv)
+            self.assertEqual(sys.argv[sys.argv.index("--search-policy") + 1], "progressive")
+            info = {}
+            self.bot.choose(LATE, info=info)
+            self.assertEqual(info["budget_profile"], "merged_banked_endgame")
+            return "done"
+        self.bot.main.side_effect = main
+        with patch.object(entry.time, "monotonic", side_effect=self.clock([.001])), redirect_stdout(io.StringIO()) as output:
+            self.assertEqual(self.runtime(["--merged-engine", "--dry-run"]), "done")
+        self.assertIn('"confirmed_improvement": false', output.getvalue())
+        self.bot.load_engine.assert_called_once_with(self.bot.ENGINE)
+        self.original_choose.assert_called_once_with(LATE, 8, .01, unittest.mock.ANY, policy="progressive")
+        self.cycle.verify_freeze.assert_not_called()
+        self.cycle.checkpoint.assert_not_called()
+        self.cycle.configure.assert_not_called()
+        self.cycle.play.assert_not_called()
+        self.cycle.finalize.assert_not_called()
+        self.assertEqual(self.events, [])
+        self.assertIs(self.bot.NATIVE, self.selected_native)
+        self.assertIs(self.bot.choose, self.original_choose)
+        self.assertIs(self.bot.THRESHOLDS, self.original_thresholds)
+        self.assertIs(sys.argv, before)
+
+    def test_default_refuses_drift_with_pinned_worktree_instructions(self):
+        self.cycle.verify_freeze.side_effect = ValueError("Замороженный файл изменён: bot.py")
+        with redirect_stderr(io.StringIO()) as error, self.assertRaises(SystemExit) as stopped:
+            self.runtime()
+        self.assertEqual(stopped.exception.code, 2)
+        self.assertIn("git worktree add --detach ../2048-banked-historical 078b51a", error.getvalue())
+        self.assertIn("restore_build.py", error.getvalue())
+        self.bot.main.assert_not_called()
+        self.bot.load_engine.assert_not_called()
+        self.cycle.configure.assert_not_called()
+
+    def test_merged_repeated_runs_reset_ledger_and_restore_even_after_error(self):
+        wrappers, budgets = [], []
+        def main():
+            wrappers.append(self.bot.choose)
+            self.bot.choose(LATE)
+            budgets.append(self.original_choose.call_args.args[2])
+            if len(wrappers) == 1:
+                raise RuntimeError("mock runtime failure")
+        self.bot.main.side_effect = main
+        before = sys.argv
+        with patch.object(entry.time, "monotonic", side_effect=self.clock([.168, .001])), \
+                redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                self.runtime(["--merged-engine"])
+            self.assert_restored(before)
+            self.runtime(["--merged-engine"])
+        self.assert_restored(before)
+        self.assertEqual(budgets, [.01, .01])
+        self.assertIsNot(wrappers[0], wrappers[1])
+        self.assertEqual(self.bot.load_engine.call_count, 2)
+        self.assertEqual(self.original_choose.call_count, 2)
+
+    def test_merged_rejects_old_or_missing_build_before_runtime(self):
+        before = sys.argv
+        for failure in (False, True):
+            self.bot.load_engine.side_effect = RuntimeError("missing build") if failure else None
+            self.bot.load_engine.return_value = object()
+            with self.subTest(failure=failure), redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                self.runtime(["--merged-engine"])
+            self.assert_restored(before)
+        self.bot.main.assert_not_called()
+        self.cycle.configure.assert_not_called()
+
+    def test_existing_banked_wrapper_cannot_be_nested(self):
+        wrapper = entry.BankedChooser(self.cycle, entry.PROFILE, self.original_choose)
+        self.bot.choose = wrapper
+        for args in ([], ["--merged-engine"]):
+            with self.subTest(args=args), redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                self.runtime(args)
+            self.assertIs(self.bot.choose, wrapper)
+        self.bot.main.assert_not_called()
+        self.bot.load_engine.assert_not_called()
+        self.cycle.configure.assert_not_called()
+        self.original_choose.assert_not_called()
 
     def test_wrapper_rejects_unmeasured_mode_before_choose(self):
         wrapper = entry.BankedChooser(self.cycle, entry.PROFILE, self.original_choose)
