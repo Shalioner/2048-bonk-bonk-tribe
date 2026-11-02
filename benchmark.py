@@ -43,7 +43,7 @@ def choose_fixed(board, depth):
     return bot.DIRECTIONS.index(direction) if direction >= 0 else None
 
 
-def play(seed, depth, think, max_moves, table, endgame_depth=None):
+def play(seed, depth, think, max_moves, table, endgame_depth=None, policy="legacy"):
     # Solver and simulator must use the same frozen distribution throughout a game.
     apply_table(table)
     rng = random.Random(seed)
@@ -54,7 +54,7 @@ def play(seed, depth, think, max_moves, table, endgame_depth=None):
     depth_counts = {}
     while moves < max_moves and not bot.reached_goal(board):
         search_depth = endgame_depth if endgame_depth is not None and board.count(bot.CAP) >= 2 else depth
-        d = choose_fixed(board, search_depth) if think is None else bot.choose(board, search_depth, think)
+        d = choose_fixed(board, search_depth) if think is None else bot.choose(board, search_depth, think, policy=policy)
         if d is None:
             break
         key = str(search_depth)
@@ -166,6 +166,8 @@ def main(argv=None):
                     help="глубина поиска при двух или более готовых плитках 11")
     ap.add_argument("--think", type=float, default=None,
                     help="бюджет на ход, с; без параметра — один проход 1e-4 без ограничения времени")
+    ap.add_argument("--search-policy", choices=("legacy", "progressive"), default="progressive",
+                    help="при --think: планировщик поиска, как в bot CLI")
     ap.add_argument("--max-moves", type=int, default=6000)
     ap.add_argument("--out", default=str(bot.ROOT / "benchmark.json"))
     ap.add_argument("--resume", action="store_true", help="продолжить совместимый --out, пропуская готовые партии")
@@ -179,10 +181,13 @@ def main(argv=None):
         ap.error("depths не должны повторяться")
     if args.think is not None and args.think < 0:
         ap.error("think должен быть неотрицательным")
+    if args.think is not None and args.search_policy == "progressive" and not hasattr(bot.NATIVE, "solve_budget_progressive"):
+        ap.error("Движок не поддерживает progressive: пересоберите sh vendor/build.sh")
     model = bot.default_spawn_model()
     table = bot.spawn_table(model)
     config = dict(games=args.games, seed=args.seed, depths=depths, think=args.think,
-                  max_moves=args.max_moves, endgame_depth=args.endgame_depth)
+                  max_moves=args.max_moves, endgame_depth=args.endgame_depth,
+                  search_policy=args.search_policy if args.think is not None else None)
     try:
         sources = source_hashes()
         rows = resume_rows(args.out, config, model, sources, table) if args.resume else []
@@ -194,7 +199,9 @@ def main(argv=None):
         for seed in range(args.seed, args.seed + args.games):
             if (seed, depth) in done:
                 continue
-            if args.endgame_depth is None:
+            if args.think is not None:
+                row = play(seed, depth, args.think, args.max_moves, table, args.endgame_depth, policy=args.search_policy)
+            elif args.endgame_depth is None:
                 row = play(seed, depth, args.think, args.max_moves, table)
             else:
                 row = play(seed, depth, args.think, args.max_moves, table, args.endgame_depth)

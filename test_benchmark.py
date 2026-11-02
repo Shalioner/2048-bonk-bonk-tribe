@@ -17,6 +17,24 @@ class BenchmarkTests(unittest.TestCase):
     def tearDown(self):
         bot.apply_spawn_model(bot.default_spawn_model())
 
+    def test_timed_cli_forwards_progressive_default_and_explicit_legacy(self):
+        row = dict(seed=1, depth=4, think=.01, result="goal", moves=1, caps=3, seconds=.01)
+        for extra, policy in (([], "progressive"), (["--search-policy", "legacy"], "legacy")):
+            with self.subTest(policy=policy), patch.object(benchmark, "play", return_value=row) as play, \
+                 patch.object(benchmark, "save_checkpoint"), contextlib.redirect_stdout(io.StringIO()):
+                benchmark.main(["--games", "1", "--think", ".01", *extra])
+            self.assertEqual(play.call_args.kwargs, {"policy": policy})
+
+    def test_unsupported_progressive_cli_stops_before_checkpoint_or_game(self):
+        from types import SimpleNamespace
+        with patch.object(bot, "NATIVE", SimpleNamespace()), patch.object(benchmark, "save_checkpoint") as save, \
+             patch.object(benchmark, "play") as play, contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit) as error:
+                benchmark.main(["--think", ".01"])
+        self.assertEqual(error.exception.code, 2)
+        save.assert_not_called()
+        play.assert_not_called()
+
     def artificial_game(self, final, max_moves=1):
         start = (1,) + (0,) * 15
         with patch.object(benchmark, "spawn", side_effect=[start, start, final]), \

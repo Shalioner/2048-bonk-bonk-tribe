@@ -24,3 +24,9 @@ python3 -m unittest test_bot test_benchmark test_progressive_search test_search_
 legacy CLI и неизменных depth/think/spawn updates. Указанные ранее74 не являются
 числом тестов этих исходных файлов; тесты не удалялись и не пропускались.
 Телефон/runtime/main/старые worktree не менялись. Реальные партии не запускались.
+
+Benchmark CLI при `--think` также использует `--search-policy progressive`
+по умолчанию, явный legacy доступен; API `benchmark.play(...,policy="legacy")`
+сохраняет прежнюю семантику. Без `--think` fixed-depth путь не меняется. Политика
+включена в checkpoint config; неподдерживаемый progressive отвергается до
+checkpoint/симуляции.17 benchmark-тестов прошли за0.038s, включая два новых.
