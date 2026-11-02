@@ -1,0 +1,26 @@
+{
+  "repo": "moporgic/TDL2048",
+  "commit": "a99f620aec0d30a75943a4c9646743f1f53b0197",
+  "files": {
+    "2048.cpp": {
+      "url": "https://raw.githubusercontent.com/moporgic/TDL2048/a99f620aec0d30a75943a4c9646743f1f53b0197/2048.cpp",
+      "sha256": "936e045167e2d168ad45095194ebd12ffc7d7aa79d4fe335dafe119d9a1bdaff",
+      "bytes": 104093
+    },
+    "board.h": {
+      "url": "https://raw.githubusercontent.com/moporgic/TDL2048/a99f620aec0d30a75943a4c9646743f1f53b0197/board.h",
+      "sha256": "fd697d10e3e7197f982b9a63a47c211ef3cd4cff0af338ff27130f12e4c07947",
+      "bytes": 53091
+    },
+    "LICENSE.md": {
+      "url": "https://raw.githubusercontent.com/moporgic/TDL2048/a99f620aec0d30a75943a4c9646743f1f53b0197/LICENSE.md",
+      "sha256": "e0fa1e3478a7e3bf06adb4d48fe093f90e832a47631d149593050f0b562aac88",
+      "bytes": 1066
+    },
+    "README.md": {
+      "url": "https://raw.githubusercontent.com/moporgic/TDL2048/a99f620aec0d30a75943a4c9646743f1f53b0197/README.md",
+      "sha256": "c9166880a41cdb3e25503b2abd35c23149d8562c8a18acdc5dc14afa26ea1745",
+      "bytes": 60216
+    }
+  }
+}
