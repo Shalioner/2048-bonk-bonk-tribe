@@ -34,7 +34,8 @@ engine_adapted.cpp, использует его CAP/moves/spawn; upstream цел
   teacher_depth=1,alpha=0.1,epsilon=0.05,max_moves=6000,start_board=None)`.
 
 Episode возвращает dict seed,result(goal/loss/limit),moves,caps,board,
-first_caps (ключи'1'/'2', board16),updates,trajectory_digest. observe не меняет
+first_caps (ключи'1'/'2', точный cap-count, board16 ПОСЛЕ spawn перед выбором
+игрока, только legal/non-goal),updates,trajectory_digest. observe не меняет
 параметры, MC обновляет все nonterminal afterstates после полного исхода,
 TD0 обновляет предыдущее afterstate по следующему выбранному afterstate value,
 последний target — goal1/loss0. На nonterminal немедленная награда0, discount1.
@@ -45,8 +46,10 @@ Tie-breaking детерминирован. После goal случайная п
 PRNG принадлежит эпизоду, детерминирован по uint64 seed; uniform empty cell,
 распределение rank из заданной таблицы по максимуму после хода. Начало — две
 плитки, либо явно переданное валидное незавершённое board. Невалидный вызов
-отвергается до изменения параметров. Limit не превращается в loss/MC-label;
-координатор не сохраняет веса частично ограниченного эпизода.
+отвергается до изменения параметров. start_board уже находится в фазе выбора
+игрока, дополнительное начальное появление к нему не добавляется. Limit не
+превращается в loss/MC-label; trainer откатывает все TD-обновления такого
+эпизода, updates=0 (attempted_updates может сохраняться как диагностика).
 
 ## Владение
 
