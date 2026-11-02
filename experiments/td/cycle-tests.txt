@@ -11,13 +11,14 @@ test_observe_and_terminal_snapshot_fail_closed (test_td_cycle.CycleTests) ... ok
 test_pool_after_spawn_unique_and_no_implicit_collection (test_td_cycle.CycleTests) ... ok
 test_real_protocol_ranges_and_lazy_help (test_td_cycle.CycleTests) ... ok
 test_replay_tail_without_double_updates (test_td_cycle.CycleTests) ... ok
+test_reserved_marker_output_rejected_before_stage_side_effects (test_td_cycle.CycleTests) ... ok
 test_resume_pending_validation_before_more_training (test_td_cycle.CycleTests) ... ok
 test_selfplay_warmup_then_exploration_and_independent_stop (test_td_cycle.CycleTests) ... ok
 test_timed_goal_does_not_spawn_and_telemetry_is_actual (test_td_cycle.CycleTests) ... ok
 test_trajectory_mismatch_retained_and_never_selected (test_td_cycle.CycleTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 17 tests in 6.577s
+Ran 18 tests in 3.241s
 
 OK
 usage: python3 -m unittest [-h]
