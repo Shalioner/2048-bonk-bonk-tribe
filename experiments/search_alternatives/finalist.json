@@ -1,0 +1,312 @@
+{
+ "version": 1,
+ "finalist": "banked_endgame",
+ "screen": {
+  "banked_endgame": {
+   "games": 16,
+   "goals": 11,
+   "win_rate": 0.6875,
+   "limits": 0,
+   "moves": 31172,
+   "total_wall": 258.56632891800007,
+   "search_wall": 249.50387115800137,
+   "choose_wall_per_move": 0.008004102115937424,
+   "search_cpu_seconds": 562.6488519999938,
+   "choose_cpu_per_move": 0.018049815603746754,
+   "wall_latency": {
+    "count": 31177,
+    "median_seconds": 0.004957457999978487,
+    "p95_nearest_rank_seconds": 0.025766125000018292,
+    "max_seconds": 0.20403233299998647,
+    "above_nominal_rate": 0.21910382653879462,
+    "nominal_seconds": 0.01
+   },
+   "depth_counts": {
+    "1": 51,
+    "2": 1271,
+    "3": 20678,
+    "4": 7993,
+    "5": 1006,
+    "6": 104,
+    "7": 24,
+    "8": 45
+   },
+   "threshold_counts": {
+    "1e-04": 31086,
+    "1e-05": 11,
+    "1e-06": 24,
+    "fallback": 51
+   },
+   "budget_profiles": {
+    "banked_endgame": {
+     "mode": "ledger",
+     "nominal_allowance": 0.01,
+     "early_call_cap": 0.01,
+     "two_cap_call_cap": 0.04
+    }
+   },
+   "max_supplied_budget_seconds": 0.04,
+   "maximum_profile_call_cap_seconds": 0.04,
+   "min_final_credit_balance": 1.5848106829969564,
+   "positions": 21553869796,
+   "positions_scope": "legacy search-node counter is not a wall or CPU cost measurement"
+  },
+  "baseline": {
+   "games": 16,
+   "goals": 7,
+   "win_rate": 0.4375,
+   "limits": 0,
+   "moves": 32015,
+   "total_wall": 149.13717945999983,
+   "search_wall": 140.7050399679943,
+   "choose_wall_per_move": 0.004394972355708084,
+   "search_cpu_seconds": 316.4278089999909,
+   "choose_cpu_per_move": 0.009883736029985659,
+   "wall_latency": {
+    "count": 32024,
+    "median_seconds": 0.0035123124999927313,
+    "p95_nearest_rank_seconds": 0.008619582999983777,
+    "max_seconds": 0.15222154100001717,
+    "above_nominal_rate": 0.012178366225331002,
+    "nominal_seconds": 0.01
+   },
+   "depth_counts": {
+    "1": 59,
+    "2": 1785,
+    "3": 26217,
+    "4": 3776,
+    "5": 151,
+    "6": 20,
+    "7": 3,
+    "8": 4
+   },
+   "threshold_counts": {
+    "1e-04": 31954,
+    "1e-05": 2,
+    "fallback": 59
+   },
+   "budget_profiles": {
+    "fixed": {
+     "mode": "fixed",
+     "nominal_allowance": 0.01,
+     "early_call_cap": 0.01,
+     "two_cap_call_cap": 0.01
+    }
+   },
+   "max_supplied_budget_seconds": 0.01,
+   "maximum_profile_call_cap_seconds": 0.01,
+   "min_final_credit_balance": null,
+   "positions": 11829809636,
+   "positions_scope": "legacy search-node counter is not a wall or CPU cost measurement"
+  },
+  "canonical": {
+   "games": 16,
+   "goals": 8,
+   "win_rate": 0.5,
+   "limits": 0,
+   "moves": 30511,
+   "total_wall": 137.8421028750002,
+   "search_wall": 130.70783706699893,
+   "choose_wall_per_move": 0.004283957820687586,
+   "search_cpu_seconds": 304.458250999999,
+   "choose_cpu_per_move": 0.009978638884336763,
+   "wall_latency": {
+    "count": 30519,
+    "median_seconds": 0.003469417000019348,
+    "p95_nearest_rank_seconds": 0.008522415999948407,
+    "max_seconds": 0.11154512500002056,
+    "above_nominal_rate": 0.008289917756151906,
+    "nominal_seconds": 0.01
+   },
+   "depth_counts": {
+    "1": 42,
+    "2": 1218,
+    "3": 24903,
+    "4": 4093,
+    "5": 187,
+    "6": 27,
+    "7": 8,
+    "8": 33
+   },
+   "threshold_counts": {
+    "1e-04": 30442,
+    "1e-05": 16,
+    "1e-06": 11,
+    "fallback": 42
+   },
+   "budget_profiles": {
+    "fixed": {
+     "mode": "fixed",
+     "nominal_allowance": 0.01,
+     "early_call_cap": 0.01,
+     "two_cap_call_cap": 0.01
+    }
+   },
+   "max_supplied_budget_seconds": 0.01,
+   "maximum_profile_call_cap_seconds": 0.01,
+   "min_final_credit_balance": null,
+   "positions": 11423832272,
+   "positions_scope": "legacy search-node counter is not a wall or CPU cost measurement"
+  },
+  "precision": {
+   "games": 16,
+   "goals": 5,
+   "win_rate": 0.3125,
+   "limits": 0,
+   "moves": 30328,
+   "total_wall": 179.62713158099987,
+   "search_wall": 171.26624733800224,
+   "choose_wall_per_move": 0.005647132924624184,
+   "search_cpu_seconds": 392.8565669999932,
+   "choose_cpu_per_move": 0.012953592950408639,
+   "wall_latency": {
+    "count": 30339,
+    "median_seconds": 0.005174874999994472,
+    "p95_nearest_rank_seconds": 0.009339083999996944,
+    "max_seconds": 0.2312657079999667,
+    "above_nominal_rate": 0.02699495698605755,
+    "nominal_seconds": 0.01
+   },
+   "depth_counts": {
+    "1": 75,
+    "2": 6059,
+    "3": 22814,
+    "4": 1285,
+    "5": 77,
+    "6": 10,
+    "8": 8
+   },
+   "threshold_counts": {
+    "1e-05": 30245,
+    "1e-06": 8,
+    "fallback": 75
+   },
+   "budget_profiles": {
+    "fixed": {
+     "mode": "fixed",
+     "nominal_allowance": 0.01,
+     "early_call_cap": 0.01,
+     "two_cap_call_cap": 0.01
+    }
+   },
+   "max_supplied_budget_seconds": 0.01,
+   "maximum_profile_call_cap_seconds": 0.01,
+   "min_final_credit_balance": null,
+   "positions": 14660729284,
+   "positions_scope": "legacy search-node counter is not a wall or CPU cost measurement"
+  },
+  "serial_shallow": {
+   "games": 16,
+   "goals": 6,
+   "win_rate": 0.375,
+   "limits": 0,
+   "moves": 31414,
+   "total_wall": 142.25245070600005,
+   "search_wall": 135.05798778300138,
+   "choose_wall_per_move": 0.004299292919812866,
+   "search_cpu_seconds": 301.743295999999,
+   "choose_cpu_per_move": 0.009605376456357007,
+   "wall_latency": {
+    "count": 31424,
+    "median_seconds": 0.003457687499984985,
+    "p95_nearest_rank_seconds": 0.008510832999998996,
+    "max_seconds": 0.15562154199994893,
+    "above_nominal_rate": 0.009610488798370672,
+    "nominal_seconds": 0.01
+   },
+   "depth_counts": {
+    "1": 31,
+    "2": 1169,
+    "3": 25876,
+    "4": 4147,
+    "5": 150,
+    "6": 22,
+    "7": 11,
+    "8": 8
+   },
+   "threshold_counts": {
+    "1e-04": 31376,
+    "1e-06": 7,
+    "fallback": 31
+   },
+   "budget_profiles": {
+    "fixed": {
+     "mode": "fixed",
+     "nominal_allowance": 0.01,
+     "early_call_cap": 0.01,
+     "two_cap_call_cap": 0.01
+    }
+   },
+   "max_supplied_budget_seconds": 0.01,
+   "maximum_profile_call_cap_seconds": 0.01,
+   "min_final_credit_balance": null,
+   "positions": 11999339092,
+   "positions_scope": "legacy search-node counter is not a wall or CPU cost measurement"
+  }
+ },
+ "policy": {
+  "seed_start": 2500000000,
+  "games": 100,
+  "labels": [
+   "baseline",
+   "finalist"
+  ],
+  "order": "alternate first label by seed, serial even when both labels use baseline",
+  "rationale": "N=100 fixed before any search-alternatives game data; historical same-baseline wall-budget repeats differed by10 wins/60, so use a larger fresh paired control. This is not an extension after seeing p or outcomes."
+ },
+ "selection": "most goals; ties baseline first, then lower measured choose-wall/completed-move, then declared arm order",
+ "stop_reason": "bounded_neighborhood_exhausted",
+ "rounds": [
+  {
+   "round": 1,
+   "previous_best": 7,
+   "best_goals": 8,
+   "improved": true
+  },
+  {
+   "round": 2,
+   "previous_best": 8,
+   "best_goals": 8,
+   "improved": false
+  },
+  {
+   "round": 3,
+   "previous_best": 8,
+   "best_goals": 8,
+   "improved": false
+  },
+  {
+   "round": 4,
+   "previous_best": 8,
+   "best_goals": 11,
+   "improved": true
+  }
+ ],
+ "hashes": {
+  "benchmark.py": "f1a00e91928ed6e41964747d205e669d9fbb1b55c8ddc2199e1a7731e5ae60f3",
+  "bot.py": "c7be4abdd61e5b8b2f64d967deeae703b6838796d4a8e9625f7257bfd4918f15",
+  "experiments/search_alternatives/build/banked_endgame/engine.cpp": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d",
+  "experiments/search_alternatives/build/banked_endgame/engine.dylib": "41af94fc8ef0b98a499a480cac4f4bd36d68473b90e7d197d41a272a455e1585",
+  "experiments/search_alternatives/build/baseline/engine.cpp": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d",
+  "experiments/search_alternatives/build/baseline/engine.dylib": "0f02d42582a22dd63abcce22cf5fb81a4a493c02ca90f323c77a638f446b6ebc",
+  "experiments/search_alternatives/build/canonical/engine.cpp": "8d2001b3e6f0ab268717ab7139fef3000580e2456eecccbef2badf1e3c3757e3",
+  "experiments/search_alternatives/build/canonical/engine.dylib": "4ccef09a5d819801278a0d58ec0460c4d344a6d2ca2bfbf239612aaa34979f4c",
+  "experiments/search_alternatives/build/manifest.json": "bfb7a79e58d0682c2e6cb883088a774efd0141fe22b22b6ed498d69c2fd3e5a7",
+  "experiments/search_alternatives/build/precision/engine.cpp": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d",
+  "experiments/search_alternatives/build/precision/engine.dylib": "fcfde36eb2801ea8ecfd1100dadd1d7e7960cd0649acce9f611705401a97a40e",
+  "experiments/search_alternatives/build/serial_shallow/engine.cpp": "1e4330c480b610890b0415ac9fd801f6f02b1ad61d73f1677dffeb54c3a7eee6",
+  "experiments/search_alternatives/build/serial_shallow/engine.dylib": "dfcfa711b62241a8f45d0917dcc344d3a15349e0aace603b15d33981810249fe",
+  "experiments/search_alternatives/plan.json": "54240d47a5f6ad7d1b4e8b29e6a742c173c8fab53968df8afdd1d68630b0a7e4",
+  "experiments/search_alternatives/run.py": "63d64b539b824691df562e628a8f05d4c5ebbf7eaac41de6a418587085bb9fbf",
+  "experiments/search_alternatives/screen.json": "eb0c8fcc5a38c8aa4dc55896313301d330089ed6026c25fecc803b8fbd1ba690",
+  "experiments/search_alternatives/seed-inventory.json": "47412033bf131e77ab4e257ee99aba074b2277415045310b836ecce54c817eac",
+  "experiments/search_alternatives/variants.py": "44fbc53bca63339854bfaba95bf36a92cff25e1223533a80b5514b26fbafdd53",
+  "spawn-model.default.json": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+  "vendor/2048.h": "2597ae4726e872494bb57997154fdb0279cfc706bb0aad7dcb758be5231ec85d",
+  "vendor/config.h": "5bbfde3aedbd34414eb6a7c1fb1a8b7f5fb2b76b66bb014318be496f24c7bda1",
+  "vendor/engine_adapted.cpp": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d",
+  "vendor/geometry_features.h": "0fdcf578cbf02e6f03028e41d1890786423d2298a489e18ac9037861d51d925f",
+  "vendor/platdefs.h": "5b3923979efb21112335319ff92a807cf47620002b446864eddea5f9925d983c",
+  "vendor/search_variants.h": "1ebebc1a487d0b16fe33fe0e766a7e6c1637c75f99486d364146e71b924d7651"
+ }
+}
