@@ -5258,7 +5258,7 @@
     ],
     "pool": [
       1400000000,
-      1400000511
+      1400004095
     ],
     "validation_full": [
       1100000000,
@@ -5289,5 +5289,6 @@
     "validation_cap2": [],
     "screen": [],
     "holdout": []
-  }
+  },
+  "pool_amendment": "Extended train-only range checked against same pre-experiment426seeds; first512are deliberately retained pilot prefix, not new independent control"
 }
