@@ -189,3 +189,11 @@ gate с пятью архивными DLL и проверил API2/11/3/threshol
 Всего в цикле прошли49 новых unit-тестов (native9, runner31, entry9) и124 случая
 fixed-depth parity. Help и логи сохранены в `verification/search-alternatives/`.
 Живой запуск телефона и качество новой политики на нём остаются непроверенными.
+
+Независимые приёмки без блокирующих замечаний:
+[протокол до данных](verification/search-alternatives/REVIEW-PROTOCOL.md),
+[сырые результаты и цена](verification/search-alternatives/REVIEW-RESULT.md),
+[точный diff opt-in launcher](verification/search-alternatives/REVIEW-ENTRY.md).
+Отчёты не заменяют перечисленных воспроизведённых проверок и не подтверждают
+работу на телефоне. Все изменения и результаты сохранены локальными коммитами;
+публикации, remote actions, установки и изменения runtime merge-game-bot не было.
