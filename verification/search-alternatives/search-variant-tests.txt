@@ -1,0 +1,15 @@
+test_abort_retains_last_completed_depth (test_search_variants.SearchVariantTests) ... ok
+test_cached_reference_exact_and_baseline_value_equivalence (test_search_variants.SearchVariantTests) ... ok
+test_canonical_all_d4_and_direction_equivariance (test_search_variants.SearchVariantTests) ... ok
+test_canonical_matches_independent_python_reference (test_search_variants.SearchVariantTests) ... ok
+test_canonical_score_and_argmax_sets_are_d4_equivariant (test_search_variants.SearchVariantTests) ... ok
+test_hard_budgets_small_corpus_without_slack_change (test_search_variants.SearchVariantTests) ... ok
+test_leaf_cutoff_unchanged_and_goal_bypass (test_search_variants.SearchVariantTests) ... ok
+test_source_identity_and_no_combinations (test_search_variants.SearchVariantTests) ... ok
+test_zero_fallback_and_successful_refinement (test_search_variants.SearchVariantTests) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 10.976s
+
+OK
+{"max_baseline_value_delta": 0.625, "max_python_reference_delta": 0.19276220398023725, "max_budget_excess_s": 0.0}
