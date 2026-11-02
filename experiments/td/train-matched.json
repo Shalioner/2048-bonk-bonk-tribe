@@ -1,0 +1,267 @@
+{
+ "version": 1,
+ "kind": "training",
+ "group": "matched",
+ "config": {
+  "training": {
+   "seed_start": 1000000000,
+   "arms": [
+    "mc_teacher",
+    "td_teacher",
+    "td_selfplay"
+   ],
+   "teacher_depth": 1,
+   "teacher_epsilon": 0.0,
+   "warmup_episodes": 2048,
+   "milestones": [
+    2048,
+    8192,
+    16384,
+    32768,
+    65536,
+    131072
+   ],
+   "checkpoint_every": 128,
+   "curriculum": "after2048episodes: index%4==0 cap1 pool, ==1 cap2 pool, ==2/3 fullstart; snapshot index=(seed xor(seed>>16))%pool_size",
+   "matched": "MC and TD-teacher use identical teacher behavior, seeds, epsilon, starts and episode counts; trajectory_digest must match. Joint checkpoint selected by summed validation goal tuple, ties earliest. Both stop together after two non-improving checks, minimum3checks.",
+   "selfplay": "TD0 teacher warmup2048, then TD0 greedy learned+epsilon using same curriculum; own validation checkpoint and two-stall stop, minimum3checks. Behavior differs from matched arms; no one-factor causal claim.",
+   "metric": "lexicographic (full_goals,cap1_goals,cap2_goals), checkpoint selection uses validation only",
+   "stop": "two consecutive non-improving validation checkpoints after at least3checks. If max131072 reached while improving, report budget-limited, never claim plateau; no tuning after screen/holdout",
+   "resume": "full config/source/binary/pool hashes, exact seed prefix and model SHA; separate current and milestone models; no implicit rebuild or overwritten foreign checkpoint; rollback limit and halt"
+  },
+  "model": {
+   "initial_value": 0.5,
+   "alpha": 0.1,
+   "epsilon": 0.05,
+   "features": "same4x4patterns/D4/stage0,1,2 as MC, clipped-linear with terminalgoal1/loss0"
+  },
+  "validation": {
+   "full_seed_start": 1100000000,
+   "cap1_seed_start": 1100001000,
+   "cap2_seed_start": 1100002000,
+   "games_per_stage": 64,
+   "epsilon": 0.0,
+   "behavior": "selfplay",
+   "scope": "checkpoint tuning, initial cap boards shared with training pool; not independent full-game control"
+  },
+  "max_moves": 6000
+ },
+ "sources": {
+  "contract": "bonk-td-cycle-v1",
+  "files": {
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/TD-PORT-API.md": "9e65b49ab8b7a9305f816cb9e599d62d1790699bb8ea1c8100cb9f9313547295",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/benchmark.py": "6a361da30ceb112bde886815c35f8b8bb656d25fc451d0b5d1a8b6e68d34e3cd",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/bot.py": "be8e42979ddb591e222d5ba2286bb673e1cba8761de30ff787c7285cbacc1e28",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/learning/cycle.py": "c7a131172b262ad2bd3f59ec94892815fe8a00df5a327efb81192829e2e421ba",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/plan.json": "135b5ce2a85a398dd07423859b4f8e26fdef67adb293ae3ca036f9c5f19f561f",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/run.py": "781cb8ab94d36cc4f88663099d0038e0060f9719749d9bb0e157077ad7fe5bcb",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/seed-inventory.json": "b10876c3048496b9daf8164d8f198305d6272508ccc2909ec04350c487ac5b43",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/spawn-model.default.json": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/td_model.py": "65b9a72373917307c438e514575f79368e35afa2e0567b3b2bfcd9111e955c0d",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/value_model.py": "992cd3fd91c1537fd574a00c75a1f5850bc2bf1d6fb8ef17c47c94a2d4c00802",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/vendor/2048.h": "2597ae4726e872494bb57997154fdb0279cfc706bb0aad7dcb758be5231ec85d",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/vendor/config.h": "5bbfde3aedbd34414eb6a7c1fb1a8b7f5fb2b76b66bb014318be496f24c7bda1",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/vendor/engine_adapted.cpp": "e052a33994659b3a0fc47c5397823a777b5ee7c439819d2a8a2580c6a9a9a0c8",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/vendor/platdefs.h": "5b3923979efb21112335319ff92a807cf47620002b446864eddea5f9925d983c",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/vendor/td_model.h": "c6340d436e3df0b8614bd42f3d9c6edb7df48fe0bab9316d08eb1668cafb78c8",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/vendor/td_train.cpp": "739ef2527ea8c6480d8aec36b8bc002878b32636708eb83dbdc721c38ad524fd",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/vendor/tdl2048-original/2048.cpp": "936e045167e2d168ad45095194ebd12ffc7d7aa79d4fe335dafe119d9a1bdaff",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/vendor/tdl2048-original/LICENSE.md": "e0fa1e3478a7e3bf06adb4d48fe093f90e832a47631d149593050f0b562aac88",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/vendor/tdl2048-original/PROVENANCE.json": "c42d5d819a6c9513d2c514ea7f325da641da7c1f85a2293d97a5d9960a36f98a",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/vendor/tdl2048-original/README.md": "c9166880a41cdb3e25503b2abd35c23149d8562c8a18acdc5dc14afa26ea1745",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/vendor/tdl2048-original/board.h": "fd697d10e3e7197f982b9a63a47c211ef3cd4cff0af338ff27130f12e4c07947",
+   "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/vendor/value_model.h": "b6e08d1291193e6235d2d365a76d293fefd22e8645fd1eb5a2bf2a09bd0c7c9c"
+  },
+  "trainer": {
+   "path": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/build/td_trainer.dylib",
+   "sha256": "8abc4fc7a3530601f62d6985538f254dd64e08d7fcab2ff14656c3bd7cfb136e"
+  }
+ },
+ "pool_sha256": "95f1f3a1900e1e648f7372fa50b484db1ce9f2bf3a508a6b91fbeb15c917a90b",
+ "run_id": "d8f27e28950b36e05f3344a5751e7c1782f29ee8a22e33b53e766ee38737ccd5",
+ "checkpoint_episodes": 16384,
+ "checks": [
+  {
+   "episodes": 0,
+   "metric": [
+    0,
+    0,
+    0
+   ],
+   "arm_metrics": {
+    "mc_teacher": [
+     0,
+     0,
+     0
+    ],
+    "td_teacher": [
+     0,
+     0,
+     0
+    ]
+   },
+   "models": {
+    "mc_teacher": {
+     "path": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/train-matched.json.artifacts/milestones/0/mc_teacher.bin",
+     "sha256": "1cf58ab1713b8bd6430350730e1042b50c75164fbc7308428427609fb3196152",
+     "parameters_sha256": "76858f880e6c5408fcae57e7b707ca77dd553ba522f1edaf1865fae70a0f9379"
+    },
+    "td_teacher": {
+     "path": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/train-matched.json.artifacts/milestones/0/td_teacher.bin",
+     "sha256": "9726a4e5575d526278c51ec99798bc71ab16bd77dc361e1f03a814e535d13def",
+     "parameters_sha256": "76858f880e6c5408fcae57e7b707ca77dd553ba522f1edaf1865fae70a0f9379"
+    }
+   }
+  },
+  {
+   "episodes": 2048,
+   "metric": [
+    0,
+    0,
+    0
+   ],
+   "arm_metrics": {
+    "mc_teacher": [
+     0,
+     0,
+     0
+    ],
+    "td_teacher": [
+     0,
+     0,
+     0
+    ]
+   },
+   "models": {
+    "mc_teacher": {
+     "path": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/train-matched.json.artifacts/milestones/2048/mc_teacher.bin",
+     "sha256": "8c29fa763ee42c8d02e2f4474627b6318b3173a0edf97ce1ad0afe15300360e1",
+     "parameters_sha256": "1960aaa8022903b89cf5b5612524ac4dbea26219c8f985f819118a875b932f52"
+    },
+    "td_teacher": {
+     "path": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/train-matched.json.artifacts/milestones/2048/td_teacher.bin",
+     "sha256": "ec6bf269989c3ade6d5752d925e1fc29a3152dc2c416437a384a87aed2042405",
+     "parameters_sha256": "f28bd0e41a0495f1d37cbaaa74272ff95b39f8d3a6a35b3c21a2930303996f9f"
+    }
+   }
+  },
+  {
+   "episodes": 8192,
+   "metric": [
+    0,
+    0,
+    0
+   ],
+   "arm_metrics": {
+    "mc_teacher": [
+     0,
+     0,
+     0
+    ],
+    "td_teacher": [
+     0,
+     0,
+     0
+    ]
+   },
+   "models": {
+    "mc_teacher": {
+     "path": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/train-matched.json.artifacts/milestones/8192/mc_teacher.bin",
+     "sha256": "8e58b5b7c00cab3f80c7c13aae36bc609c242a58ba5302c5adb3d4519d9ae6e6",
+     "parameters_sha256": "06a7d2aa7c3eaa9c09ef1614e9f265a853dfb5e319d58632be4d9d92e9750dfc"
+    },
+    "td_teacher": {
+     "path": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/train-matched.json.artifacts/milestones/8192/td_teacher.bin",
+     "sha256": "c7e7cf32828576f217e2dd0f2b0512020ab2bd99d928a51b4bac28ee49819885",
+     "parameters_sha256": "32790c13e8fb6c79c292bfe6a214cd336f73df51ebfe44f78ae054f3bfdb3d9d"
+    }
+   }
+  },
+  {
+   "episodes": 16384,
+   "metric": [
+    0,
+    0,
+    0
+   ],
+   "arm_metrics": {
+    "mc_teacher": [
+     0,
+     0,
+     0
+    ],
+    "td_teacher": [
+     0,
+     0,
+     0
+    ]
+   },
+   "models": {
+    "mc_teacher": {
+     "path": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/train-matched.json.artifacts/milestones/16384/mc_teacher.bin",
+     "sha256": "fdc3d7ca54655a7e26d0bd5b54d6f16420755159d5abc294625ccbaf2e3554a4",
+     "parameters_sha256": "b2796674917656ae2e464e1862e6563d9e9acf3d69c306766966194d452ef7de"
+    },
+    "td_teacher": {
+     "path": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/train-matched.json.artifacts/milestones/16384/td_teacher.bin",
+     "sha256": "013110b27347463c3e823e02d92c804c338dbd0225daa09ef3a1c1a3f14533e9",
+     "parameters_sha256": "b4403e15aac8c3cd400cd323c7c31886bb9e71bad79e43e481cadb22384b8e5d"
+    }
+   }
+  }
+ ],
+ "stalls": 3,
+ "complete": true,
+ "records_sha256": "8918a5596bdbce5dcf98800506a8e42dc1f624fb91021352ec29487e0eb309e4",
+ "slot": 0,
+ "current": {
+  "mc_teacher": {
+   "path": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/train-matched.json.artifacts/current/0-mc_teacher.bin",
+   "sha256": "fdc3d7ca54655a7e26d0bd5b54d6f16420755159d5abc294625ccbaf2e3554a4",
+   "parameters_sha256": "b2796674917656ae2e464e1862e6563d9e9acf3d69c306766966194d452ef7de"
+  },
+  "td_teacher": {
+   "path": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/train-matched.json.artifacts/current/0-td_teacher.bin",
+   "sha256": "013110b27347463c3e823e02d92c804c338dbd0225daa09ef3a1c1a3f14533e9",
+   "parameters_sha256": "b4403e15aac8c3cd400cd323c7c31886bb9e71bad79e43e481cadb22384b8e5d"
+  }
+ },
+ "best_metric": [
+  0,
+  0,
+  0
+ ],
+ "selected": {
+  "episodes": 0,
+  "metric": [
+   0,
+   0,
+   0
+  ],
+  "arm_metrics": {
+   "mc_teacher": [
+    0,
+    0,
+    0
+   ],
+   "td_teacher": [
+    0,
+    0,
+    0
+   ]
+  },
+  "models": {
+   "mc_teacher": {
+    "path": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/train-matched.json.artifacts/milestones/0/mc_teacher.bin",
+    "sha256": "1cf58ab1713b8bd6430350730e1042b50c75164fbc7308428427609fb3196152",
+    "parameters_sha256": "76858f880e6c5408fcae57e7b707ca77dd553ba522f1edaf1865fae70a0f9379"
+   },
+   "td_teacher": {
+    "path": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree/experiments/td/train-matched.json.artifacts/milestones/0/td_teacher.bin",
+    "sha256": "9726a4e5575d526278c51ec99798bc71ab16bd77dc361e1f03a814e535d13def",
+    "parameters_sha256": "76858f880e6c5408fcae57e7b707ca77dd553ba522f1edaf1865fae70a0f9379"
+   }
+  }
+ },
+ "stop_reason": "plateau"
+}
