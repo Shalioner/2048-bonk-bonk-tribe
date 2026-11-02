@@ -1,4 +1,4 @@
-"""Контракт opt-in углубления: полный уровень, отмена и старый движок."""
+"""Контракт последовательного углубления: полный уровень, отмена и старый движок."""
 import contextlib
 import io
 import time
@@ -94,7 +94,7 @@ class ProgressiveSearchTests(unittest.TestCase):
 
         with patch.object(bot, "NATIVE", SimpleNamespace(solve_budget=legacy)):
             info = {}
-            self.assertEqual(bot.choose(self.BOARD, info=info), 0)
+            self.assertEqual(bot.choose(self.BOARD, info=info, policy="legacy"), 0)
             self.assertEqual(calls, ["legacy"])
             self.assertNotIn("requested_depth", info)
             with self.assertRaisesRegex(RuntimeError, "не поддерживает progressive.*пересоберите"):

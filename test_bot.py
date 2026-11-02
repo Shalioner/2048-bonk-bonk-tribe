@@ -190,7 +190,7 @@ class BotTests(unittest.TestCase):
         board=(10,7,6,4, 4,3,1,2, 3,2,1,0, 2,1,0,1)
         info={}
         with patch.object(bot,'THRESHOLDS',(1e-4,)):
-            d=bot.choose(board,depth=5,think=60,info=info)
+            d=bot.choose(board,depth=5,think=60,info=info,policy="legacy")
         self.assertEqual((info['passes'],info['threshold'],info['fallback']),(1,1e-4,False))
         scores={m:bot.NATIVE.score_levels_thresh(bot.pack(board),bot.DIRECTIONS[m],5,1e-4) for m,_ in bot.legal_moves(board)}
         self.assertEqual(d,max(scores,key=scores.get))
@@ -200,11 +200,11 @@ class BotTests(unittest.TestCase):
         board=(10,7,6,4, 4,3,1,2, 3,2,1,0, 2,1,0,1) # реальная позиция из play.log, 2 пустые клетки
         first={}
         with patch.object(bot,'THRESHOLDS',(1e-4,)):
-            bot.choose(board,depth=8,think=60,info=first)
+            bot.choose(board,depth=8,think=60,info=first,policy="legacy")
         think=first['search_s']*1.5+.3 # первый проход успевает, второй — нет
         info={};started=time.monotonic()
         with patch.object(bot,'GROWTH',0.0): # заставляем начать следующий проход
-            d=bot.choose(board,depth=8,think=think,info=info)
+            d=bot.choose(board,depth=8,think=think,info=info,policy="legacy")
         elapsed=time.monotonic()-started
         self.assertIn(d,[m for m,_ in bot.legal_moves(board)])
         self.assertEqual((info['passes'],info['cut'],info['fallback']),(1,True,False)) # второй проход прерван
@@ -214,7 +214,7 @@ class BotTests(unittest.TestCase):
         board=(10,7,6,4, 4,3,1,2, 3,2,1,0, 2,1,0,1) # первый проход глубины 8 здесь идёт ~1 с
         for think in (0,.01,.05):
             info={};started=time.monotonic()
-            d=bot.choose(board,depth=8,think=think,info=info)
+            d=bot.choose(board,depth=8,think=think,info=info,policy="legacy")
             elapsed=time.monotonic()-started
             self.assertIn(d,[m for m,_ in bot.legal_moves(board)])
             self.assertTrue(info['fallback']) # ни один проход не успел: запасной ход глубины 1

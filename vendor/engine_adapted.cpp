@@ -43,8 +43,6 @@ struct search_cache_hash {
 };
 
 #include "config.h"
-#include "value_model.h"
-#include "td_model.h"
 #if defined(HAVE_UNORDERED_MAP)
     #include <unordered_map>
     typedef std::unordered_map<search_cache_key, float, search_cache_hash> trans_table_t;
@@ -122,16 +120,6 @@ static const int GOAL_COUNT = 3;
 // Filled from Python (set_spawn_table); classic 90/10 until then.
 static float spawn_table[16][15];
 static bool spawn_table_set = false;
-
-// Модель меняется только между вызовами поиска; потоки читают неизменные веса.
-static bonk_value::Model learned_value;
-static std::string learned_value_error;
-static bonk_td::Model learned_td_value;
-static std::string learned_td_value_error;
-
-static inline bool learned_model_loaded() {
-    return learned_value.loaded() || learned_td_value.loaded();
-}
 
 // Heuristic scoring settings
 static const float SCORE_LOST_PENALTY = 200000.0f;
@@ -375,9 +363,7 @@ static inline int count_cap(board_t b) {
 }
 static bool goal(board_t b) { return count_cap(b)>=GOAL_COUNT; }
 static float score_heur_board(board_t board) {
-    if(goal(board)) return learned_model_loaded() ? 1.0f : 1e9f;
-    if(learned_td_value.loaded()) return learned_td_value.evaluate(board);
-    if(learned_value.loaded()) return learned_value.evaluate(board);
+    if(goal(board)) return 1e9f;
     return score_helper(          board , heur_score_table) +
            score_helper(transpose(board), heur_score_table);
 }
@@ -392,7 +378,7 @@ static float score_board(board_t board) {
 static const int CACHE_DEPTH_LIMIT  = 15;
 
 static float score_tilechoose_node(eval_state &state, board_t board, float cprob) {
-    if(goal(board)) return learned_model_loaded() ? 1.0f : 1e9f;
+    if(goal(board)) return 1e9f;
     if (state.has_deadline && !state.aborted && (++state.checks & 0xfff) == 0) {
         if ((state.stop && state.stop->load()) || std::chrono::steady_clock::now() >= state.deadline) {
             state.aborted = true;
@@ -618,32 +604,6 @@ int upstream_main() {
 
 // Bumped whenever the Python side needs new exports or changed semantics.
 extern "C" int engine_api_version() { return 2; }
-
-// Необязательное расширение API2: default остаётся ручной эвристикой.
-extern "C" int load_value_model(const char *path) {
-    if (!path) { learned_value_error = "Не задан путь модели"; return -1; }
-    if (!learned_value.load(std::string(path), &learned_value_error)) return -1;
-    learned_td_value.clear();
-    learned_td_value_error.clear();
-    return 0;
-}
-extern "C" void clear_value_model() {
-    learned_value.clear(); learned_value_error.clear();
-    learned_td_value.clear(); learned_td_value_error.clear();
-}
-extern "C" int value_model_loaded() { return learned_value.loaded() ? 1 : 0; }
-extern "C" const char *value_model_error() { return learned_value_error.c_str(); }
-extern "C" int load_td_model(const char *path) {
-    if (!path) { learned_td_value_error = "Не задан путь TD-модели"; return -1; }
-    if (!learned_td_value.load(std::string(path), &learned_td_value_error)) return -1;
-    learned_value.clear();
-    learned_value_error.clear();
-    return 0;
-}
-extern "C" void clear_td_model() { learned_td_value.clear(); learned_td_value_error.clear(); }
-extern "C" int td_model_loaded() { return learned_td_value.loaded() ? 1 : 0; }
-extern "C" const char *td_model_error() { return learned_td_value_error.c_str(); }
-
 extern "C" int get_cap_rank() { return CAP_RANK; }
 extern "C" int get_goal_count() { return GOAL_COUNT; }
 extern "C" int goal_levels(board_t board) { return goal(board); }

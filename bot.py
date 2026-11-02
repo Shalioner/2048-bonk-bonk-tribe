@@ -254,30 +254,6 @@ def load_engine(path=ENGINE):
     lib.score_levels_thresh.restype=ctypes.c_float
     lib.goal_levels.argtypes=[ctypes.c_uint64]
     lib.goal_levels.restype=ctypes.c_int
-    if hasattr(lib,"load_value_model"):
-        lib.load_value_model.argtypes=[ctypes.c_char_p]
-        lib.load_value_model.restype=ctypes.c_int
-    if hasattr(lib,"clear_value_model"):
-        lib.clear_value_model.argtypes=[]
-        lib.clear_value_model.restype=None
-    if hasattr(lib,"value_model_loaded"):
-        lib.value_model_loaded.argtypes=[]
-        lib.value_model_loaded.restype=ctypes.c_int
-    if hasattr(lib,"value_model_error"):
-        lib.value_model_error.argtypes=[]
-        lib.value_model_error.restype=ctypes.c_char_p
-    if hasattr(lib,"load_td_model"):
-        lib.load_td_model.argtypes=[ctypes.c_char_p]
-        lib.load_td_model.restype=ctypes.c_int
-    if hasattr(lib,"clear_td_model"):
-        lib.clear_td_model.argtypes=[]
-        lib.clear_td_model.restype=None
-    if hasattr(lib,"td_model_loaded"):
-        lib.td_model_loaded.argtypes=[]
-        lib.td_model_loaded.restype=ctypes.c_int
-    if hasattr(lib,"td_model_error"):
-        lib.td_model_error.argtypes=[]
-        lib.td_model_error.restype=ctypes.c_char_p
     lib.init_tables()
     return lib
 
@@ -344,33 +320,6 @@ def pack(b):
     if any(not 0<=v<=15 for v in b):raise RuntimeError("Уровень вне диапазона движка")
     return sum(v<<(4*i) for i,v in enumerate(b))
 
-def configure_value_model(path=None):
-    """Загружать/сбрасывать только между поисками; текущий cache тогда не устаревает."""
-    if path is None:
-        if hasattr(NATIVE,"clear_value_model"):NATIVE.clear_value_model()
-        return
-    required=("load_value_model","clear_value_model","value_model_loaded","value_model_error")
-    if any(not hasattr(NATIVE,name) for name in required):
-        raise RuntimeError("Движок не поддерживает value-модель: пересоберите sh vendor/build.sh")
-    path=Path(path)
-    with path.open("rb") as stream:
-        magic=stream.read(8)
-    if magic==b"BONKTD01":
-        td_required=("load_td_model","clear_td_model","td_model_loaded","td_model_error")
-        if any(not hasattr(NATIVE,name) for name in td_required):
-            raise RuntimeError("Движок не поддерживает TD-модель: пересоберите sh vendor/build.sh")
-        from td_model import TDModel
-        TDModel.load(path)
-        load,error=NATIVE.load_td_model,NATIVE.td_model_error
-    else:
-        from value_model import ValueModel
-        ValueModel.load(path) # Строгая проверка до изменения действующей native-модели.
-        load,error=NATIVE.load_value_model,NATIVE.value_model_error
-    if load(str(path).encode("utf-8"))!=0:
-        detail=error()
-        raise RuntimeError("Не удалось загрузить value-модель: "+(detail.decode("utf-8",errors="replace") if detail else "ошибка формата"))
-
-
 def choose(b,depth=DEFAULT_DEPTH,think=DEFAULT_THINK,info=None,policy="legacy"):
     if policy not in ("legacy","progressive"):raise ValueError("Неизвестная политика поиска: "+str(policy))
     if policy=="progressive" and depth<1:raise ValueError("Глубина progressive должна быть положительной")
@@ -402,14 +351,11 @@ def main():
     ap.add_argument("--dry-run",action="store_true")
     ap.add_argument("--depth",type=int,default=DEFAULT_DEPTH,help="предел глубины поиска (ходов вперёд)")
     ap.add_argument("--think",type=float,default=DEFAULT_THINK,help="бюджет расчёта хода, с")
-    ap.add_argument("--search-policy",choices=("legacy","progressive"),default="legacy",help="планировщик поиска; progressive последовательно углубляет завершённые проходы")
-    ap.add_argument("--value-model",default=None,help="экспериментальная обученная оценка после хода; без флага используется ручная эвристика")
+    ap.add_argument("--search-policy",choices=("legacy","progressive"),default="progressive",help="планировщик поиска; progressive последовательно углубляет завершённые проходы")
     args=ap.parse_args()
     if args.search_policy=="progressive":
         if args.depth<1:ap.error("Глубина progressive должна быть положительной")
         if not hasattr(NATIVE,"solve_budget_progressive"):ap.error("Движок не поддерживает progressive: пересоберите sh vendor/build.sh")
-    try:configure_value_model(args.value_model)
-    except (OSError,ValueError,RuntimeError) as exc:ap.error(str(exc))
     lock=open(ROOT/"bot.lock","w")
     try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
     except BlockingIOError:raise RuntimeError("Бот уже запущен")

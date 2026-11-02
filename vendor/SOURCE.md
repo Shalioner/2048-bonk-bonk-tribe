@@ -33,19 +33,15 @@ the transposition key now includes remaining depth and exact cprob bits (cprob
 omitted when the probability cutoff is disabled). An optional uncached
 score_levels_reference validates the cache contract. Added optional
 solve_budget_progressive; the original solve_budget algorithm remains available.
-Added local value_model.h and load/clear diagnostics for an optional learned
-afterstate value with consistent goal=1/loss=0. API2 is retained; Python checks
-optional symbols when explicitly requested. Original 2048.cpp, 2048.h,
-platdefs.h and LICENSE are unchanged. Local models, provenance, tests and
-offline controls are documented in ../LEARNING.md and ../VALUE-IMPLEMENTATION.md.
+Original 2048.cpp, 2048.h, platdefs.h and LICENSE are unchanged.
 
-2026-11-02, local/strategy-td-port-20261102, baseline 45fd360:
-adapted n-tuple estimate/isomorphic update, state correction and forward TD(0)
-from moporgic/TDL2048 commit a99f620aec0d30a75943a4c9646743f1f53b0197 (MIT,
-Copyright2021 Hung Guei). Pinned originals, license and SHA are retained under
-tdl2048-original; modified files retain MIT notices and adaptation notes.
-New td_model.h uses binary goal11x3, clipped-linear value, target2/BONKTD01;
-td_train.cpp reuses LOCAL Bonk moves/spawn/goal, not donor classic board rules.
-Optional inference exports preserve existing API2/MC and default settings.
-No pretrained classic2048 weights are installed. See ../TD.md and
-../TD-MODEL-IMPLEMENTATION.md for exact adaptation, tests and experiment limits.
+2026-11-02, pure mathematical branch:
+engine_adapted.cpp restored byte-for-byte from pure commit e28aad0; cache/progressive
+search retained. Removed active MC/TD inference, trainers, model files and donor
+copy. Complete ML source/license/results archives remain in commits
+6e421feeb92f11271d63ccc9be60daa3498d3024 (local/strategy-td-port-20261102) and
+45fd360ce3fbb080823ef6544cdd4d5d54f329f1 (local/strategy-learning-20261101).
+Spawn frequency estimation is retained. The new experiments/math runner builds
+isolated variants of pinned pure e28aad0 and fingerprints actual source/binary
+bytes. See ../MATHEMATICAL.md. No new heuristic weights are adopted without
+fresh independent control.
