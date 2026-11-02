@@ -1,0 +1,7 @@
+{
+  "generator_seed": 202611021,
+  "boards": 7000,
+  "spawn_children_checked": 150000,
+  "exact_equal": true,
+  "scope": "synthetic board identity; no full games or independent win-rate control"
+}

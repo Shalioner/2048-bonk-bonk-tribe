@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "entries": {
+    "baseline": {
+      "path": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-geometry-20261102/worktree/experiments/geometry/build/baseline/engine.dylib",
+      "backup": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-geometry-20261102/native-engines/baseline.dylib",
+      "sha256": "ec74e617df06bf0e71936aaa4974f34a59061198bb804eb8bbc2470acc4a3cf2",
+      "source_sha256": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d"
+    },
+    "segments_r1": {
+      "path": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-geometry-20261102/worktree/experiments/geometry/build/segments_r1/engine.dylib",
+      "backup": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-geometry-20261102/native-engines/segments_r1.dylib",
+      "sha256": "1433a4dc7b096535386e0ded55f6cfb57cd8e7e465715d14789e065b359dd354",
+      "source_sha256": "817272f21683b91d63d755c1a6ece29c178925c00b6f538fd0d4b791151cd759"
+    },
+    "geometry_r1": {
+      "path": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-geometry-20261102/worktree/experiments/geometry/build/geometry_r1/engine.dylib",
+      "backup": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-geometry-20261102/native-engines/geometry_r1.dylib",
+      "sha256": "95a18796997be95c1519afcf71acde3f93ce49375b934d204d33d83876660142",
+      "source_sha256": "2b664395a574b39f1d79f2ee62b7b514ba69c4b6534007518c65b192a158134c"
+    },
+    "risk_r1": {
+      "path": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-geometry-20261102/worktree/experiments/geometry/build/risk_r1/engine.dylib",
+      "backup": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-geometry-20261102/native-engines/risk_r1.dylib",
+      "sha256": "7184c3993e030c0fb3d5efb907b43b98c375bedfc5eaca41929e457ff9347661",
+      "source_sha256": "b9c99ae2146582b731de8fbfc8715307006c448f509108c48ea25bd5ab573154"
+    },
+    "segments_r2": {
+      "path": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-geometry-20261102/worktree/experiments/geometry/build/segments_r2/engine.dylib",
+      "backup": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-geometry-20261102/native-engines/segments_r2.dylib",
+      "sha256": "59c1d94cdcf2e31b8fdbf443dffe80383e364b63557856419acfb576742883a7",
+      "source_sha256": "026e35b6f240cbff75c6848f18b12d54b142f1d6eecf6d4c8d7c653183dbdecf"
+    },
+    "geometry_r2": {
+      "path": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-geometry-20261102/worktree/experiments/geometry/build/geometry_r2/engine.dylib",
+      "backup": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-geometry-20261102/native-engines/geometry_r2.dylib",
+      "sha256": "24e56b6036b3771c96d0a8cd27f5446f1dd06887ccd25d8acd294d6d9be02321",
+      "source_sha256": "a8c0a50cf28d554a49ec92759c6a1d8b6b9baecb59b1dd7d643da68613197809"
+    },
+    "risk_r2": {
+      "path": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-geometry-20261102/worktree/experiments/geometry/build/risk_r2/engine.dylib",
+      "backup": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-geometry-20261102/native-engines/risk_r2.dylib",
+      "sha256": "ca0cc61a1ee3a9d0ff214805d0210ed3fd3d3901ce5f866bd2e21af91447b1fa",
+      "source_sha256": "a48c0e910a700cfd9f40ae56d4f5756ac60680e42703666735c99fbcd9759314"
+    }
+  },
+  "smoke": "API2/CAP11/GOAL3/progressive/no MC or TD exports; no full games"
+}
