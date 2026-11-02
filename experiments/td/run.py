@@ -691,12 +691,22 @@ def evaluation_sources(models):
 
 
 def verify_freeze(frozen):
+    if (not isinstance(frozen, dict) or type(frozen.get("version")) is not int or frozen["version"] != 1 or
+            frozen.get("finalist") not in ("td_teacher", "td_selfplay") or
+            type(frozen.get("promoted")) is not bool or frozen.get("policy") != plan()["holdout"]):
+        raise ValueError("Некорректная версия/TD-finalist/gate/policy заморозки")
     hashes = frozen.get("hashes")
     if not isinstance(hashes, dict) or not hashes:
         raise ValueError("Нет hashes заморозки")
     for path, expected in hashes.items():
         if sha(path) != expected:
             raise ValueError("Замороженный файл изменён: " + path)
+    screen = evaluate("screen", resume=True, validate_only=True)
+    table, finalist, promoted = screen_decision(screen)
+    models = {arm: str(Path(entry["path"]).resolve()) for arm, entry in screen["sources"]["models"].items()}
+    if (frozen.get("screen") != table or frozen["finalist"] != finalist or
+            frozen["promoted"] != promoted or frozen.get("models") != models):
+        raise ValueError("Содержимое заморозки не соответствует завершённому screen/моделям/отбору")
 
 
 def evaluate(stage, resume=False, out=None, *, validate_only=False):
@@ -760,11 +770,8 @@ def summaries(games):
     return result
 
 
-def freeze(out=None):
-    out = checked_output(out or ROOT / "finalist.json")
-    if out.exists() or (ROOT / "finalist.json").exists() or (ROOT / "holdout.json").exists():
-        raise ValueError("Заморозка уже существует или контроль уже начат")
-    screen = evaluate("screen", resume=True, validate_only=True)
+def screen_decision(screen):
+    """Один и тот же зафиксированный отбор при записи и чтении заморозки."""
     if not screen["complete"]:
         raise ValueError("Screen не завершён")
     table = summaries(screen["games"])
@@ -774,6 +781,15 @@ def freeze(out=None):
     promoted = (table[finalist]["goals"] > table["heuristic"]["goals"] and
                 table[finalist]["goals"] >= table["mc_teacher"]["goals"] and
                 table[finalist]["goals"] >= table["old_mc"]["goals"])
+    return table, finalist, promoted
+
+
+def freeze(out=None):
+    out = checked_output(out or ROOT / "finalist.json")
+    if out.exists() or (ROOT / "finalist.json").exists() or (ROOT / "holdout.json").exists():
+        raise ValueError("Заморозка уже существует или контроль уже начат")
+    screen = evaluate("screen", resume=True, validate_only=True)
+    table, finalist, promoted = screen_decision(screen)
     models = selected_models()
     engine_path = Path(screen["sources"]["engine"]["path"])
     paths = set(producer_paths()) | {trainer_path(), engine_path}

@@ -407,7 +407,10 @@ class CycleTests(unittest.TestCase):
             elif row["arm"].startswith("td_") and row["seed"] == self.p["screen"]["seed_start"]:
                 row.update(result="loss", board=LOSS, caps=0, max=2)
         cycle.atomic(self.root / "screen.json", data)
-        self.assertFalse(cycle.freeze()["promoted"])
+        frozen = cycle.freeze()
+        self.assertFalse(frozen["promoted"])
+        with self.assertRaisesRegex(ValueError, "заморозк"):
+            cycle.verify_freeze(dict(frozen, promoted=True))
 
     def test_complete_serial_cycle_freeze_hashes_and_exact_tests(self):
         self.trained()
@@ -430,6 +433,60 @@ class CycleTests(unittest.TestCase):
         self.producer.write_text("mutated frozen producer")
         with self.assertRaisesRegex(ValueError, "Замороженный файл"):
             cycle.verify_freeze(frozen)
+
+    def test_freeze_read_side_rejects_semantic_tampering(self):
+        self.trained()
+        self.eval_patches()
+        cycle.evaluate("screen")
+        frozen = cycle.freeze()
+        mutations = {"version": dict(version=2), "non_td": dict(finalist="old_mc"),
+                     "wrong_td": dict(finalist="td_selfplay"), "gate": dict(promoted=False),
+                     "policy": dict(policy=dict(frozen["policy"], think=1)),
+                     "screen": dict(screen={}), "models": dict(models={})}
+        count = len(FakeTrainer.events)
+        with patch.object(cycle, "timed_play", side_effect=AssertionError("must reject before playing")) as timed:
+            for name, mutation in mutations.items():
+                with self.subTest(field=name):
+                    with self.assertRaisesRegex(ValueError, "заморозк"):
+                        cycle.verify_freeze(dict(frozen, **mutation))
+            timed.assert_not_called()
+        self.assertEqual(len(FakeTrainer.events), count)
+
+    def test_bad_finalist_rejected_by_holdout_and_finalizer(self):
+        self.trained()
+        self.eval_patches()
+        cycle.evaluate("screen")
+        frozen = cycle.freeze()
+        cycle.atomic(self.root / "finalist.json", dict(frozen, finalist="old_mc"))
+        count = len(FakeTrainer.events)
+        with patch.object(cycle, "timed_play", side_effect=AssertionError("must reject before playing")) as timed:
+            for action in (lambda: cycle.evaluate("holdout"), cycle.finalize):
+                with self.subTest(action=action):
+                    with self.assertRaisesRegex(ValueError, "заморозк"):
+                        action()
+            timed.assert_not_called()
+        self.assertEqual(len(FakeTrainer.events), count)
+        self.assertFalse((self.root / "holdout.json").exists())
+        self.assertFalse((self.root / "summary.json").exists())
+
+    def test_freeze_read_requires_complete_screen_without_continuation(self):
+        self.trained()
+        self.eval_patches()
+        screen = cycle.evaluate("screen")
+        frozen = cycle.freeze()
+        screen["games"].pop()
+        screen["complete"] = False
+        path = self.root / "screen.json"
+        cycle.atomic(path, screen)
+        frozen["hashes"][str(path.resolve())] = cycle.sha(path)
+        before = path.read_bytes()
+        count = len(FakeTrainer.events)
+        with patch.object(cycle, "timed_play", side_effect=AssertionError("must not complete screen")) as timed:
+            with self.assertRaisesRegex(ValueError, "неявное продолжение"):
+                cycle.verify_freeze(frozen)
+            timed.assert_not_called()
+        self.assertEqual(path.read_bytes(), before)
+        self.assertEqual(len(FakeTrainer.events), count)
 
     def test_duplicate_seed_or_model_tamper_refused(self):
         games = [dict(seed=1, arm=arm, result="goal") for arm in ("td_teacher", "heuristic")]

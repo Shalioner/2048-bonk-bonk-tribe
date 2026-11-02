@@ -148,3 +148,16 @@ native), затем прошёл после общей проверки пути
 файлов и отсутствие вызовов native/timed episodes. Реальные партии, fit и сборки
 в этом исправлении не запускались.
 После исправления все18 тестов прошли за2.913s; py_compile и diff-check прошли.
+
+Следующий read-side follow-up проверяет содержание `finalist.json`, а не только
+SHA перечисленных файлов. Версия должна быть1, finalist — один из двух TD arms,
+policy — точный holdout плана. Через validate-only читается готовый исходный
+screen; одна общая функция для producer/verifier заново вычисляет TD selection,
+promotion gate и summary, а model paths сверяются с проверенными screen sources.
+Подмена old MC, другого TD при tie, gate в любую сторону, policy, screen summary
+или models отвергается до holdout/finalize. Неполный исходный screen не продолжается.
+Регрессионные тесты сначала показали принятие семи подмен и вызов timed_play с
+old_mc, затем прошли с неизменными native episode counters. Подписи/sandbox
+файлов не добавлены; это проверка согласованности штатных артефактов протокола.
+После read-side исправления все21 mocked тестов прошли за7.113s; py_compile и
+diff-check прошли. Реальные игры, fit, native build и изменения плана не выполнялись.
