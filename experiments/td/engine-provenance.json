@@ -10,8 +10,8 @@
     },
     "trainer": {
       "path": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-td-port-20261102/worktree/experiments/td/build/td_trainer.dylib",
-      "backup": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-td-port-20261102/native-engines/trainer.dylib",
-      "sha256": "60ccc29c24fbdb2b68fb88e2e78d6f5fff73c8f8019db8641dd8a335478637af"
+      "backup": "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-td-port-20261102/native-engines/trainer-pool4096.dylib",
+      "sha256": "8abc4fc7a3530601f62d6985538f254dd64e08d7fcab2ff14656c3bd7cfb136e"
     }
   },
   "trainer_build": {
@@ -23,9 +23,9 @@
         "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-td-port-20261102/worktree/benchmark.py": "6a361da30ceb112bde886815c35f8b8bb656d25fc451d0b5d1a8b6e68d34e3cd",
         "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-td-port-20261102/worktree/bot.py": "be8e42979ddb591e222d5ba2286bb673e1cba8761de30ff787c7285cbacc1e28",
         "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-td-port-20261102/worktree/experiments/learning/cycle.py": "c7a131172b262ad2bd3f59ec94892815fe8a00df5a327efb81192829e2e421ba",
-        "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-td-port-20261102/worktree/experiments/td/plan.json": "3848aef6d08f048b09bf72f9039ec55b85996a499fd2f106ca8707104c790a19",
+        "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-td-port-20261102/worktree/experiments/td/plan.json": "135b5ce2a85a398dd07423859b4f8e26fdef67adb293ae3ca036f9c5f19f561f",
         "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-td-port-20261102/worktree/experiments/td/run.py": "781cb8ab94d36cc4f88663099d0038e0060f9719749d9bb0e157077ad7fe5bcb",
-        "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-td-port-20261102/worktree/experiments/td/seed-inventory.json": "4f4dd9ca236bc56100065d338d91ec77b12b9dec9f19aaa84fcbf1a7188f5143",
+        "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-td-port-20261102/worktree/experiments/td/seed-inventory.json": "b10876c3048496b9daf8164d8f198305d6272508ccc2909ec04350c487ac5b43",
         "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-td-port-20261102/worktree/spawn-model.default.json": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
         "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-td-port-20261102/worktree/td_model.py": "65b9a72373917307c438e514575f79368e35afa2e0567b3b2bfcd9111e955c0d",
         "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-td-port-20261102/worktree/value_model.py": "992cd3fd91c1537fd574a00c75a1f5850bc2bf1d6fb8ef17c47c94a2d4c00802",
@@ -43,6 +43,8 @@
         "/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/output/2048-td-port-20261102/worktree/vendor/value_model.h": "b6e08d1291193e6235d2d365a76d293fefd22e8645fd1eb5a2bf2a09bd0c7c9c"
       }
     },
-    "sha256": "60ccc29c24fbdb2b68fb88e2e78d6f5fff73c8f8019db8641dd8a335478637af"
-  }
+    "sha256": "8abc4fc7a3530601f62d6985538f254dd64e08d7fcab2ff14656c3bd7cfb136e"
+  },
+  "pool_plan_commit": "e05ed8e",
+  "note": "Explicit rebuild after train-only pool-size amendment; CPP/model core unchanged"
 }
