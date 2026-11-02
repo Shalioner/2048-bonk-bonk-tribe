@@ -1,0 +1,132 @@
+{
+  "ok": true,
+  "real_native": true,
+  "real_recognition": true,
+  "fake_adb": true,
+  "results": [
+    {
+      "profile": "progressive",
+      "move": {
+        "step": 0,
+        "board": [
+          10,
+          3,
+          2,
+          1,
+          2,
+          1,
+          1,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "direction": "right",
+        "capture_s": 0.0,
+        "think_s": 0.373,
+        "search": {
+          "depth": 3,
+          "passes": 2,
+          "threshold": 0.0001,
+          "positions": 818940,
+          "search_s": 0.004,
+          "cut": false,
+          "skipped": true,
+          "fallback": false,
+          "requested_depth": 8,
+          "policy": "progressive"
+        }
+      },
+      "metrics": {
+        "outcome": "dry_run",
+        "total_s": 0.728917,
+        "seconds": {
+          "focus": 9.6e-05,
+          "capture": 0.000524,
+          "recognize": 0.212927,
+          "confirm_wait": 0.15403,
+          "choose": 0.003806,
+          "diagnostic_write": 0.355591
+        },
+        "other_s": 0.001943,
+        "counts": {
+          "captures": 2,
+          "ocr_calls": 0,
+          "full_frame_fallbacks": 0,
+          "observations": 2
+        }
+      },
+      "adb_calls": 4,
+      "gestures": 0
+    },
+    {
+      "profile": "merged_banked_endgame",
+      "move": {
+        "step": 0,
+        "board": [
+          10,
+          3,
+          2,
+          1,
+          2,
+          1,
+          1,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "direction": "right",
+        "capture_s": 0.0,
+        "think_s": 0.35,
+        "search": {
+          "depth": 3,
+          "passes": 2,
+          "threshold": 0.0001,
+          "positions": 818940,
+          "search_s": 0.003,
+          "cut": false,
+          "skipped": true,
+          "fallback": false,
+          "requested_depth": 8,
+          "policy": "progressive",
+          "budget_profile": "merged_banked_endgame",
+          "supplied_budget_s": 0.01,
+          "external_choose_wall_s": 0.003019583000000381,
+          "budget_credit_s": 0.006980416999999619
+        }
+      },
+      "metrics": {
+        "outcome": "dry_run",
+        "total_s": 0.619154,
+        "seconds": {
+          "focus": 1.6e-05,
+          "capture": 4.1e-05,
+          "recognize": 0.193534,
+          "confirm_wait": 0.153509,
+          "choose": 0.003037,
+          "diagnostic_write": 0.268824
+        },
+        "other_s": 0.000193,
+        "counts": {
+          "captures": 2,
+          "ocr_calls": 0,
+          "full_frame_fallbacks": 0,
+          "observations": 2
+        }
+      },
+      "adb_calls": 4,
+      "gestures": 0
+    }
+  ]
+}
