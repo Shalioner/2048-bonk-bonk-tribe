@@ -1,9 +1,12 @@
+test_bad_finalist_rejected_by_holdout_and_finalizer (test_td_cycle.CycleTests) ... ok
 test_build_no_implicit_rebuild_and_source_fingerprint (test_td_cycle.CycleTests) ... ok
 test_complete_serial_cycle_freeze_hashes_and_exact_tests (test_td_cycle.CycleTests) ... ok
 test_custom_eval_barrier_and_partial_freeze_never_plays (test_td_cycle.CycleTests) ... ok
 test_duplicate_seed_or_model_tamper_refused (test_td_cycle.CycleTests) ... ok
 test_eval_resume_checks_actual_engine_and_no_limit_relabel (test_td_cycle.CycleTests) ... ok
 test_finalizer_does_not_continue_partial_control (test_td_cycle.CycleTests) ... ok
+test_freeze_read_requires_complete_screen_without_continuation (test_td_cycle.CycleTests) ... ok
+test_freeze_read_side_rejects_semantic_tampering (test_td_cycle.CycleTests) ... ok
 test_historical_mc_participates_in_screen_gate (test_td_cycle.CycleTests) ... ok
 test_limit_retained_rollback_and_matching_failure (test_td_cycle.CycleTests) ... ok
 test_matched_joint_earliest_stop_and_curriculum (test_td_cycle.CycleTests) ... ok
@@ -18,7 +21,7 @@ test_timed_goal_does_not_spawn_and_telemetry_is_actual (test_td_cycle.CycleTests
 test_trajectory_mismatch_retained_and_never_selected (test_td_cycle.CycleTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 18 tests in 3.241s
+Ran 21 tests in 11.506s
 
 OK
 usage: python3 -m unittest [-h]
