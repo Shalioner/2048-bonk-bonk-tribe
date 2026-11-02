@@ -1,0 +1,1 @@
+Exact parity: 800 per-direction scores, 200 allowed-mask decisions, 4 models; depths 1–3, thresholds 1e-4/1e-5/1e-6.

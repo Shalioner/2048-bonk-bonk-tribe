@@ -1,0 +1,6 @@
+{"observation_error": "temporary crop OCR failure", "action": "retry_full_frame"}
+{"spawn_model": "старый формат spawn-model.json без стадий проигнорирован; используется spawn-model.default.json"}
+----------------------------------------------------------------------
+Ran 63 tests in 7.975s
+
+OK

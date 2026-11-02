@@ -1,0 +1,38 @@
+{
+  "engine": "vendor/session-goal.dylib",
+  "binary_sha256": "910d7f4d3cabe369409ec4667d571c20d635ec7805cb24b303a6d1783a312d3b",
+  "command": [
+    "profile_search.py",
+    "--engine",
+    "vendor/session-goal.dylib",
+    "--out",
+    "search-results/session-profile-budget.json",
+    "--seconds",
+    "20",
+    "--mode",
+    "budget"
+  ],
+  "mode": "budget",
+  "depth": 8,
+  "threshold": 0.0001,
+  "calls": 48,
+  "wall_seconds": 20.319171791,
+  "cpu_seconds": 33.926172,
+  "peak_rss": 184631296,
+  "peak_rss_unit": "bytes",
+  "results": {
+    "1211413353017100": {
+      "move": 0,
+      "positions": 12525840
+    },
+    "423054209511a622": {
+      "move": 1,
+      "positions": 27983680
+    },
+    "8741653154213210": {
+      "move": 1,
+      "positions": 32766688
+    }
+  },
+  "note": "Sampler workload only; do not use these times as unprofiled benchmarks."
+}

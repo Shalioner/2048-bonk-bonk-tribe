@@ -1,0 +1,59 @@
+test_finite_sum_overflow_rejected_atomically (test_spawn_validation.SpawnValidationTests) ... FAIL
+test_invalid_dimensions_preserve_model (test_spawn_validation.SpawnValidationTests) ... ok
+test_negative_and_empty_rows_preserve_model (test_spawn_validation.SpawnValidationTests) ... ok
+test_nonfinite_weights_rejected_atomically (test_spawn_validation.SpawnValidationTests) ... test_valid_rows_keep_float_normalization (test_spawn_validation.SpawnValidationTests) ... ok
+
+======================================================================
+FAIL: test_finite_sum_overflow_rejected_atomically (test_spawn_validation.SpawnValidationTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/model/test_spawn_validation.py", line 79, in test_finite_sum_overflow_rejected_atomically
+    self.assert_rejected_unchanged(rows)
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/model/test_spawn_validation.py", line 58, in assert_rejected_unchanged
+    self.assertEqual(self.install(rows, **shape), -1)
+AssertionError: 0 != -1
+
+======================================================================
+FAIL: test_nonfinite_weights_rejected_atomically (test_spawn_validation.SpawnValidationTests) (value='nan', stage=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/model/test_spawn_validation.py", line 73, in test_nonfinite_weights_rejected_atomically
+    self.assert_rejected_unchanged(rows)
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/model/test_spawn_validation.py", line 58, in assert_rejected_unchanged
+    self.assertEqual(self.install(rows, **shape), -1)
+AssertionError: 0 != -1
+
+======================================================================
+FAIL: test_nonfinite_weights_rejected_atomically (test_spawn_validation.SpawnValidationTests) (value='nan', stage=15)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/model/test_spawn_validation.py", line 73, in test_nonfinite_weights_rejected_atomically
+    self.assert_rejected_unchanged(rows)
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/model/test_spawn_validation.py", line 58, in assert_rejected_unchanged
+    self.assertEqual(self.install(rows, **shape), -1)
+AssertionError: 0 != -1
+
+======================================================================
+FAIL: test_nonfinite_weights_rejected_atomically (test_spawn_validation.SpawnValidationTests) (value='inf', stage=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/model/test_spawn_validation.py", line 73, in test_nonfinite_weights_rejected_atomically
+    self.assert_rejected_unchanged(rows)
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/model/test_spawn_validation.py", line 58, in assert_rejected_unchanged
+    self.assertEqual(self.install(rows, **shape), -1)
+AssertionError: 0 != -1
+
+======================================================================
+FAIL: test_nonfinite_weights_rejected_atomically (test_spawn_validation.SpawnValidationTests) (value='inf', stage=15)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/model/test_spawn_validation.py", line 73, in test_nonfinite_weights_rejected_atomically
+    self.assert_rejected_unchanged(rows)
+  File "/private/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/model/test_spawn_validation.py", line 58, in assert_rejected_unchanged
+    self.assertEqual(self.install(rows, **shape), -1)
+AssertionError: 0 != -1
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.377s
+
+FAILED (failures=5)

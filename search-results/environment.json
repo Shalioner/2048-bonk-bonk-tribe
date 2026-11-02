@@ -1,0 +1,8 @@
+{
+  "baseline_commit": "db204cd",
+  "candidate_source_sha256": "79efc58bfab84fd01ac3469cfe265a9aa5735f27d4be132c902a0e1af9761919",
+  "compiler": "Apple clang 17.0.0 clang-1700.0.13.5",
+  "flags": "-O3 -std=c++11 -dynamiclib",
+  "architecture": "arm64",
+  "depth": 8
+}

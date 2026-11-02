@@ -1,0 +1,57 @@
+{
+  "scope": "Read-only AST and isolated-process FFI smoke; no search, ADB or live bot",
+  "bot_sha256": "6495f1ad41272048679eee8f7a65a1d91c90508ec2b1e49d8c95e0e5437f288a",
+  "engine_sha256": "a1ff1ad49350929ba36d9baa60bb8e817f55cae7e612d391789276aaeb146583",
+  "subprocess_calls": [
+    {
+      "line": 127,
+      "command": "['tesseract', f.name, 'stdout', '--psm', '6', '-l', 'eng']",
+      "keyword_names": [
+        "capture_output",
+        "text",
+        "check"
+      ],
+      "timeout_present": false
+    },
+    {
+      "line": 131,
+      "command": "['tesseract', f.name, 'stdout', '--psm', '13', '-l', 'eng', '-c', 'tessedit_char_whitelist=0123456789']",
+      "keyword_names": [
+        "capture_output",
+        "text",
+        "check"
+      ],
+      "timeout_present": false
+    },
+    {
+      "line": 348,
+      "command": "['adb', *(['-s', args.serial] if args.serial else []), *cmd]",
+      "keyword_names": [
+        "capture_output",
+        "check",
+        "timeout"
+      ],
+      "timeout_present": true
+    }
+  ],
+  "nonfinite_model_checks": [
+    {
+      "input": "NaN",
+      "return_code": 0,
+      "probabilities": [
+        "nan",
+        "nan"
+      ],
+      "all_finite": false
+    },
+    {
+      "input": "positive infinity",
+      "return_code": 0,
+      "probabilities": [
+        "nan",
+        "0.0"
+      ],
+      "all_finite": false
+    }
+  ]
+}

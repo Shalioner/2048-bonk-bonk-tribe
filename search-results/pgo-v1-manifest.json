@@ -1,0 +1,119 @@
+{
+  "source_sha256": "1bf6013b9ff42b6b030766549b4189a2debfb9a341d14756b82df02fba9e464e",
+  "flags": [
+    "-O3",
+    "-std=c++11",
+    "-dynamiclib"
+  ],
+  "training_command": [
+    "clang++",
+    "-O3",
+    "-std=c++11",
+    "-dynamiclib",
+    "-fprofile-generate=/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/profiles",
+    "-fprofile-update=atomic",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/engine_adapted.cpp",
+    "-o",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/training.dylib"
+  ],
+  "training_seed": 2048,
+  "holdout_seed": 809,
+  "holdout_limit": 15,
+  "purpose": "PGO experiment only; instrumented timings are not performance evidence",
+  "selection_rule": "Exact scores/moves/positions; >=5% lower raw median and p95, no maximum regression, balanced 6 repeats; contradictory data require control.",
+  "optimized_command": [
+    "clang++",
+    "-O3",
+    "-std=c++11",
+    "-dynamiclib",
+    "-fprofile-use=/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/search.profdata",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/engine_adapted.cpp",
+    "-o",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/optimized.dylib"
+  ],
+  "profile_sha256": "9dc1d5ecd308637e1cf780ef2b3b6e3288be7bba95732e1332ec4fb607a2d1fb",
+  "raw_profile_hashes": {
+    "default_6926230601195283074_0.profraw": "c0380dfda9392e03c2d80c35050aed7af4991f9e12a85058beeae8338466408a"
+  },
+  "binary_hashes": {
+    "regular.dylib": "42a92a1028c143681c210a48ca16d4991021caf7aabf4794205df9f19bf7f49c",
+    "training.dylib": "f67b242a5197dfaf120038257359eb15d85f66ac5117c5d44963f6caf1b9256b",
+    "optimized.dylib": "7c61075a99521cb197a3e9422d86addbe547b8d3ee5a7e9a29cc39b7f69c3473"
+  },
+  "training_boards": [
+    "0000010012003111",
+    "2000200042005211",
+    "0000401053006221",
+    "1211413353017100",
+    "3100521165207620",
+    "2002410074438511",
+    "0002100074209322",
+    "1012213134439864",
+    "321143306400a101",
+    "423054209511a622",
+    "101203229734a875",
+    "6620210020101000",
+    "8741653154213210",
+    "a421331010100000",
+    "4220321020010000",
+    "123423453456456b",
+    "11223344556677bb",
+    "123456789abbb000",
+    "123456789abcdef0",
+    "0000000000000011",
+    "1234123412341234"
+  ],
+  "holdout_boards": [
+    "0223001100100000",
+    "4101123112311231",
+    "2001410032016432",
+    "7522432132002010",
+    "0000411043208532",
+    "0001100210448763",
+    "3200541164309410",
+    "2213032184219643",
+    "310054006411a430",
+    "600076138232a210",
+    "131124449720a805",
+    "2100421254308431",
+    "1000310083209135",
+    "140021101650a841",
+    "12012752a8521519"
+  ],
+  "training_holdout_disjoint": true,
+  "portable_profile_sha256": "3e8ef7dcb169b88400c33c86cf7a6116e604629a29e68c4de680f2f8f435c873",
+  "portable_build_command": [
+    "clang++",
+    "-O3",
+    "-std=c++11",
+    "-dynamiclib",
+    "-Werror=profile-instr-out-of-date",
+    "-Werror=profile-instr-unprofiled",
+    "-fprofile-use=/Users/shalioner/orca/projects/\u0412\u0441\u044f\u043a\u043e\u0435 \u0440\u0430\u0437\u043d\u043e\u0435/2048-search-speed/search-results/pgo-profile.profdata",
+    "engine_adapted.cpp",
+    "-o",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/portable.dylib"
+  ],
+  "remapped_static_function_count": 5,
+  "portable_machine_text_identical": true,
+  "machine_text_sha256": "7785ecbc9e9578d75ccb247f160d48522702640a6e750e51481b9c5c85ca33ad",
+  "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin24.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "architecture": "arm64",
+  "input_hashes": {
+    "engine_adapted.cpp": "1bf6013b9ff42b6b030766549b4189a2debfb9a341d14756b82df02fba9e464e",
+    "2048.h": "2597ae4726e872494bb57997154fdb0279cfc706bb0aad7dcb758be5231ec85d",
+    "config.h": "5bbfde3aedbd34414eb6a7c1fb1a8b7f5fb2b76b66bb014318be496f24c7bda1",
+    "platdefs.h": "5b3923979efb21112335319ff92a807cf47620002b446864eddea5f9925d983c"
+  },
+  "local_selected_binary_sha256": "d07a9423659743a454b9cccaf17d39584b17793ce2f9b7fc21a62823fa69bc6a",
+  "selected_local_build_command": [
+    "python3",
+    "build_search_pgo.py",
+    "--out",
+    "vendor/engine.dylib"
+  ],
+  "selected_machine_text_sha256": "105125a7fb85fd3cb5d19894a9cf4cdd7ef9afdc234a75dfc9ed515591b99224",
+  "selected_matches_strict_score_candidate": true,
+  "selected_matches_original_measured_text": false,
+  "link_layout_note": "Stable @rpath install name moves __text start from0x5d0 to0x580; same size0x3a20. Rebenchmark final selected artifact separately; do not transfer old percentages blindly."
+}

@@ -1,0 +1,153 @@
+{
+  "mode": "budget",
+  "depth": 8,
+  "threshold": 1e-05,
+  "repeats": 1,
+  "seed": 2048,
+  "thresholds": [
+    1e-05
+  ],
+  "budget_seconds": 60.0,
+  "growth": 5.0,
+  "hashes": {
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/regular.dylib": "42a92a1028c143681c210a48ca16d4991021caf7aabf4794205df9f19bf7f49c",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/training.dylib": "f67b242a5197dfaf120038257359eb15d85f66ac5117c5d44963f6caf1b9256b"
+  },
+  "hashes_after": {
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/regular.dylib": "42a92a1028c143681c210a48ca16d4991021caf7aabf4794205df9f19bf7f49c",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/training.dylib": "f67b242a5197dfaf120038257359eb15d85f66ac5117c5d44963f6caf1b9256b"
+  },
+  "model_sha256": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+  "benchmark_sha256": "d328644725d326c5437c5b523c09664d0b0208846fbb863dbb6ad4450c52e386",
+  "command": [
+    "search_benchmark.py",
+    "--baseline",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/regular.dylib",
+    "--candidate",
+    "/var/folders/ss/4g0fyyvx3hgczmghb26lyfhh0000gn/T/2048-implementation-vad4w2v3/pgo/training.dylib",
+    "--out",
+    "search-results/pgo-v2-training-1e5-not-performance.json",
+    "--repeats",
+    "1",
+    "--mode",
+    "budget",
+    "--threshold",
+    "1e-5",
+    "--board",
+    "0000010012003111",
+    "--board",
+    "2000200042005211"
+  ],
+  "platform": "macOS-15.7.9-arm64-arm-64bit",
+  "summary": [
+    {
+      "median": 0.2205755210000001,
+      "p95": 0.3964063750000002,
+      "maximum": 0.3964063750000002
+    },
+    {
+      "median": 1.2025270005,
+      "p95": 1.724023917,
+      "maximum": 1.724023917
+    }
+  ],
+  "per_position_medians": [
+    {
+      "median": 0.2205755210000001,
+      "p95": 0.3964063750000002,
+      "maximum": 0.3964063750000002
+    },
+    {
+      "median": 1.2025270005,
+      "p95": 1.724023917,
+      "maximum": 1.724023917
+    }
+  ],
+  "rows": [
+    {
+      "board": "0000010012003111",
+      "scores": null,
+      "move": 3,
+      "seconds": [
+        [
+          0.04474466699999999
+        ],
+        [
+          0.681030084
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-06,
+            "positions": 4639224,
+            "native_seconds": 0.044682709,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.044666333,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-06,
+            "positions": 4639224,
+            "native_seconds": 0.680962375,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.680948875,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "2000200042005211",
+      "scores": null,
+      "move": 1,
+      "seconds": [
+        [
+          0.3964063750000002
+        ],
+        [
+          1.724023917
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-06,
+            "positions": 10041536,
+            "native_seconds": 0.396270875,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.39622925,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-06,
+            "positions": 10041536,
+            "native_seconds": 1.723973041,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 1.723944958,
+            "fallback": false
+          }
+        ]
+      ]
+    }
+  ],
+  "exact_parity": true,
+  "equal_completed_work_move_parity": true,
+  "score_parity": false
+}

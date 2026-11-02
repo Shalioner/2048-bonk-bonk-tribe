@@ -1,0 +1,2940 @@
+{
+  "mode": "budget",
+  "depth": 8,
+  "threshold": 0.0001,
+  "repeats": 5,
+  "thresholds": [
+    0.0001
+  ],
+  "budget_seconds": 60.0,
+  "growth": 5.0,
+  "hashes": {
+    "vendor/session-start.dylib": "da7ec1d720c75bcab842d02add38a6bd59cbd81e78cf812822a03a961ba6acd4",
+    "vendor/session-goal.dylib": "910d7f4d3cabe369409ec4667d571c20d635ec7805cb24b303a6d1783a312d3b"
+  },
+  "hashes_after": {
+    "vendor/session-start.dylib": "da7ec1d720c75bcab842d02add38a6bd59cbd81e78cf812822a03a961ba6acd4",
+    "vendor/session-goal.dylib": "910d7f4d3cabe369409ec4667d571c20d635ec7805cb24b303a6d1783a312d3b"
+  },
+  "model_sha256": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+  "command": [
+    "search_benchmark.py",
+    "--baseline",
+    "vendor/session-start.dylib",
+    "--candidate",
+    "vendor/session-goal.dylib",
+    "--out",
+    "search-results/session-goal-budget.json",
+    "--repeats",
+    "5",
+    "--mode",
+    "budget"
+  ],
+  "platform": "macOS-15.7.9-arm64-arm-64bit",
+  "summary": [
+    {
+      "median": 0.037514916999999315,
+      "p95": 0.4903129170000007,
+      "maximum": 0.9175341669999995
+    },
+    {
+      "median": 0.034056124999999327,
+      "p95": 0.4581047079999996,
+      "maximum": 0.6796813749999977
+    }
+  ],
+  "per_position_medians": [
+    {
+      "median": 0.03474054199999799,
+      "p95": 0.4424813329999999,
+      "maximum": 0.6437659579999995
+    },
+    {
+      "median": 0.034056124999999327,
+      "p95": 0.4124857079999984,
+      "maximum": 0.5986166660000016
+    }
+  ],
+  "rows": [
+    {
+      "board": "0000010012003111",
+      "scores": null,
+      "move": 1,
+      "seconds": [
+        [
+          0.006526541999999996,
+          0.00638491699999999,
+          0.0062097079999999805,
+          0.006320582999999991,
+          0.0064475420000000006
+        ],
+        [
+          0.006129249999999975,
+          0.006057541,
+          0.006272208000000001,
+          0.006046625,
+          0.006042374999999989
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 686376,
+            "native_seconds": 0.00644225,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.006437542,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 686376,
+            "native_seconds": 0.006374417,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.006367583,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 686376,
+            "native_seconds": 0.006200166,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.006194584,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 686376,
+            "native_seconds": 0.006314209,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.006307291,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 686376,
+            "native_seconds": 0.006439625,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.006434875,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 686376,
+            "native_seconds": 0.006119042,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.006110792,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 686376,
+            "native_seconds": 0.006049542,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.006044416,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 686376,
+            "native_seconds": 0.006264541,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.006256459,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 686376,
+            "native_seconds": 0.00604,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.006034584,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 686376,
+            "native_seconds": 0.006033875,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.006026125,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "2000200042005211",
+      "scores": null,
+      "move": 1,
+      "seconds": [
+        [
+          0.007790999999999992,
+          0.016620625,
+          0.009600624999999974,
+          0.009327375000000027,
+          0.01038529199999999
+        ],
+        [
+          0.0072101669999999896,
+          0.009824250000000007,
+          0.010092457999999999,
+          0.008701457999999995,
+          0.008924874999999999
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1151376,
+            "native_seconds": 0.0077825,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.007770334,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1151376,
+            "native_seconds": 0.016600667,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.016592958,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1151376,
+            "native_seconds": 0.009585875,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.009573875,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1151376,
+            "native_seconds": 0.009314625,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.009307166,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1151376,
+            "native_seconds": 0.010371917,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.010358625,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1151376,
+            "native_seconds": 0.00720275,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.007195458,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1151376,
+            "native_seconds": 0.009799792,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.009784792,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1151376,
+            "native_seconds": 0.0100725,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.010064875,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1151376,
+            "native_seconds": 0.008691542,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.008679833,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1151376,
+            "native_seconds": 0.008916583,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.008909,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "0000401053006221",
+      "scores": null,
+      "move": 1,
+      "seconds": [
+        [
+          0.021119582999999997,
+          0.027733583000000006,
+          0.026671208000000002,
+          0.031146749999999945,
+          0.03234075000000003
+        ],
+        [
+          0.02409787499999999,
+          0.025869332999999994,
+          0.02784620900000001,
+          0.028322291,
+          0.027232750000000028
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2374288,
+            "native_seconds": 0.02110225,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0210925,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2374288,
+            "native_seconds": 0.02770925,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.027691209,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2374288,
+            "native_seconds": 0.02663225,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.026617166,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2374288,
+            "native_seconds": 0.031120667,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0311015,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2374288,
+            "native_seconds": 0.03231325,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.03229875,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2374288,
+            "native_seconds": 0.024077,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.024057833,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2374288,
+            "native_seconds": 0.025845375,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.02583075,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2374288,
+            "native_seconds": 0.027795167,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.027777291,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2374288,
+            "native_seconds": 0.028294792,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.028279958,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2374288,
+            "native_seconds": 0.027198209,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.027178833,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "1211413353017100",
+      "scores": null,
+      "move": 0,
+      "seconds": [
+        [
+          0.21334254200000013,
+          0.25321529100000006,
+          0.29571737500000017,
+          0.24757600000000002,
+          0.17560449999999994
+        ],
+        [
+          0.262400458,
+          0.299942041,
+          0.31984508300000014,
+          0.21225441700000003,
+          0.18173875000000006
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 12525840,
+            "native_seconds": 0.21332075,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.213310833,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 12525840,
+            "native_seconds": 0.253187583,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.253182292,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 12525840,
+            "native_seconds": 0.295686167,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.295676416,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 12525840,
+            "native_seconds": 0.247549458,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.247543667,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 12525840,
+            "native_seconds": 0.17554625,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.175538833,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 12525840,
+            "native_seconds": 0.262368417,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.262358708,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 12525840,
+            "native_seconds": 0.299873,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.299863583,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 12525840,
+            "native_seconds": 0.319804833,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.319798083,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 12525840,
+            "native_seconds": 0.212231084,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.212222834,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 12525840,
+            "native_seconds": 0.18171675,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.181708792,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "3100521165207620",
+      "scores": null,
+      "move": 1,
+      "seconds": [
+        [
+          0.07480012499999988,
+          0.08869458399999974,
+          0.09179225000000013,
+          0.08930779200000005,
+          0.09018874999999982
+        ],
+        [
+          0.09324704200000022,
+          0.09598845899999997,
+          0.08141583399999996,
+          0.09717837499999993,
+          0.10171383399999989
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 8731728,
+            "native_seconds": 0.074772584,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.074764875,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 8731728,
+            "native_seconds": 0.0886635,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.088651583,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 8731728,
+            "native_seconds": 0.091762666,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.091753708,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 8731728,
+            "native_seconds": 0.089280584,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.089268542,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 8731728,
+            "native_seconds": 0.090163625,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.090156417,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 8731728,
+            "native_seconds": 0.093214875,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.093204333,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 8731728,
+            "native_seconds": 0.095960709,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.09594625,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 8731728,
+            "native_seconds": 0.081383959,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.081373,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 8731728,
+            "native_seconds": 0.097152166,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.097143,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 8731728,
+            "native_seconds": 0.101685833,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.101664083,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "2002410074438511",
+      "scores": null,
+      "move": 0,
+      "seconds": [
+        [
+          0.19274258300000024,
+          0.20900708299999948,
+          0.17805720900000033,
+          0.17450683399999978,
+          0.22456566700000025
+        ],
+        [
+          0.17658137500000004,
+          0.1821660000000005,
+          0.15667462499999996,
+          0.19141383399999956,
+          0.197161833
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 13717356,
+            "native_seconds": 0.19270225,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.192688959,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 13717356,
+            "native_seconds": 0.208974917,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.208964958,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 13717356,
+            "native_seconds": 0.178030416,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.178015,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 13717356,
+            "native_seconds": 0.174481583,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.174471792,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 13717356,
+            "native_seconds": 0.22447575,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.224449458,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 13717356,
+            "native_seconds": 0.176555083,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.176543167,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 13717356,
+            "native_seconds": 0.182138917,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.1821235,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 13717356,
+            "native_seconds": 0.156648334,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.156638375,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 13717356,
+            "native_seconds": 0.191330208,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.191314791,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 13717356,
+            "native_seconds": 0.197132708,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.197122208,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "0002100074209322",
+      "scores": null,
+      "move": 0,
+      "seconds": [
+        [
+          0.038348958000000266,
+          0.05046033400000027,
+          0.055111833000000665,
+          0.07435645799999957,
+          0.06562424999999994
+        ],
+        [
+          0.04076754200000021,
+          0.04205712500000036,
+          0.0478299170000005,
+          0.05671445800000008,
+          0.056851959000000285
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4611408,
+            "native_seconds": 0.038311083,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.03826125,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4611408,
+            "native_seconds": 0.050405333,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.050372167,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4611408,
+            "native_seconds": 0.054976292,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.054953458,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4611408,
+            "native_seconds": 0.074321458,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.074275416,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4611408,
+            "native_seconds": 0.065558,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.065493666,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4611408,
+            "native_seconds": 0.040732417,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.040688958,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4611408,
+            "native_seconds": 0.042011542,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.041992792,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4611408,
+            "native_seconds": 0.047799375,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.047752167,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4611408,
+            "native_seconds": 0.056672042,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.056363375,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4611408,
+            "native_seconds": 0.0567975,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.056773084,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "1012213134439864",
+      "scores": null,
+      "move": 3,
+      "seconds": [
+        [
+          0.4155864169999992,
+          0.42666841700000013,
+          0.3358706250000001,
+          0.3331226249999997,
+          0.38204079199999974
+        ],
+        [
+          0.4581047079999996,
+          0.36089633300000035,
+          0.3268847079999997,
+          0.2852053750000003,
+          0.31201941700000013
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 29559376,
+            "native_seconds": 0.415552375,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.415534542,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 29559376,
+            "native_seconds": 0.426638041,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.426630791,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 29559376,
+            "native_seconds": 0.335844834,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.335835167,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 29559376,
+            "native_seconds": 0.33309575,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.333089459,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 29559376,
+            "native_seconds": 0.382003458,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.381991334,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 29559376,
+            "native_seconds": 0.458071,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.458061916,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 29559376,
+            "native_seconds": 0.360813542,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.360801084,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 29559376,
+            "native_seconds": 0.326859833,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.326853458,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 29559376,
+            "native_seconds": 0.285180166,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.285169958,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 29559376,
+            "native_seconds": 0.31199325,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.311986,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "321143306400a101",
+      "scores": null,
+      "move": 3,
+      "seconds": [
+        [
+          0.10629141599999947,
+          0.14540870799999972,
+          0.1518809999999995,
+          0.12220408399999982,
+          0.11065283299999962
+        ],
+        [
+          0.12556625000000032,
+          0.1221602500000003,
+          0.11688712500000165,
+          0.09938245799999912,
+          0.1035693749999993
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 10848080,
+            "native_seconds": 0.106262,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.106243166,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 10848080,
+            "native_seconds": 0.145382791,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.145363625,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 10848080,
+            "native_seconds": 0.151770459,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.151754375,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 10848080,
+            "native_seconds": 0.122159542,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.122139584,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 10848080,
+            "native_seconds": 0.110589209,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.110572875,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 10848080,
+            "native_seconds": 0.1255385,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.125514,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 10848080,
+            "native_seconds": 0.122133625,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.122118375,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 10848080,
+            "native_seconds": 0.116857667,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.116832041,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 10848080,
+            "native_seconds": 0.099356083,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.099340958,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 10848080,
+            "native_seconds": 0.103547625,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.103528292,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "423054209511a622",
+      "scores": null,
+      "move": 1,
+      "seconds": [
+        [
+          0.3801576250000007,
+          0.3896300419999985,
+          0.4424813329999999,
+          0.47353295799999984,
+          0.4715367499999985
+        ],
+        [
+          0.3413173750000009,
+          0.34917304100000024,
+          0.3489907499999987,
+          0.44667379200000035,
+          0.41301633299999985
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 27983680,
+            "native_seconds": 0.38009725,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.380087166,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 27983680,
+            "native_seconds": 0.389592,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.389578583,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 27983680,
+            "native_seconds": 0.442450541,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.442438791,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 27983680,
+            "native_seconds": 0.473492459,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.473484917,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 27983680,
+            "native_seconds": 0.4715105,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.471499708,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 27983680,
+            "native_seconds": 0.34129375,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.341282958,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 27983680,
+            "native_seconds": 0.349143958,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.349107417,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 27983680,
+            "native_seconds": 0.348931542,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.348924292,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 27983680,
+            "native_seconds": 0.446602542,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.446583125,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 27983680,
+            "native_seconds": 0.412986833,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.412975792,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "101203229734a875",
+      "scores": null,
+      "move": 3,
+      "seconds": [
+        [
+          0.3866973750000007,
+          0.44899329100000074,
+          0.4903129170000007,
+          0.36214787500000156,
+          0.4112929170000008
+        ],
+        [
+          0.4356344169999993,
+          0.4124857079999984,
+          0.4226269579999986,
+          0.34027258300000085,
+          0.4002201250000006
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 26009520,
+            "native_seconds": 0.38666525,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.386650375,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 26009520,
+            "native_seconds": 0.44889725,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.448869459,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 26009520,
+            "native_seconds": 0.49026525,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.490242709,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 26009520,
+            "native_seconds": 0.362100666,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.362050458,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 26009520,
+            "native_seconds": 0.41126125,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.411246584,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 26009520,
+            "native_seconds": 0.435603542,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.435583333,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 26009520,
+            "native_seconds": 0.412456417,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.412444042,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 26009520,
+            "native_seconds": 0.422585708,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.422503583,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 26009520,
+            "native_seconds": 0.34024,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.340218833,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 26009520,
+            "native_seconds": 0.400189083,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.400169166,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "6620210020101000",
+      "scores": null,
+      "move": 3,
+      "seconds": [
+        [
+          0.024337208999998694,
+          0.02760300000000271,
+          0.024643624999999503,
+          0.02282204099999774,
+          0.022559208000000552
+        ],
+        [
+          0.023910041000000604,
+          0.024126374999998035,
+          0.02994783400000145,
+          0.02007575000000017,
+          0.0212088339999994
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1952728,
+            "native_seconds": 0.024305667,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.024290625,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1952728,
+            "native_seconds": 0.027569125,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.027554959,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1952728,
+            "native_seconds": 0.024604333,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.024583125,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1952728,
+            "native_seconds": 0.022773917,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0227565,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1952728,
+            "native_seconds": 0.022524334,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.022504541,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1952728,
+            "native_seconds": 0.023544209,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.023532208,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1952728,
+            "native_seconds": 0.024090333,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.024070541,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1952728,
+            "native_seconds": 0.029913292,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.029901292,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1952728,
+            "native_seconds": 0.020041375,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0200215,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 1952728,
+            "native_seconds": 0.021178417,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.021166333,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "8741653154213210",
+      "scores": null,
+      "move": 1,
+      "seconds": [
+        [
+          0.6581704590000008,
+          0.6160651249999987,
+          0.6437659579999995,
+          0.9175341669999995,
+          0.6335082090000022
+        ],
+        [
+          0.5986166660000016,
+          0.6796813749999977,
+          0.5664084580000015,
+          0.555398125,
+          0.636808417000001
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 32766688,
+            "native_seconds": 0.658126667,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.658118333,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 32766688,
+            "native_seconds": 0.615983625,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.615926084,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 32766688,
+            "native_seconds": 0.643707458,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.6437,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 32766688,
+            "native_seconds": 0.917434333,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.917421833,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 32766688,
+            "native_seconds": 0.633453083,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.633441375,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 32766688,
+            "native_seconds": 0.598586458,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.598578958,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 32766688,
+            "native_seconds": 0.679597459,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.679591541,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 32766688,
+            "native_seconds": 0.566361625,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.566350625,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 32766688,
+            "native_seconds": 0.555353583,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.555347708,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 32766688,
+            "native_seconds": 0.636774667,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.636729459,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "a421331010100000",
+      "scores": null,
+      "move": 1,
+      "seconds": [
+        [
+          0.04925341600000266,
+          0.05516525000000172,
+          0.0699704170000004,
+          0.042013041000000584,
+          0.0616836670000005
+        ],
+        [
+          0.050090291000000065,
+          0.04642479099999974,
+          0.044065166999999406,
+          0.044195375000001036,
+          0.05450233300000207
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4589480,
+            "native_seconds": 0.048717458,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.048629708,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4589480,
+            "native_seconds": 0.055131334,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0551045,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4589480,
+            "native_seconds": 0.069936708,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.069906292,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4589480,
+            "native_seconds": 0.041976833,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.041939459,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4589480,
+            "native_seconds": 0.06161775,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.061588834,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4589480,
+            "native_seconds": 0.049835667,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.049798,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4589480,
+            "native_seconds": 0.046392375,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.04635975,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4589480,
+            "native_seconds": 0.0440305,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.043998334,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4589480,
+            "native_seconds": 0.044159583,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.044116792,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 4589480,
+            "native_seconds": 0.054468417,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.054441125,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "4220321020010000",
+      "scores": null,
+      "move": 3,
+      "seconds": [
+        [
+          0.04534729099999879,
+          0.03474054199999799,
+          0.06318474999999779,
+          0.031483375000000535,
+          0.030823416999997022
+        ],
+        [
+          0.02656141699999992,
+          0.033006374999999366,
+          0.029536916999997942,
+          0.023439332999998896,
+          0.030216041000002747
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2755984,
+            "native_seconds": 0.045301416,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.045288875,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2755984,
+            "native_seconds": 0.034705041,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.034684458,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2755984,
+            "native_seconds": 0.063148125,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.063132958,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2755984,
+            "native_seconds": 0.031450459,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.031431167,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2755984,
+            "native_seconds": 0.030787959,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.030776208,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2755984,
+            "native_seconds": 0.026528292,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0264985,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2755984,
+            "native_seconds": 0.032965042,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.032942791,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2755984,
+            "native_seconds": 0.027685,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.027667208,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2755984,
+            "native_seconds": 0.023403208,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0233695,
+            "fallback": false
+          },
+          {
+            "move": 3,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2755984,
+            "native_seconds": 0.030179208,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.030159208,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "123423453456456b",
+      "scores": null,
+      "move": -1,
+      "seconds": [
+        [
+          7.166999999697055e-06,
+          4.7909999985051854e-06,
+          4.332999999689946e-06,
+          4.542000002771829e-06,
+          4.41699999953471e-06
+        ],
+        [
+          1.8957999998292507e-05,
+          4.582999999058757e-06,
+          4.457999999374351e-06,
+          4.332999999689946e-06,
+          4.582999999058757e-06
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": -1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 8.33e-07,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 3.75e-07,
+            "fallback": false
+          },
+          {
+            "move": -1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 1.67e-07,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 8.3e-08,
+            "fallback": false
+          },
+          {
+            "move": -1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 1.66e-07,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 8.4e-08,
+            "fallback": false
+          },
+          {
+            "move": -1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 1.67e-07,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 4.1e-08,
+            "fallback": false
+          },
+          {
+            "move": -1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 1.66e-07,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 4.2e-08,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": -1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 4.58e-07,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 1.25e-07,
+            "fallback": false
+          },
+          {
+            "move": -1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 1.25e-07,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 4.1e-08,
+            "fallback": false
+          },
+          {
+            "move": -1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 1.67e-07,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 4.2e-08,
+            "fallback": false
+          },
+          {
+            "move": -1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 1.25e-07,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 4.2e-08,
+            "fallback": false
+          },
+          {
+            "move": -1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 1.25e-07,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 4.1e-08,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "11223344556677bb",
+      "scores": null,
+      "move": 2,
+      "seconds": [
+        [
+          0.037514916999999315,
+          0.03316262500000278,
+          0.034733290999998445,
+          0.028966999999997967,
+          0.026595249999999737
+        ],
+        [
+          0.03993904200000031,
+          0.03784383300000016,
+          0.031654667000001524,
+          0.033718790999998305,
+          0.034056124999999327
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 2,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2027960,
+            "native_seconds": 0.037387458,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.037316209,
+            "fallback": false
+          },
+          {
+            "move": 2,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2027960,
+            "native_seconds": 0.033127,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.033045042,
+            "fallback": false
+          },
+          {
+            "move": 2,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2027960,
+            "native_seconds": 0.034673917,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.034659333,
+            "fallback": false
+          },
+          {
+            "move": 2,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2027960,
+            "native_seconds": 0.028938167,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.028923791,
+            "fallback": false
+          },
+          {
+            "move": 2,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2027960,
+            "native_seconds": 0.026566167,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.026556042,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 2,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2027960,
+            "native_seconds": 0.039901208,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.039857458,
+            "fallback": false
+          },
+          {
+            "move": 2,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2027960,
+            "native_seconds": 0.037807792,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.037762167,
+            "fallback": false
+          },
+          {
+            "move": 2,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2027960,
+            "native_seconds": 0.031596042,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.031579917,
+            "fallback": false
+          },
+          {
+            "move": 2,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2027960,
+            "native_seconds": 0.033674084,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.033663584,
+            "fallback": false
+          },
+          {
+            "move": 2,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 2027960,
+            "native_seconds": 0.034027458,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.034013417,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "123456789abbb000",
+      "scores": null,
+      "move": 0,
+      "seconds": [
+        [
+          0.0001615830000005758,
+          0.0004972910000020647,
+          0.00014924999999976762,
+          0.0001103750000019943,
+          0.0001141250000031846
+        ],
+        [
+          0.0001811250000010034,
+          0.0001240000000031216,
+          0.00018820900000093843,
+          0.00016437500000066052,
+          0.00017766600000257426
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 0.000148666,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000147542,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 0.000483792,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000483,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 0.00013375,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.00013275,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 0.000103417,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000103042,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 7.5e-05,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 7.4375e-05,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 0.000164875,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000164,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 0.00011525,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000114459,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 0.000172166,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000171792,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 0.0001535,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.00015275,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 0,
+            "native_seconds": 0.000167,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000165958,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "123456789abcdef0",
+      "scores": null,
+      "move": 0,
+      "seconds": [
+        [
+          0.0010899579999978926,
+          0.0007043330000016113,
+          0.0004952920000000915,
+          0.0006513330000004203,
+          0.0006628749999997297
+        ],
+        [
+          0.0007037089999997193,
+          0.0005321249999994393,
+          0.000597290999998279,
+          0.00046754099999901655,
+          0.000883374999997244
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 16440,
+            "native_seconds": 0.001079041,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.001043625,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 16440,
+            "native_seconds": 0.000693958,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000690375,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 16440,
+            "native_seconds": 0.000481209,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000478041,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 16440,
+            "native_seconds": 0.000641833,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000623125,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 16440,
+            "native_seconds": 0.000651,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000648667,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 16440,
+            "native_seconds": 0.000693625,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000678167,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 16440,
+            "native_seconds": 0.000521292,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000517208,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 16440,
+            "native_seconds": 0.000558458,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000519458,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 16440,
+            "native_seconds": 0.000457167,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000454292,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 16440,
+            "native_seconds": 0.000862542,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.000858375,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "0000000000000011",
+      "scores": null,
+      "move": 1,
+      "seconds": [
+        [
+          0.0026200000000002888,
+          0.0018750839999981395,
+          0.0019233750000005045,
+          0.001809209000001033,
+          0.002007541999997642
+        ],
+        [
+          0.001770582999998993,
+          0.002282749999999112,
+          0.0028641669999984742,
+          0.002309207999999785,
+          0.0019187909999978103
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 150456,
+            "native_seconds": 0.002605625,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.002592125,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 150456,
+            "native_seconds": 0.001862166,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.001850166,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 150456,
+            "native_seconds": 0.001889,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.001875625,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 150456,
+            "native_seconds": 0.001795833,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.001784333,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 150456,
+            "native_seconds": 0.001993417,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.0019795,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 150456,
+            "native_seconds": 0.001751959,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.001738958,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 150456,
+            "native_seconds": 0.002267875,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.002254209,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 150456,
+            "native_seconds": 0.002833458,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.002821458,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 150456,
+            "native_seconds": 0.002276833,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.002263875,
+            "fallback": false
+          },
+          {
+            "move": 1,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 150456,
+            "native_seconds": 0.00190375,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.001891958,
+            "fallback": false
+          }
+        ]
+      ]
+    },
+    {
+      "board": "1234123412341234",
+      "scores": null,
+      "move": 0,
+      "seconds": [
+        [
+          0.004754874999999714,
+          0.0034821669999978155,
+          0.00305774999999997,
+          0.003101374999999962,
+          0.0038870829999986256
+        ],
+        [
+          0.00350025000000187,
+          0.003840250000003209,
+          0.0032460839999970403,
+          0.0038406249999987097,
+          0.003105999999998943
+        ]
+      ],
+      "details": [
+        [
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 204088,
+            "native_seconds": 0.004495041,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.00448525,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 204088,
+            "native_seconds": 0.003464625,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.00345675,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 204088,
+            "native_seconds": 0.003042375,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.003037417,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 204088,
+            "native_seconds": 0.003085958,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.00307675,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 204088,
+            "native_seconds": 0.003874583,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.003868833,
+            "fallback": false
+          }
+        ],
+        [
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 204088,
+            "native_seconds": 0.003479791,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.003469875,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 204088,
+            "native_seconds": 0.003823583,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.003817375,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 204088,
+            "native_seconds": 0.003079875,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.003071917,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 204088,
+            "native_seconds": 0.003745625,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.00374075,
+            "fallback": false
+          },
+          {
+            "move": 0,
+            "passes": 1,
+            "threshold": 9.999999747378752e-05,
+            "positions": 204088,
+            "native_seconds": 0.003094167,
+            "cut": false,
+            "skipped": false,
+            "last_pass_seconds": 0.003086375,
+            "fallback": false
+          }
+        ]
+      ]
+    }
+  ],
+  "exact_parity": true,
+  "equal_completed_work_move_parity": true,
+  "score_parity": false
+}

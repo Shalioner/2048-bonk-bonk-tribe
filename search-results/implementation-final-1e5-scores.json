@@ -1,0 +1,163 @@
+{
+  "mode": "scores",
+  "depth": 8,
+  "threshold": 1e-05,
+  "repeats": 1,
+  "seed": 2048,
+  "thresholds": [
+    1e-05
+  ],
+  "budget_seconds": null,
+  "growth": null,
+  "hashes": {
+    "vendor/session-start.dylib": "da7ec1d720c75bcab842d02add38a6bd59cbd81e78cf812822a03a961ba6acd4",
+    "vendor/engine.dylib": "42a92a1028c143681c210a48ca16d4991021caf7aabf4794205df9f19bf7f49c"
+  },
+  "hashes_after": {
+    "vendor/session-start.dylib": "da7ec1d720c75bcab842d02add38a6bd59cbd81e78cf812822a03a961ba6acd4",
+    "vendor/engine.dylib": "42a92a1028c143681c210a48ca16d4991021caf7aabf4794205df9f19bf7f49c"
+  },
+  "model_sha256": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+  "benchmark_sha256": "d328644725d326c5437c5b523c09664d0b0208846fbb863dbb6ad4450c52e386",
+  "command": [
+    "search_benchmark.py",
+    "--baseline",
+    "vendor/session-start.dylib",
+    "--candidate",
+    "vendor/engine.dylib",
+    "--out",
+    "search-results/implementation-final-1e5-scores.json",
+    "--repeats",
+    "1",
+    "--mode",
+    "scores",
+    "--threshold",
+    "1e-5",
+    "--board",
+    "0000010012003111",
+    "--board",
+    "2000200042005211",
+    "--board",
+    "0000401053006221",
+    "--board",
+    "1211413353017100"
+  ],
+  "platform": "macOS-15.7.9-arm64-arm-64bit",
+  "summary": [
+    {
+      "median": 0.36039575,
+      "p95": 2.318655292,
+      "maximum": 2.318655292
+    },
+    {
+      "median": 0.33061822949999997,
+      "p95": 2.289412125,
+      "maximum": 2.289412125
+    }
+  ],
+  "per_position_medians": [
+    {
+      "median": 0.36039575,
+      "p95": 2.318655292,
+      "maximum": 2.318655292
+    },
+    {
+      "median": 0.33061822949999997,
+      "p95": 2.289412125,
+      "maximum": 2.289412125
+    }
+  ],
+  "rows": [
+    {
+      "board": "0000010012003111",
+      "scores": [
+        0.0,
+        1604438.625,
+        1604402.75,
+        1604666.875
+      ],
+      "move": 3,
+      "seconds": [
+        [
+          0.14223600000000003
+        ],
+        [
+          0.131389417
+        ]
+      ],
+      "details": [
+        [],
+        []
+      ]
+    },
+    {
+      "board": "2000200042005211",
+      "scores": [
+        1594809.0,
+        1595033.75,
+        1592582.5,
+        1594697.5
+      ],
+      "move": 1,
+      "seconds": [
+        [
+          0.257510084
+        ],
+        [
+          0.256825125
+        ]
+      ],
+      "details": [
+        [],
+        []
+      ]
+    },
+    {
+      "board": "0000401053006221",
+      "scores": [
+        1583635.5,
+        1585001.25,
+        1561314.25,
+        1583154.5
+      ],
+      "move": 1,
+      "seconds": [
+        [
+          0.46328141600000006
+        ],
+        [
+          0.40441133399999996
+        ]
+      ],
+      "details": [
+        [],
+        []
+      ]
+    },
+    {
+      "board": "1211413353017100",
+      "scores": [
+        1566759.625,
+        0.0,
+        1541509.75,
+        1561002.5
+      ],
+      "move": 0,
+      "seconds": [
+        [
+          2.318655292
+        ],
+        [
+          2.289412125
+        ]
+      ],
+      "details": [
+        [],
+        []
+      ]
+    }
+  ],
+  "exact_parity": true,
+  "equal_completed_work_move_parity": true,
+  "score_parity": true
+}

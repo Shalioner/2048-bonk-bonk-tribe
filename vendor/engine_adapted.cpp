@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <atomic>
 #include <chrono>
+#include <cmath>
 #include <thread>
 #include <vector>
 
@@ -43,16 +44,39 @@ struct search_cache_hash {
 };
 
 #include "config.h"
-#if defined(HAVE_UNORDERED_MAP)
-    #include <unordered_map>
-    typedef std::unordered_map<search_cache_key, float, search_cache_hash> trans_table_t;
-#elif defined(HAVE_TR1_UNORDERED_MAP)
-    #include <tr1/unordered_map>
-    typedef std::tr1::unordered_map<search_cache_key, float, search_cache_hash> trans_table_t;
-#else
-    #include <map>
-    typedef std::map<search_cache_key, float> trans_table_t;
-#endif
+// Per-root exact cache with open addressing: no node allocations or eviction.
+// remaining_depth == 0 marks an empty slot; only positive horizons are cached.
+class trans_table_t {
+    struct slot { search_cache_key key = {0, 0, 0}; float value = 0; };
+    std::vector<slot> slots;
+    size_t entries = 0;
+    void grow() {
+        std::vector<slot> old;
+        old.swap(slots);
+        slots.resize(old.empty() ? 64 : old.size() * 2);
+        entries = 0;
+        for (const slot &s : old) if (s.key.remaining_depth != 0) put(s.key, s.value);
+    }
+public:
+    const float *find(const search_cache_key &key) const {
+        if (slots.empty()) return NULL;
+        size_t i = search_cache_hash()(key) & (slots.size() - 1);
+        while (slots[i].key.remaining_depth != 0) {
+            if (slots[i].key == key) return &slots[i].value;
+            i = (i + 1) & (slots.size() - 1);
+        }
+        return NULL;
+    }
+    void put(const search_cache_key &key, float value) {
+        if (slots.empty() || (entries + 1) * 10 >= slots.size() * 7) grow();
+        size_t i = search_cache_hash()(key) & (slots.size() - 1);
+        while (slots[i].key.remaining_depth != 0 && !(slots[i].key == key))
+            i = (i + 1) & (slots.size() - 1);
+        if (slots[i].key.remaining_depth == 0) { slots[i].key = key; ++entries; }
+        slots[i].value = value;
+    }
+    size_t size() const { return entries; }
+};
 
 /* MSVC compatibility: undefine max and min macros */
 #if defined(max)
@@ -110,6 +134,7 @@ static board_t col_up_table[65536];
 static board_t col_down_table[65536];
 static float heur_score_table[65536];
 static float score_table[65536];
+static uint8_t row_max_rank[65536];
 
 // Rules of the "Звёздное провидение" merge mode: tiles of CAP_RANK (2048 in classic
 // terms) never merge with each other; the goal is GOAL_COUNT such tiles at once.
@@ -120,6 +145,16 @@ static const int GOAL_COUNT = 3;
 // Filled from Python (set_spawn_table); classic 90/10 until then.
 static float spawn_table[16][15];
 static bool spawn_table_set = false;
+struct spawn_ranks_t { int ranks[15]; int count; };
+static spawn_ranks_t spawn_ranks[16];
+static void refresh_spawn_ranks() {
+    for (int stage = 0; stage < 16; ++stage) {
+        spawn_ranks[stage].count = 0;
+        for (int rank = 1; rank <= 15; ++rank)
+            if (spawn_table[stage][rank-1] > 0)
+                spawn_ranks[stage].ranks[spawn_ranks[stage].count++] = rank;
+    }
+}
 
 // Heuristic scoring settings
 static const float SCORE_LOST_PENALTY = 200000.0f;
@@ -138,6 +173,7 @@ void init_tables() {
             spawn_table[s][1] = 0.1f;
         }
     }
+    refresh_spawn_ranks();
     for (unsigned row = 0; row < 65536; ++row) {
         unsigned line[4] = {
                 (row >>  0) & 0xf,
@@ -145,6 +181,8 @@ void init_tables() {
                 (row >>  8) & 0xf,
                 (row >> 12) & 0xf
         };
+
+        row_max_rank[row] = std::max(std::max(line[0], line[1]), std::max(line[2], line[3]));
 
         // Score
         float score = 0.0f;
@@ -235,9 +273,8 @@ void init_tables() {
     }
 }
 
-static inline board_t execute_move_0(board_t board) {
+static inline board_t execute_move_0_transposed(board_t board, board_t t) {
     board_t ret = board;
-    board_t t = transpose(board);
     ret ^= col_up_table[(t >>  0) & ROW_MASK] <<  0;
     ret ^= col_up_table[(t >> 16) & ROW_MASK] <<  4;
     ret ^= col_up_table[(t >> 32) & ROW_MASK] <<  8;
@@ -245,9 +282,8 @@ static inline board_t execute_move_0(board_t board) {
     return ret;
 }
 
-static inline board_t execute_move_1(board_t board) {
+static inline board_t execute_move_1_transposed(board_t board, board_t t) {
     board_t ret = board;
-    board_t t = transpose(board);
     ret ^= col_down_table[(t >>  0) & ROW_MASK] <<  0;
     ret ^= col_down_table[(t >> 16) & ROW_MASK] <<  4;
     ret ^= col_down_table[(t >> 32) & ROW_MASK] <<  8;
@@ -273,6 +309,9 @@ static inline board_t execute_move_3(board_t board) {
     return ret;
 }
 
+static inline board_t execute_move_0(board_t board) { return execute_move_0_transposed(board, transpose(board)); }
+static inline board_t execute_move_1(board_t board) { return execute_move_1_transposed(board, transpose(board)); }
+
 /* Execute a move. */
 board_t execute_move(int move, board_t board) {
     switch(move) {
@@ -290,12 +329,8 @@ board_t execute_move(int move, board_t board) {
 }
 
 static inline int get_max_rank(board_t board) {
-    int maxrank = 0;
-    while (board) {
-        maxrank = std::max(maxrank, int(board & 0xf));
-        board >>= 4;
-    }
-    return maxrank;
+    return std::max(std::max(row_max_rank[board & ROW_MASK], row_max_rank[(board >> 16) & ROW_MASK]),
+                    std::max(row_max_rank[(board >> 32) & ROW_MASK], row_max_rank[board >> 48]));
 }
 
 static inline int count_distinct_tiles(board_t board) {
@@ -399,10 +434,10 @@ static float score_tilechoose_node(eval_state &state, board_t board, float cprob
     }
     const bool use_cache = state.cache_enabled && state.curdepth < CACHE_DEPTH_LIMIT;
     if (use_cache) {
-        const trans_table_t::iterator i = state.trans_table.find(cache_key);
-        if (i != state.trans_table.end()) {
+        const float *cached = state.trans_table.find(cache_key);
+        if (cached) {
             state.cachehits++;
-            return i->second;
+            return *cached;
         }
     }
 
@@ -410,23 +445,26 @@ static float score_tilechoose_node(eval_state &state, board_t board, float cprob
     cprob /= num_open;
 
     float res = 0.0f;
-    board_t tmp = board;
-    board_t tile_2 = 1;
-    const float *spawn_probs = spawn_table[get_max_rank(board)];
-    while (tile_2) {
-        if ((tmp & 0xf) == 0) {
-            for(int rank=1;rank<=15;rank++) {
-                float p=spawn_probs[rank-1];
-                if(p>0) res += score_move_node(state, board | (tile_2*rank), cprob*p)*p;
-            }
+    board_t occupied = board;
+    occupied |= (occupied >> 2) & 0x3333333333333333ULL;
+    occupied |= occupied >> 1;
+    board_t empty = ~occupied & 0x1111111111111111ULL;
+    int stage = get_max_rank(board);
+    const float *spawn_probs = spawn_table[stage];
+    const spawn_ranks_t &active = spawn_ranks[stage];
+    while (empty) {
+        board_t tile = empty & -empty;
+        empty &= empty - 1;
+        for (int i = 0; i < active.count; ++i) {
+            int rank = active.ranks[i];
+            float p = spawn_probs[rank-1];
+            res += score_move_node(state, board | (tile*rank), cprob*p)*p;
         }
-        tmp >>= 4;
-        tile_2 <<= 4;
     }
     res = res / num_open;
 
     if (use_cache) {
-        state.trans_table[cache_key] = res;
+        state.trans_table.put(cache_key, res);
     }
 
     return res;
@@ -435,8 +473,11 @@ static float score_tilechoose_node(eval_state &state, board_t board, float cprob
 static float score_move_node(eval_state &state, board_t board, float cprob) {
     float best = 0.0f;
     state.curdepth++;
+    board_t t = transpose(board);
+    board_t next[4] = {execute_move_0_transposed(board, t), execute_move_1_transposed(board, t),
+                       execute_move_2(board), execute_move_3(board)};
     for (int move = 0; move < 4; ++move) {
-        board_t newboard = execute_move(move, board);
+        board_t newboard = next[move];
         state.moves_evaled++;
 
         if (board != newboard) {
@@ -821,11 +862,15 @@ extern "C" int set_spawn_table(const float *probs, int stages, int levels) {
     float tmp[16][15];
     for (int s = 0; s < 16; ++s) {
         float sum = 0;
-        for (int r = 0; r < levels; ++r) { if (probs[s*levels+r] < 0) return -1; sum += probs[s*levels+r]; }
-        if (sum <= 0) return -1;
+        for (int r = 0; r < levels; ++r) {
+            if (!std::isfinite(probs[s*levels+r]) || probs[s*levels+r] < 0) return -1;
+            sum += probs[s*levels+r];
+        }
+        if (!std::isfinite(sum) || sum <= 0) return -1;
         for (int r = 0; r < 15; ++r) tmp[s][r] = r < levels ? probs[s*levels+r] / sum : 0.0f;
     }
     memcpy(spawn_table, tmp, sizeof(tmp));
+    refresh_spawn_ranks();
     spawn_table_set = true;
     return 0;
 }

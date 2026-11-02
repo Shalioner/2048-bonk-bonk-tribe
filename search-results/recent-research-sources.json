@@ -1,0 +1,100 @@
+{
+  "accessed": "2026-11-01",
+  "scope": "Свежие первичные материалы и проверка применимости к полному циклу Bonk Bonk Tribe; без отправки исходников во внешние запросы",
+  "recent_materials": [
+    {
+      "id": "apple-wwdc26-responsive",
+      "title": "Profile, fix, and verify: Improve app responsiveness with Instruments",
+      "date": "WWDC26, 2026; точный день на прочитанной странице не указан",
+      "url": "https://developer.apple.com/videos/play/wwdc2026/268/",
+      "publisher": "Apple",
+      "locators": "Transcript: diagnostic flow; sampling data visualization; system blocking; Run Comparisons",
+      "supported_use": "Разделение CPU saturation, execution contention и blocking; сравнение одинаковых интервалов",
+      "limit": "Не доказывает доступность Instruments27 на текущей машине или величину ускорения нашего цикла"
+    },
+    {
+      "id": "apple-wwdc25-cpu",
+      "title": "Optimize CPU performance with Instruments",
+      "date": "WWDC25, 2025",
+      "url": "https://developer.apple.com/videos/play/wwdc2025/308/",
+      "publisher": "Apple",
+      "locators": "Profilers 8:50; Processor Trace 14:05; bottleneck analysis 19:51; transcript аппаратных требований",
+      "supported_use": "Sampling bias, аппаратные ограничения и различие CPU bottlenecks",
+      "limit": "Processor Trace в докладе требует M4/A18; live sysctl текущей машины показывает M1. Наличие Xcode/доступность counters не предполагаются"
+    },
+    {
+      "id": "msvc-spgo-2026",
+      "title": "Introducing Sample Profile Guided Optimization in MSVC",
+      "date": "2026-05-19",
+      "url": "https://devblogs.microsoft.com/cppblog/introducing-sample-profile-guided-optimization-in-msvc/",
+      "publisher": "Microsoft C++ compiler team; David Gillies",
+      "locators": "Limitations of Traditional PGO; Data Collection Strategies; How the Compiler Improves Optimization using Profile Data",
+      "supported_use": "Представительный профиль, актуальность профиля, inlining/code layout/hot-cold optimizations",
+      "limit": "MSVC/Windows workflow не применяется к Apple clang напрямую; заявленные проценты в наш прогноз не включены"
+    },
+    {
+      "id": "bolt-arm-2025",
+      "title": "Tutorial: BOLT on AArch64 and how it compares with other PGOs",
+      "date": "2025-10-29",
+      "url": "https://llvm.org/devmtg/2025-10/slides/tutorials/mpeis.pdf",
+      "publisher": "LLVM Developers Meeting / Arm; Paschalis Mpeis",
+      "locators": "PDF pages1,4-7,10-17: date, front-end bottleneck and code-layout mechanisms",
+      "supported_use": "Проверять code locality/front-end признаки до выбора post-link optimization",
+      "limit": "Не доказан front-end bottleneck нашей библиотеки. ELF требования подтверждены отдельно README; Mach-O не объявляется поддерживаемой целью"
+    },
+    {
+      "id": "hash-open-addressing-2025-v2",
+      "title": "Optimal Bounds for Open Addressing Without Reordering",
+      "date": "2025-02-28 v2; v1 2025-01-04; conference FOCS2024",
+      "url": "https://arxiv.org/html/2501.02305v2",
+      "publisher": "Martin Farach-Colton, Andrew Krapivin, William Kuszmaul",
+      "locators": "Sections1-3, Theorems1-2; Background probe complexity definition",
+      "supported_use": "Теоретический контекст исследования probe complexity elastic/funnel hashing",
+      "limit": "Теоретические expected bounds не доказывают wall-time benefit для растущей таблицы при70% с bitboard keys; реализация не переносилась"
+    },
+    {
+      "id": "lkforge-2048-2026",
+      "title": "How Much Search Does 2048 Need? An Expectimax Depth Benchmark",
+      "date": "2026-09-09; update 2026-09-23",
+      "url": "https://lkforge.com/blog/2048-expectimax-depth-benchmark/",
+      "publisher": "LK Forge; Lucian, автор собственного решателя",
+      "locators": "How we measured it; Every number; Why the shipped engine varies its depth; update note",
+      "supported_use": "Современный первичный benchmark2048 с указанием глубины, размера выборки, версии и метода",
+      "limit": "Результаты не воспроизведены; другие rules/heuristic/search policy. Описание randomness/sampling и адаптивной глубины требует осторожности. Ни ms, ни win-rate не переносятся на нашу задачу; depth8 не меняется"
+    }
+  ],
+  "supporting_documentation": [
+    {
+      "url": "https://clang.llvm.org/docs/UsersManual.html#profile-guided-optimization",
+      "context7_library": "/websites/clang_llvm_usersmanual",
+      "use": "IR PGO, concurrent profile counters, прежняя FP/fp-contract policy",
+      "date_note": "Текущая документация, не отдельная датированная новая статья; поддержка Apple clang17 требует локального smoke"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/llvm/llvm-project/main/bolt/README.md",
+      "use": "Input Binary Requirements: X86-64/AArch64 ELF",
+      "date_note": "main fetched2026-11-01, revision не закреплён"
+    },
+    {
+      "url": "https://docs.python.org/3.9/library/subprocess.html",
+      "context7_library": "/python/cpython/v3.9.22",
+      "use": "run timeout=None, check=True CalledProcessError, timeout handling",
+      "date_note": "Семантика используемого Python API, не новая статья"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/landley/toybox/master/toys/posix/dd.c",
+      "use": "Refutation: current count/skip count bytes and subtract actual lengths; no blanket short-read/fullblock diagnosis",
+      "locators": "190-201,215-216,263",
+      "date_note": "master fetched2026-11-01; версия на телефоне не проверена"
+    }
+  ],
+  "local_evidence": [
+    "BLINDSPOT-FULL-MOVE-REVIEW.md",
+    "search-results/full-move-audit-local-evidence.json",
+    "bot.py:127,131,348,371-429",
+    "vendor/engine_adapted.cpp:29-51,389-467,664-748",
+    "SEARCH-PERFORMANCE.md",
+    "SEARCH-SPEED-RESEARCH.md"
+  ],
+  "constraints": "Исследование/audit only. Продукт/библиотеки/модель/глубина/вероятности/обход не изменены; live Android, установки и платные действия не выполнялись"
+}
