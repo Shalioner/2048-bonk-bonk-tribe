@@ -76,7 +76,8 @@ class CycleTests(unittest.TestCase):
                 state['decodes'] += 1
                 if frame_bytes is not None:return original_decode(data)
                 return SimpleNamespace(size=(1440, 3040), save=Mock())
-            def choose(board, depth, think, info):
+            def choose(board, depth, think, info, *, policy):
+                self.assertEqual(policy, 'progressive')
                 self.assertEqual((depth, think), (8, 10.))
                 clock.advance(.07)
                 info.update(search_s=.07, passes=1, positions=4)
