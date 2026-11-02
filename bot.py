@@ -266,6 +266,18 @@ def load_engine(path=ENGINE):
     if hasattr(lib,"value_model_error"):
         lib.value_model_error.argtypes=[]
         lib.value_model_error.restype=ctypes.c_char_p
+    if hasattr(lib,"load_td_model"):
+        lib.load_td_model.argtypes=[ctypes.c_char_p]
+        lib.load_td_model.restype=ctypes.c_int
+    if hasattr(lib,"clear_td_model"):
+        lib.clear_td_model.argtypes=[]
+        lib.clear_td_model.restype=None
+    if hasattr(lib,"td_model_loaded"):
+        lib.td_model_loaded.argtypes=[]
+        lib.td_model_loaded.restype=ctypes.c_int
+    if hasattr(lib,"td_model_error"):
+        lib.td_model_error.argtypes=[]
+        lib.td_model_error.restype=ctypes.c_char_p
     lib.init_tables()
     return lib
 
@@ -340,11 +352,22 @@ def configure_value_model(path=None):
     required=("load_value_model","clear_value_model","value_model_loaded","value_model_error")
     if any(not hasattr(NATIVE,name) for name in required):
         raise RuntimeError("Движок не поддерживает value-модель: пересоберите sh vendor/build.sh")
-    from value_model import ValueModel
     path=Path(path)
-    ValueModel.load(path) # Проверка JSON-метаданных, архитектуры и SHA до native load.
-    if NATIVE.load_value_model(str(path).encode("utf-8"))!=0:
-        detail=NATIVE.value_model_error()
+    with path.open("rb") as stream:
+        magic=stream.read(8)
+    if magic==b"BONKTD01":
+        td_required=("load_td_model","clear_td_model","td_model_loaded","td_model_error")
+        if any(not hasattr(NATIVE,name) for name in td_required):
+            raise RuntimeError("Движок не поддерживает TD-модель: пересоберите sh vendor/build.sh")
+        from td_model import TDModel
+        TDModel.load(path)
+        load,error=NATIVE.load_td_model,NATIVE.td_model_error
+    else:
+        from value_model import ValueModel
+        ValueModel.load(path) # Строгая проверка до изменения действующей native-модели.
+        load,error=NATIVE.load_value_model,NATIVE.value_model_error
+    if load(str(path).encode("utf-8"))!=0:
+        detail=error()
         raise RuntimeError("Не удалось загрузить value-модель: "+(detail.decode("utf-8",errors="replace") if detail else "ошибка формата"))
 
 
