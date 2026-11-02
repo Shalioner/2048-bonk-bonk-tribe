@@ -1,0 +1,37 @@
+test_comparison_reuses_seeds_and_reports_each_depth (test_benchmark.BenchmarkTests) ... ok
+test_endgame_depth_switches_and_counts_only_completed_moves (test_benchmark.BenchmarkTests) ... ok
+test_fixed_search_has_no_budget_and_matches_native (test_benchmark.BenchmarkTests) ... ok
+test_goal_on_last_move (test_benchmark.BenchmarkTests) ... ok
+test_limit_counts_completed_move (test_benchmark.BenchmarkTests) ... ok
+test_loss_on_last_move (test_benchmark.BenchmarkTests) ... ok
+test_solver_uses_simulator_model (test_benchmark.BenchmarkTests) ... ok
+test_timed_cli_forwards_progressive_default_and_explicit_legacy (test_benchmark.BenchmarkTests) ... ok
+test_unsupported_progressive_cli_stops_before_checkpoint_or_game (test_benchmark.BenchmarkTests) ... ok
+test_zero_moves (test_benchmark.BenchmarkTests) ... ok
+test_endgame_config_is_forwarded_and_resume_mismatch_rejected (test_benchmark.CheckpointTests) ... ok
+test_failed_atomic_replace_keeps_previous_json (test_benchmark.CheckpointTests) ... ok
+test_incompatible_config_model_or_sources_preserves_file (test_benchmark.CheckpointTests) ... ok
+test_interruption_resume_and_completed_run_skips_every_game (test_benchmark.CheckpointTests) ... ok
+test_loaded_engine_change_rejected_without_overwrite (test_benchmark.CheckpointTests) ... ok
+test_missing_loaded_engine_has_user_error_without_overwrite (test_benchmark.CheckpointTests) ... ok
+test_missing_or_legacy_checkpoint_rejected (test_benchmark.CheckpointTests) ... ok
+test_baseline_tie_priority_keeps_separate_control_labels (test_math_cycle.MathCycleTests) ... ok
+test_build_validation_checks_actual_source_and_binary (test_math_cycle.MathCycleTests) ... ok
+test_changed_config_source_or_order_refuses_resume (test_math_cycle.MathCycleTests) ... ok
+test_freeze_and_finalize_never_continue_incomplete_stage (test_math_cycle.MathCycleTests) ... ok
+test_freeze_rejects_changed_selection_policy_and_raw_screen (test_math_cycle.MathCycleTests) ... ok
+test_full_pipeline_fresh_control_and_exact_test (test_math_cycle.MathCycleTests) ... ok
+test_last_round_growth_cannot_be_called_plateau (test_math_cycle.MathCycleTests) ... ok
+test_limit_is_saved_and_halts_without_loss_or_continuation (test_math_cycle.MathCycleTests) ... ok
+test_malformed_telemetry_and_terminal_cap_snapshot_rejected (test_math_cycle.MathCycleTests) ... ok
+test_paired_duplicate_or_missing_seed_and_negative_outcomes (test_math_cycle.MathCycleTests) ... ok
+test_real_protocol_and_single_constant_changes (test_math_cycle.MathCycleTests) ... ok
+test_relative_module_filename_has_identical_source_fingerprint (test_math_cycle.MathCycleTests) ... ok
+test_seed_extraction_prior_ranges_and_hidden_overlap (test_math_cycle.MathCycleTests) ... ok
+test_serial_rotation_and_resume_exact_prefix (test_math_cycle.MathCycleTests) ... ok
+test_synthetic_goal_uses_progressive_and_stops_before_spawn (test_math_cycle.MathCycleTests) ... ok
+
+----------------------------------------------------------------------
+Ran 32 tests in 0.606s
+
+OK

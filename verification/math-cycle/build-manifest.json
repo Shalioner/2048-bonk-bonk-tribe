@@ -1,0 +1,54 @@
+{
+ "version": 1,
+ "sources": {
+  "benchmark.py": "f1a00e91928ed6e41964747d205e669d9fbb1b55c8ddc2199e1a7731e5ae60f3",
+  "bot.py": "c7be4abdd61e5b8b2f64d967deeae703b6838796d4a8e9625f7257bfd4918f15",
+  "experiments/math/plan.json": "e6470c701c1d79dd911d87729e73c8d89ee6dcb11322bd9211025d9901af3bab",
+  "experiments/math/run.py": "1fd5b872d201108ba30aec103e14539584230b5faebbdcfa8433b861438cf62b",
+  "experiments/math/seed-inventory.json": "8fb57260337f949f09ede1b35cdb21f366f8160f0870228971ee2cb41dfb9076",
+  "spawn-model.default.json": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+  "vendor/2048.h": "2597ae4726e872494bb57997154fdb0279cfc706bb0aad7dcb758be5231ec85d",
+  "vendor/config.h": "5bbfde3aedbd34414eb6a7c1fb1a8b7f5fb2b76b66bb014318be496f24c7bda1",
+  "vendor/engine_adapted.cpp": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d",
+  "vendor/platdefs.h": "5b3923979efb21112335319ff92a807cf47620002b446864eddea5f9925d983c"
+ },
+ "pure_commit": "e28aad01f8c8e3aa725e41640625e5fda7a02701",
+ "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin24.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+ "flags": [
+  "clang++",
+  "-O3",
+  "-std=c++11",
+  "-dynamiclib",
+  "-pthread"
+ ],
+ "engines": {
+  "baseline": {
+   "sha256": "d8c7bc2194e2d8f0f09cf18946abef4ccd1d96e736610f28732d1293f4fb51b4",
+   "source_sha256": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d"
+  },
+  "empty_r1": {
+   "sha256": "be310b9ec4e041f3fb7e8a5973f329b8157742514b67c8c57f39d5ae11783147",
+   "source_sha256": "dd9ce37311d46e3d113462c45a941d1ae0393ae2ea4d9aae49710202eb49b7a3"
+  },
+  "mono_r1": {
+   "sha256": "2ee5564e41b334181bf4f6b8a40207ae4d868e6603221594d77c21e9cdbb0437",
+   "source_sha256": "fc8c8b3871f1ed0bd57a52351386311586367f62f5e7b06c2dbb189257e25710"
+  },
+  "merges_r1": {
+   "sha256": "b209ea31305511653e3edc2f11ff19d3df51e8ce33a890f7f5e979ebc0a2df1f",
+   "source_sha256": "0f744b9fc9683bb20f87a098f034a49a36d1f4c02ab19fa514a3dbf7d3d79160"
+  },
+  "empty_r2": {
+   "sha256": "0991e2c1f2bc7c93c44432dbcc08a086278174690f82bce69974e7862e4c4c12",
+   "source_sha256": "90b6033edf0d490d729909c1678e5080bed7083f77b27f2df724d885c5055744"
+  },
+  "mono_r2": {
+   "sha256": "d05de66df54238f0f16ce6bf6ff2789d37ecd729caaa0278b2c77e1953289399",
+   "source_sha256": "a1a26ee3718e6d23e5baeeca2b83811cc955962f53722ed4c17bbc2b263e9d4e"
+  },
+  "merges_r2": {
+   "sha256": "f7b4cdda249be06f562692b3b54ae2aad102bf07ab5a34b64676059b1aa1c1f4",
+   "source_sha256": "032d5c92ec61a2da0f20db9d440ff5cdb14778736dc2827b7fb9d33938dd38f8"
+  }
+ }
+}

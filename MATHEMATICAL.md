@@ -31,3 +31,15 @@ bot/benchmarktests. 31поле×2глубины×2threshold=124сравнени�
 Активных ML-экспортов в DLL нет; архивные377файлов сохранены в старом
 TD-worktree. После benchmarkfollowup2дополнительныхтеста проверяютpolicyrouting;
 его targetedgate будет записан вместе с новымrunner.
+
+Новый runner, plan и inventory в experiments/math зафиксированы до данных.
+Семь фактических root-библиотек построены изpinnede28, проверены API2/CAP11/
+GOAL3/progressive и отсутствиеMC/TDэкспортов. SHA/source/flags/compiler и копии
+исходников — verification/math-cycle, бинарные копии — ../native-engines.
+Всего84уникальныхтеста прошли(65pure,2новыхbenchmarkrouting,17runner);
+32target и17freezeclosure логи сохранены. До данных исправленP2неполного
+freezeSHAнабора; независимыйclosureподтвердилregression. Другихблокеровнет.
+
+Команды нового опыта: python3 experiments/math/run.py build, затем screen,
+freeze, control, finalize. После начала не пересобирать библиотеки/исходники.
+Для частично готовых screen/control нужен --resume; данные не перезаписываются.
