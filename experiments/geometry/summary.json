@@ -1,0 +1,112 @@
+{
+ "version": 1,
+ "finalist": "baseline",
+ "paired": {
+  "gained": [
+   1900000007,
+   1900000015,
+   1900000017,
+   1900000019,
+   1900000030,
+   1900000031,
+   1900000036,
+   1900000044,
+   1900000047,
+   1900000051,
+   1900000056
+  ],
+  "lost": [
+   1900000001,
+   1900000003,
+   1900000009,
+   1900000011,
+   1900000014,
+   1900000018,
+   1900000021,
+   1900000023,
+   1900000025,
+   1900000028,
+   1900000034,
+   1900000037,
+   1900000039,
+   1900000041,
+   1900000042,
+   1900000048,
+   1900000049,
+   1900000052,
+   1900000053,
+   1900000054,
+   1900000057
+  ],
+  "one_sided_p": 0.9749487701337785,
+  "improved": false
+ },
+ "arms": {
+  "baseline": {
+   "games": 60,
+   "goals": 34,
+   "win_rate": 0.5666666666666667,
+   "limits": 0,
+   "moves": 117317,
+   "total_wall": 508.7667171689997,
+   "search_wall": 484.98465530198354,
+   "choose_wall_per_move": 0.00413396741565147,
+   "depth_counts": {
+    "1": 133,
+    "2": 3020,
+    "3": 95696,
+    "4": 17531,
+    "5": 772,
+    "6": 69,
+    "7": 23,
+    "8": 73
+   },
+   "positions": 48247294204,
+   "positions_scope": "legacy search-node counter excludes feature arithmetic; production risk makes no execute_move calls"
+  },
+  "finalist": {
+   "games": 60,
+   "goals": 24,
+   "win_rate": 0.4,
+   "limits": 0,
+   "moves": 115245,
+   "total_wall": 514.0523391690004,
+   "search_wall": 488.56831120602976,
+   "choose_wall_per_move": 0.004239388357030932,
+   "depth_counts": {
+    "1": 183,
+    "2": 4222,
+    "3": 92874,
+    "4": 17000,
+    "5": 827,
+    "6": 92,
+    "7": 17,
+    "8": 30
+   },
+   "positions": 46214198852,
+   "positions_scope": "legacy search-node counter excludes feature arithmetic; production risk makes no execute_move calls"
+  }
+ },
+ "confirmed_improvement": false,
+ "choose_wall_ratio": 1.0255011544068613,
+ "actual_cost_within_10_percent": true,
+ "freeze_sha256": "a00581a3407d1f857a1a716df791cf92f8794acd608467b880cde3cd51c394a9",
+ "control_sha256": "2496a7ebd1d26ddb75b9290ef1380e1f9838277b67c9021d30c093af60cc8286",
+ "stop_reason": "local_plateau",
+ "rounds": [
+  {
+   "round": 1,
+   "previous_best": 9,
+   "best_goals": 9,
+   "improved": false
+  },
+  {
+   "round": 2,
+   "previous_best": 9,
+   "best_goals": 9,
+   "improved": false
+  }
+ ],
+ "stop": "after all seven predetermined arms: local_plateau only if neither round1 nor round2 improves previous best goal count; otherwise bounded_neighborhood_exhausted. Both labels refer only to this fixed bounded neighborhood, never global optimum. No weights tuned on control.",
+ "scope": "offline modeled Bonk only, pure formulas without ML/training/fit; spawn-stage rules remain assumptions; nominal10ms is not actual-cost equality and does not establish10s/phone win-rate; legacy positions counts search nodes rather than feature arithmetic, and production risk makes no execute_move calls; no tuning on control"
+}
