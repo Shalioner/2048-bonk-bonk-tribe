@@ -52,15 +52,15 @@
  "hypotheses": {
   "segments": {
    "effect": "Compute monotonicity separately in segments split by immutable CAP cells; strength .5/1 interpolates the correction.",
-   "cost": "Additional row/column segment arithmetic per leaf; may weaken useful global ordering."
+   "cost": "Segment arithmetic is computed once in init_tables over 65536 rows; runtime leaf keeps the same eight row/column lookups. May weaken useful global ordering."
   },
   "geometry": {
    "effect": "Soft penalty for CAP geometry that constricts free-space mobility; strengths2000/4000. CAP tiles are never hard walls for legal moves.",
-   "cost": "Extra board topology arithmetic per leaf; may over-penalize useful CAP positions."
+   "cost": "One-time initialization of a 65536-entry adjacency LUT; per leaf CAP-mask extraction plus LUT/popcount arithmetic. May over-penalize useful CAP positions."
   },
   "risk": {
    "effect": "Exact probability of immediate no-legal-move loss after the next spawn, only with two CAP and <=3 empty cells; strengths .5/1.",
-   "cost": "Additional execute_move checks are outside the existing positions counter; judge wall time/depth, not positions alone."
+   "cost": "Per-leaf CAP/empty and adjacency arithmetic; closed-form probability sum for exactly one empty cell, zero risk with >=2 empties. No production execute_move calls; this arithmetic is absent from the legacy positions counter, so judge wall time/depth."
   }
  },
  "search": {
@@ -86,7 +86,7 @@
  },
  "criterion": "nonbaseline finalist goals>baseline goals AND exact paired one-sided p<=0.05 AND zero limits; otherwise retain baseline. Actual choose-wall cost within +/-10% is reported separately, never assumed from the nominal budget.",
  "stop": "after all seven predetermined arms: local_plateau only if neither round1 nor round2 improves previous best goal count; otherwise bounded_neighborhood_exhausted. Both labels refer only to this fixed bounded neighborhood, never global optimum. No weights tuned on control.",
- "scope": "offline modeled Bonk only, pure formulas without ML/training/fit; spawn-stage rules remain assumptions; nominal10ms is not actual-cost equality and does not establish10s/phone win-rate; extra risk move checks are absent from the legacy positions counter; no tuning on control",
+ "scope": "offline modeled Bonk only, pure formulas without ML/training/fit; spawn-stage rules remain assumptions; nominal10ms is not actual-cost equality and does not establish10s/phone win-rate; legacy positions counts search nodes rather than feature arithmetic, and production risk makes no execute_move calls; no tuning on control",
  "history": [
   {
    "name": "previous_pure_math",

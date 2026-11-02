@@ -360,7 +360,7 @@ def summarize(games):
                            moves=moves, total_wall=sum(g["seconds"] for g in rows), search_wall=wall,
                            choose_wall_per_move=wall / moves if moves else None, depth_counts=depths,
                            positions=sum(g["positions"] for g in rows),
-                           positions_scope="legacy search counter excludes extra immediate-risk execute_move checks")
+                           positions_scope="legacy search-node counter excludes feature arithmetic; production risk makes no execute_move calls")
     return result
 
 
