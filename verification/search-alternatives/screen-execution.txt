@@ -1,0 +1,99 @@
+{"stage": "screen", "seed": 2400000000, "arm": "baseline", "result": "goal"}
+{"stage": "screen", "seed": 2400000000, "arm": "canonical", "result": "loss"}
+{"stage": "screen", "seed": 2400000000, "arm": "serial_shallow", "result": "loss"}
+{"stage": "screen", "seed": 2400000000, "arm": "precision", "result": "loss"}
+{"stage": "screen", "seed": 2400000000, "arm": "banked_endgame", "result": "loss"}
+{"stage": "screen", "seed": 2400000001, "arm": "canonical", "result": "goal"}
+{"stage": "screen", "seed": 2400000001, "arm": "serial_shallow", "result": "goal"}
+{"stage": "screen", "seed": 2400000001, "arm": "precision", "result": "loss"}
+{"stage": "screen", "seed": 2400000001, "arm": "banked_endgame", "result": "goal"}
+{"stage": "screen", "seed": 2400000001, "arm": "baseline", "result": "loss"}
+{"stage": "screen", "seed": 2400000002, "arm": "serial_shallow", "result": "loss"}
+{"stage": "screen", "seed": 2400000002, "arm": "precision", "result": "loss"}
+{"stage": "screen", "seed": 2400000002, "arm": "banked_endgame", "result": "goal"}
+{"stage": "screen", "seed": 2400000002, "arm": "baseline", "result": "goal"}
+{"stage": "screen", "seed": 2400000002, "arm": "canonical", "result": "goal"}
+{"stage": "screen", "seed": 2400000003, "arm": "precision", "result": "goal"}
+{"stage": "screen", "seed": 2400000003, "arm": "banked_endgame", "result": "goal"}
+{"stage": "screen", "seed": 2400000003, "arm": "baseline", "result": "loss"}
+{"stage": "screen", "seed": 2400000003, "arm": "canonical", "result": "goal"}
+{"stage": "screen", "seed": 2400000003, "arm": "serial_shallow", "result": "loss"}
+{"stage": "screen", "seed": 2400000004, "arm": "banked_endgame", "result": "loss"}
+{"stage": "screen", "seed": 2400000004, "arm": "baseline", "result": "loss"}
+{"stage": "screen", "seed": 2400000004, "arm": "canonical", "result": "loss"}
+{"stage": "screen", "seed": 2400000004, "arm": "serial_shallow", "result": "loss"}
+{"stage": "screen", "seed": 2400000004, "arm": "precision", "result": "loss"}
+{"stage": "screen", "seed": 2400000005, "arm": "baseline", "result": "goal"}
+{"stage": "screen", "seed": 2400000005, "arm": "canonical", "result": "loss"}
+{"stage": "screen", "seed": 2400000005, "arm": "serial_shallow", "result": "goal"}
+{"stage": "screen", "seed": 2400000005, "arm": "precision", "result": "loss"}
+{"stage": "screen", "seed": 2400000005, "arm": "banked_endgame", "result": "goal"}
+{"stage": "screen", "seed": 2400000006, "arm": "canonical", "result": "goal"}
+{"stage": "screen", "seed": 2400000006, "arm": "serial_shallow", "result": "goal"}
+{"stage": "screen", "seed": 2400000006, "arm": "precision", "result": "loss"}
+{"stage": "screen", "seed": 2400000006, "arm": "banked_endgame", "result": "loss"}
+{"stage": "screen", "seed": 2400000006, "arm": "baseline", "result": "loss"}
+{"stage": "screen", "seed": 2400000007, "arm": "serial_shallow", "result": "goal"}
+{"stage": "screen", "seed": 2400000007, "arm": "precision", "result": "loss"}
+{"stage": "screen", "seed": 2400000007, "arm": "banked_endgame", "result": "loss"}
+{"stage": "screen", "seed": 2400000007, "arm": "baseline", "result": "loss"}
+{"stage": "screen", "seed": 2400000007, "arm": "canonical", "result": "goal"}
+{"stage": "screen", "seed": 2400000008, "arm": "precision", "result": "goal"}
+{"stage": "screen", "seed": 2400000008, "arm": "banked_endgame", "result": "goal"}
+{"stage": "screen", "seed": 2400000008, "arm": "baseline", "result": "loss"}
+{"stage": "screen", "seed": 2400000008, "arm": "canonical", "result": "goal"}
+{"stage": "screen", "seed": 2400000008, "arm": "serial_shallow", "result": "loss"}
+{"stage": "screen", "seed": 2400000009, "arm": "banked_endgame", "result": "goal"}
+{"stage": "screen", "seed": 2400000009, "arm": "baseline", "result": "loss"}
+{"stage": "screen", "seed": 2400000009, "arm": "canonical", "result": "loss"}
+{"stage": "screen", "seed": 2400000009, "arm": "serial_shallow", "result": "loss"}
+{"stage": "screen", "seed": 2400000009, "arm": "precision", "result": "loss"}
+{"stage": "screen", "seed": 2400000010, "arm": "baseline", "result": "goal"}
+{"stage": "screen", "seed": 2400000010, "arm": "canonical", "result": "goal"}
+{"stage": "screen", "seed": 2400000010, "arm": "serial_shallow", "result": "loss"}
+{"stage": "screen", "seed": 2400000010, "arm": "precision", "result": "goal"}
+{"stage": "screen", "seed": 2400000010, "arm": "banked_endgame", "result": "goal"}
+{"stage": "screen", "seed": 2400000011, "arm": "canonical", "result": "loss"}
+{"stage": "screen", "seed": 2400000011, "arm": "serial_shallow", "result": "goal"}
+{"stage": "screen", "seed": 2400000011, "arm": "precision", "result": "goal"}
+{"stage": "screen", "seed": 2400000011, "arm": "banked_endgame", "result": "goal"}
+{"stage": "screen", "seed": 2400000011, "arm": "baseline", "result": "goal"}
+{"stage": "screen", "seed": 2400000012, "arm": "serial_shallow", "result": "loss"}
+{"stage": "screen", "seed": 2400000012, "arm": "precision", "result": "loss"}
+{"stage": "screen", "seed": 2400000012, "arm": "banked_endgame", "result": "loss"}
+{"stage": "screen", "seed": 2400000012, "arm": "baseline", "result": "loss"}
+{"stage": "screen", "seed": 2400000012, "arm": "canonical", "result": "loss"}
+{"stage": "screen", "seed": 2400000013, "arm": "precision", "result": "goal"}
+{"stage": "screen", "seed": 2400000013, "arm": "banked_endgame", "result": "goal"}
+{"stage": "screen", "seed": 2400000013, "arm": "baseline", "result": "goal"}
+{"stage": "screen", "seed": 2400000013, "arm": "canonical", "result": "loss"}
+{"stage": "screen", "seed": 2400000013, "arm": "serial_shallow", "result": "goal"}
+{"stage": "screen", "seed": 2400000014, "arm": "banked_endgame", "result": "goal"}
+{"stage": "screen", "seed": 2400000014, "arm": "baseline", "result": "goal"}
+{"stage": "screen", "seed": 2400000014, "arm": "canonical", "result": "loss"}
+{"stage": "screen", "seed": 2400000014, "arm": "serial_shallow", "result": "loss"}
+{"stage": "screen", "seed": 2400000014, "arm": "precision", "result": "loss"}
+{"stage": "screen", "seed": 2400000015, "arm": "baseline", "result": "loss"}
+{"stage": "screen", "seed": 2400000015, "arm": "canonical", "result": "goal"}
+{"stage": "screen", "seed": 2400000015, "arm": "serial_shallow", "result": "loss"}
+{"stage": "screen", "seed": 2400000015, "arm": "precision", "result": "loss"}
+{"stage": "screen", "seed": 2400000015, "arm": "banked_endgame", "result": "goal"}
+{"stage": "done", "action": "screen", "complete": true}
+      920.20 real      1875.53 user        82.76 sys
+           105136128  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             2350435  page reclaims
+                2503  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                1136  voluntary context switches
+             6880937  involuntary context switches
+      12187707625574  instructions retired
+       2709705864416  cycles elapsed
+            67765952  peak memory footprint

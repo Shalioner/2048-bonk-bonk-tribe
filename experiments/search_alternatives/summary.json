@@ -1,0 +1,193 @@
+{
+ "version": 1,
+ "measurement_schema": 1,
+ "finalist": "banked_endgame",
+ "paired": {
+  "gained": [
+   2500000000,
+   2500000012,
+   2500000021,
+   2500000023,
+   2500000026,
+   2500000029,
+   2500000032,
+   2500000034,
+   2500000035,
+   2500000036,
+   2500000038,
+   2500000039,
+   2500000041,
+   2500000045,
+   2500000046,
+   2500000048,
+   2500000049,
+   2500000054,
+   2500000057,
+   2500000063,
+   2500000064,
+   2500000073,
+   2500000075,
+   2500000078,
+   2500000079,
+   2500000081,
+   2500000082,
+   2500000091,
+   2500000092,
+   2500000096
+  ],
+  "lost": [
+   2500000001,
+   2500000003,
+   2500000007,
+   2500000008,
+   2500000019,
+   2500000022,
+   2500000033,
+   2500000053,
+   2500000055,
+   2500000056,
+   2500000067,
+   2500000068,
+   2500000072,
+   2500000074,
+   2500000090,
+   2500000099
+  ],
+  "one_sided_p": 0.027038015929434778,
+  "improved": true
+ },
+ "arms": {
+  "baseline": {
+   "games": 100,
+   "goals": 49,
+   "win_rate": 0.49,
+   "limits": 0,
+   "moves": 196444,
+   "total_wall": 867.601348997999,
+   "search_wall": 845.9337506379807,
+   "choose_wall_per_move": 0.004306233586355301,
+   "search_cpu_seconds": 2272.774039000009,
+   "choose_cpu_per_move": 0.011569577279021038,
+   "wall_latency": {
+    "count": 196495,
+    "median_seconds": 0.0035512090000224816,
+    "p95_nearest_rank_seconds": 0.008036208000021361,
+    "max_seconds": 0.1180170420000195,
+    "above_nominal_rate": 0.0009720349118298176,
+    "nominal_seconds": 0.01
+   },
+   "depth_counts": {
+    "1": 23,
+    "2": 529,
+    "3": 118105,
+    "4": 74714,
+    "5": 2644,
+    "6": 271,
+    "7": 56,
+    "8": 102
+   },
+   "threshold_counts": {
+    "1e-04": 196341,
+    "1e-05": 23,
+    "1e-06": 57,
+    "fallback": 23
+   },
+   "budget_profiles": {
+    "fixed": {
+     "mode": "fixed",
+     "nominal_allowance": 0.01,
+     "early_call_cap": 0.01,
+     "two_cap_call_cap": 0.01
+    }
+   },
+   "max_supplied_budget_seconds": 0.01,
+   "maximum_profile_call_cap_seconds": 0.01,
+   "min_final_credit_balance": null,
+   "positions": 160355593224,
+   "positions_scope": "legacy search-node counter is not a wall or CPU cost measurement"
+  },
+  "finalist": {
+   "games": 100,
+   "goals": 63,
+   "win_rate": 0.63,
+   "limits": 0,
+   "moves": 205340,
+   "total_wall": 1433.2213017519996,
+   "search_wall": 1410.1655317599623,
+   "choose_wall_per_move": 0.006867466308366428,
+   "search_cpu_seconds": 3710.756484000035,
+   "choose_cpu_per_move": 0.01807127926366044,
+   "wall_latency": {
+    "count": 205377,
+    "median_seconds": 0.005832542000007379,
+    "p95_nearest_rank_seconds": 0.020192999999835592,
+    "max_seconds": 0.16810791700004302,
+    "above_nominal_rate": 0.17283824381503285,
+    "nominal_seconds": 0.01
+   },
+   "depth_counts": {
+    "1": 9,
+    "2": 240,
+    "3": 95090,
+    "4": 91422,
+    "5": 16976,
+    "6": 1260,
+    "7": 163,
+    "8": 180
+   },
+   "threshold_counts": {
+    "1e-04": 205177,
+    "1e-05": 55,
+    "1e-06": 99,
+    "fallback": 9
+   },
+   "budget_profiles": {
+    "banked_endgame": {
+     "mode": "ledger",
+     "nominal_allowance": 0.01,
+     "early_call_cap": 0.01,
+     "two_cap_call_cap": 0.04
+    }
+   },
+   "max_supplied_budget_seconds": 0.04,
+   "maximum_profile_call_cap_seconds": 0.04,
+   "min_final_credit_balance": 2.9147970950011075,
+   "positions": 263357300400,
+   "positions_scope": "legacy search-node counter is not a wall or CPU cost measurement"
+  }
+ },
+ "confirmed_improvement": true,
+ "choose_wall_ratio": 1.5947732910092545,
+ "actual_cost_within_10_percent": false,
+ "freeze_sha256": "4bbbe0a61693e07dbc8a9d8a0e16af8417a76017e611975ad0ef50976df94df9",
+ "control_sha256": "feeac75a6db73382ab10d64439b6a60a98f6e69947c7ac5fe4de36b37afcd14c",
+ "stop_reason": "bounded_neighborhood_exhausted",
+ "rounds": [
+  {
+   "round": 1,
+   "previous_best": 7,
+   "best_goals": 8,
+   "improved": true
+  },
+  {
+   "round": 2,
+   "previous_best": 8,
+   "best_goals": 8,
+   "improved": false
+  },
+  {
+   "round": 3,
+   "previous_best": 8,
+   "best_goals": 8,
+   "improved": false
+  },
+  {
+   "round": 4,
+   "previous_best": 8,
+   "best_goals": 11,
+   "improved": true
+  }
+ ],
+ "stop": "after all five predetermined arms/four rounds: update best goal count sequentially in sorted declared round order; local_plateau only if the final two rounds both fail to raise the previous best; otherwise bounded_neighborhood_exhausted. These are local bounded alternatives, never global optimum. No tuning on control.",
+ "scope": "offline modeled Bonk only, fixed math/search alternatives without ML/training/fit; spawn-stage rules remain assumptions; four fixed profiles use nominal10ms per call, banked_endgame is a different resource regime with10ms allowance per call and a40ms late-call cap, not the same per-call hard cap; actual wall/CPU/latency and ledger debt are reported without censoring, no strict prefix-wall guarantee; unchanged native hard deadline for the supplied budget and budget+50ms unit gates still apply; no phone/default10s win-rate claim and no tuning on control"
+}
