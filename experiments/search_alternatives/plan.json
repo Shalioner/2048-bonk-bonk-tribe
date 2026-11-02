@@ -1,0 +1,164 @@
+{
+ "version": 1,
+ "pure_commit": "e28aad01f8c8e3aa725e41640625e5fda7a02701",
+ "pure_sha256": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d",
+ "archive_commit": "01b659fa734d1aa018223377a9fa77602958c046",
+ "archive_root": "/Users/shalioner/orca/projects/Всякое разное/output/2048-geometry-20261102/worktree",
+ "workspace": "/Users/shalioner/orca/projects/Всякое разное",
+ "arms": [
+  {
+   "name": "baseline",
+   "kind": "baseline",
+   "thresholds": [
+    0.0001,
+    1e-05,
+    1e-06
+   ],
+   "round": 0,
+   "budget_profile": "fixed"
+  },
+  {
+   "name": "canonical",
+   "kind": "canonical",
+   "thresholds": [
+    0.0001,
+    1e-05,
+    1e-06
+   ],
+   "round": 1,
+   "budget_profile": "fixed"
+  },
+  {
+   "name": "serial_shallow",
+   "kind": "serial_shallow",
+   "thresholds": [
+    0.0001,
+    1e-05,
+    1e-06
+   ],
+   "round": 2,
+   "budget_profile": "fixed"
+  },
+  {
+   "name": "precision",
+   "kind": "precision",
+   "thresholds": [
+    1e-05,
+    1e-06
+   ],
+   "round": 3,
+   "budget_profile": "fixed"
+  },
+  {
+   "name": "banked_endgame",
+   "kind": "banked_endgame",
+   "thresholds": [
+    0.0001,
+    1e-05,
+    1e-06
+   ],
+   "budget_profile": "banked_endgame",
+   "round": 4
+  }
+ ],
+ "hypotheses": {
+  "canonical": {
+   "effect": "Canonicalize D4-symmetric chance cache keys only after the existing leaf cutoff, including the diagnostic reference path.",
+   "cost": "Transform/key arithmetic per nonleaf chance cache lookup; more cache reuse may offset that cost. Leaf heuristic and physics stay fixed."
+  },
+  "serial_shallow": {
+   "effect": "Evaluate root passes serially only when requested pass depth<=2; deeper passes retain the existing parallel behavior.",
+   "cost": "May avoid thread launch/synchronization overhead at shallow depth; may lose useful shallow parallelism."
+  },
+  "precision": {
+   "effect": "Keep native source identical to baseline, use threshold schedule[1e-5,1e-6] instead of[1e-4,1e-5,1e-6].",
+   "cost": "Stricter first-pass pruning may improve expectation accuracy while reducing completed depth under the same nominal budget."
+  },
+  "banked_endgame": {
+   "effect": "Keep native source/heuristic/physics identical to baseline; accumulate nominal10ms per choose call and spend available credit with cap10ms before two CAP,40ms at exactly two CAP. This is a different resource regime, not the same per-call10ms hard cap.",
+   "cost": "Actual wall overshoot remains negative debt and is repaid by later allowances; even zero supplied budget may incur fallback/OS overhead. Report wall/CPU/depth and ledger deficit; no strict prefix-wall guarantee."
+  }
+ },
+ "search": {
+  "policy": "progressive",
+  "depth": 8,
+  "think": 0.01,
+  "max_moves": 6000
+ },
+ "screen": {
+  "seed_start": 2400000000,
+  "games": 16,
+  "order": "rotate all five arms by seed; strictly serial"
+ },
+ "selection": "most goals; ties baseline first, then lower measured choose-wall/completed-move, then declared arm order",
+ "control": {
+  "seed_start": 2500000000,
+  "games": 100,
+  "labels": [
+   "baseline",
+   "finalist"
+  ],
+  "order": "alternate first label by seed, serial even when both labels use baseline",
+  "rationale": "N=100 fixed before any search-alternatives game data; historical same-baseline wall-budget repeats differed by10 wins/60, so use a larger fresh paired control. This is not an extension after seeing p or outcomes."
+ },
+ "criterion": "nonbaseline finalist goals>baseline goals AND exact paired one-sided p<=0.05 AND zero limits; otherwise retain baseline. Actual choose-wall cost within +/-10% is reported separately, never assumed from the nominal budget.",
+ "stop": "after all five predetermined arms/four rounds: update best goal count sequentially in sorted declared round order; local_plateau only if the final two rounds both fail to raise the previous best; otherwise bounded_neighborhood_exhausted. These are local bounded alternatives, never global optimum. No tuning on control.",
+ "scope": "offline modeled Bonk only, fixed math/search alternatives without ML/training/fit; spawn-stage rules remain assumptions; four fixed profiles use nominal10ms per call, banked_endgame is a different resource regime with10ms allowance per call and a40ms late-call cap, not the same per-call hard cap; actual wall/CPU/latency and ledger debt are reported without censoring, no strict prefix-wall guarantee; unchanged native hard deadline for the supplied budget and budget+50ms unit gates still apply; no phone/default10s win-rate claim and no tuning on control",
+ "history": [
+  {
+   "name": "previous_geometry",
+   "commit": "01b659fa734d1aa018223377a9fa77602958c046",
+   "root": "/Users/shalioner/orca/projects/Всякое разное/output/2048-geometry-20261102/worktree"
+  },
+  {
+   "name": "previous_pure_math",
+   "commit": "08b8b9536070ef493f755b5c130ff89ff4e05512",
+   "root": "/Users/shalioner/orca/projects/Всякое разное/output/2048-math-20261102/worktree"
+  },
+  {
+   "name": "previous_td",
+   "commit": "6e421feeb92f11271d63ccc9be60daa3498d3024",
+   "root": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree"
+  }
+ ],
+ "required_seen_ranges": {
+  "previous_math_screen": [
+   1600000000,
+   1600000007
+  ],
+  "previous_math_control": [
+   1700000000,
+   1700000059
+  ],
+  "previous_geometry_screen": [
+   1800000000,
+   1800000011
+  ],
+  "previous_geometry_control": [
+   1900000000,
+   1900000059
+  ]
+ },
+ "measurements": {
+  "wall_samples": "one monotonic elapsed sample for every choose call, including terminal None; exact sum equals search_wall_seconds",
+  "cpu": "sum process_time elapsed around choose calls; includes native threads; search_cpu_seconds and per-completed-move ratio reported separately",
+  "latency": "flatten all choose samples per arm, ordinary median, p95 nearest-rank ceil(.95*n), maximum, fraction strictly above nominal think",
+  "budget": "budget_samples and pre-call decision_caps have one entry per choose call including None; final credit_balance=None for fixed, otherwise replay allowance+phase cap minus actual external wall, preserving negative debt; absolute validation tolerance1e-10",
+  "schema_version": 1,
+  "threshold_counts": "completed moves only: positive info.threshold formatted.0e, fallback key when info.fallback or threshold=None; sum=moves, positive keys must belong to the source_arm schedule; no count for terminal None call"
+ },
+ "budget_profiles": {
+  "fixed": {
+   "mode": "fixed",
+   "nominal_allowance": 0.01,
+   "early_call_cap": 0.01,
+   "two_cap_call_cap": 0.01
+  },
+  "banked_endgame": {
+   "mode": "ledger",
+   "nominal_allowance": 0.01,
+   "early_call_cap": 0.01,
+   "two_cap_call_cap": 0.04
+  }
+ }
+}
