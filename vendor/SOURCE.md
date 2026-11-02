@@ -38,3 +38,14 @@ afterstate value with consistent goal=1/loss=0. API2 is retained; Python checks
 optional symbols when explicitly requested. Original 2048.cpp, 2048.h,
 platdefs.h and LICENSE are unchanged. Local models, provenance, tests and
 offline controls are documented in ../LEARNING.md and ../VALUE-IMPLEMENTATION.md.
+
+2026-11-02, local/strategy-td-port-20261102, baseline 45fd360:
+adapted n-tuple estimate/isomorphic update, state correction and forward TD(0)
+from moporgic/TDL2048 commit a99f620aec0d30a75943a4c9646743f1f53b0197 (MIT,
+Copyright2021 Hung Guei). Pinned originals, license and SHA are retained under
+tdl2048-original; modified files retain MIT notices and adaptation notes.
+New td_model.h uses binary goal11x3, clipped-linear value, target2/BONKTD01;
+td_train.cpp reuses LOCAL Bonk moves/spawn/goal, not donor classic board rules.
+Optional inference exports preserve existing API2/MC and default settings.
+No pretrained classic2048 weights are installed. See ../TD.md and
+../TD-MODEL-IMPLEMENTATION.md for exact adaptation, tests and experiment limits.
