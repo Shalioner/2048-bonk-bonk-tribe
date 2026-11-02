@@ -1,0 +1,30 @@
+{
+ "version": 1,
+ "pure_commit": "e28aad01f8c8e3aa725e41640625e5fda7a02701",
+ "pure_sha256": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d",
+ "archive_commit": "6e421feeb92f11271d63ccc9be60daa3498d3024",
+ "archive_root": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree",
+ "workspace": "/Users/shalioner/orca/projects/Всякое разное",
+ "base_constants": {"SCORE_EMPTY_WEIGHT":270.0,"SCORE_MONOTONICITY_WEIGHT":47.0,"SCORE_MERGES_WEIGHT":700.0,"SCORE_SUM_WEIGHT":11.0},
+ "arms": [
+  {"name":"baseline","round":0,"constant":null,"multiplier":1.0},
+  {"name":"empty_r1","round":1,"constant":"SCORE_EMPTY_WEIGHT","multiplier":1.15},
+  {"name":"mono_r1","round":1,"constant":"SCORE_MONOTONICITY_WEIGHT","multiplier":0.75},
+  {"name":"merges_r1","round":1,"constant":"SCORE_MERGES_WEIGHT","multiplier":1.25},
+  {"name":"empty_r2","round":2,"constant":"SCORE_EMPTY_WEIGHT","multiplier":1.3},
+  {"name":"mono_r2","round":2,"constant":"SCORE_MONOTONICITY_WEIGHT","multiplier":0.5},
+  {"name":"merges_r2","round":2,"constant":"SCORE_MERGES_WEIGHT","multiplier":1.5}
+ ],
+ "hypotheses": {
+  "empty":"More empty-space reward may preserve mobility; risk is delayed productive merges.",
+  "mono":"Less monotonicity penalty may permit routes around immutable cap tiles; risk is disordered large tiles.",
+  "merges":"More potential-merge reward may prepare pairs/chains; risk is congested boards. SUM remains unchanged."
+ },
+ "search":{"policy":"progressive","depth":8,"think":0.01,"max_moves":6000},
+ "screen":{"seed_start":1600000000,"games":8,"order":"rotate all seven arms by seed; strictly serial"},
+ "selection":"most goals; ties baseline first, then lower measured choose-wall/completed-move, then declared arm order",
+ "control":{"seed_start":1700000000,"games":60,"labels":["baseline","finalist"],"order":"alternate first label by seed, serial even when both labels use baseline"},
+ "criterion":"candidate goals>baseline goals AND exact paired one-sided p<=0.05 AND zero limits; otherwise retain baseline",
+ "stop":"after all seven predetermined arms: local_plateau only if neither round1 nor round2 improves previous best goal count; otherwise bounded_neighborhood_exhausted. Both labels refer only to this fixed bounded neighborhood, never global optimum. No weights tuned on control.",
+ "scope":"offline modeled Bonk only; nominal10ms is not actual-cost equality and does not establish10s/phone win-rate; no tuning on control"
+}
