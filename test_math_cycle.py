@@ -242,6 +242,34 @@ class MathCycleTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Замороженный файл"):
             cycle.verify_freeze()
 
+    def test_freeze_requires_exact_hash_key_set(self):
+        self.screened()
+        frozen = cycle.freeze()
+        extra = self.work / "unrelated.txt"
+        extra.write_text("outside the required freeze set")
+        cases = {"trimmed": {"benchmark.py": frozen["hashes"]["benchmark.py"]},
+                 "extra": dict(frozen["hashes"], **{"unrelated.txt": cycle.sha(extra)})}
+        for name, hashes in cases.items():
+            with self.subTest(case=name):
+                cycle.atomic(self.root / "finalist.json", dict(frozen, hashes=hashes))
+                with self.assertRaisesRegex(ValueError, "набор.*freeze"):
+                    cycle.verify_freeze()
+
+    def test_raw_telemetry_cannot_hide_behind_trimmed_freeze(self):
+        screen = self.screened()
+        frozen = cycle.freeze()
+        screen["games"][0]["positions"] += 1  # итоговый summary/selection не меняется
+        cycle.atomic(self.root / "screen.json", screen)
+        with self.assertRaisesRegex(ValueError, "Замороженный файл"):
+            cycle.verify_freeze()  # полный набор SHA уже должен ловить raw mutation
+        trimmed = {"benchmark.py": frozen["hashes"]["benchmark.py"]}
+        cycle.atomic(self.root / "finalist.json", dict(frozen, hashes=trimmed))
+        with patch.object(cycle, "play", side_effect=AssertionError("trimmed freeze must not play")) as played:
+            with self.assertRaisesRegex(ValueError, "набор.*freeze"):
+                cycle.checkpoint("control", False)
+            played.assert_not_called()
+        self.assertFalse((self.root / "control.json").exists())
+
     def test_freeze_and_finalize_never_continue_incomplete_stage(self):
         data = self.screened()
         path = self.root / "screen.json"

@@ -360,6 +360,13 @@ def round_stop(table):
     return reason, rounds
 
 
+def required_freeze_paths():
+    paths = [WORK / p for p in sources()] + [ROOT / "screen.json", ROOT / "build/manifest.json"]
+    engines = [engine_path(a["name"]) for a in plan()["arms"]]
+    paths += engines + [p.with_name("engine.cpp") for p in engines]
+    return {str(path.relative_to(WORK)): path for path in sorted(set(paths))}
+
+
 def freeze():
     path = ROOT / "finalist.json"
     if path.exists() or (ROOT / "control.json").exists():
@@ -367,12 +374,9 @@ def freeze():
     screen = checkpoint("screen", True, validate_only=True)
     finalist, table = decision(screen)
     reason, rounds = round_stop(table)
-    paths = [WORK / p for p in sources()] + [ROOT / "screen.json", ROOT / "build/manifest.json"]
-    paths += [engine_path(a["name"]) for a in plan()["arms"]]
-    paths += [p.with_name("engine.cpp") for p in paths if p.name == LIBRARY]
     data = dict(version=1, finalist=finalist, screen=table, policy=plan()["control"], selection=plan()["selection"],
                 stop_reason=reason, rounds=rounds,
-                hashes={str(p.relative_to(WORK)): sha(p) for p in sorted(set(paths))})
+                hashes={key: sha(path) for key, path in required_freeze_paths().items()})
     atomic(path, data)
     return data
 
@@ -382,9 +386,12 @@ def verify_freeze():
     if (data.get("version") != 1 or data.get("policy") != plan()["control"] or data.get("selection") != plan()["selection"]
             or data.get("finalist") not in [a["name"] for a in plan()["arms"]] or not data.get("hashes")):
         raise ValueError("Некорректный freeze")
-    for path, expected in data["hashes"].items():
-        if sha(WORK / path) != expected:
-            raise ValueError("Замороженный файл изменён: " + path)
+    required = required_freeze_paths()
+    if not isinstance(data["hashes"], dict) or set(data["hashes"]) != set(required):
+        raise ValueError("Неверный обязательный набор файлов freeze")
+    for key, path in required.items():
+        if sha(path) != data["hashes"][key]:
+            raise ValueError("Замороженный файл изменён: " + key)
     screen = checkpoint("screen", True, validate_only=True)
     finalist, table = decision(screen)
     reason, rounds = round_stop(table)

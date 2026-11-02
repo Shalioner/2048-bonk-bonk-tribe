@@ -101,3 +101,13 @@ read-only finalize/freeze, exact statistics/неполные пары, baseline 
 module filename также покрыта регрессией. Build/исторические временные сборки
 не включаются в Git. screen/control/finalist/summary не создавались: реальные
 полные игры или длинные измерения не запускались.
+
+Предданный follow-up закрывает неполный freeze: writer и verifier используют один
+`required_freeze_paths()`, verifier требует точное совпадение ключей hashes до
+проверки SHA. Raw screen целиком входит в обязательный набор, включая telemetry,
+которая не влияет на агрегаты выбора. Red regression подтвердил принятие trim/
+extra hashes и обход через positions+=1; после исправления все17 synthetic tests
+прошли за0.694s, py_compile/diff-check прошли. План и inventory не изменялись.
+Прежние ignored builds не пересобирались: их producer fingerprint после этого
+source-fix устарел; координатор выполняет первую свежую сборку после интеграции.
+Реальные screen/control по-прежнему не запускались.
