@@ -1,0 +1,87 @@
+{
+ "version": 1,
+ "finalist": "empty_r1",
+ "paired": {
+  "gained": [
+   1700000000,
+   1700000001,
+   1700000003,
+   1700000008,
+   1700000012,
+   1700000013,
+   1700000016,
+   1700000018,
+   1700000022,
+   1700000026,
+   1700000028,
+   1700000033,
+   1700000042,
+   1700000051,
+   1700000055,
+   1700000059
+  ],
+  "lost": [
+   1700000002,
+   1700000004,
+   1700000005,
+   1700000009,
+   1700000010,
+   1700000011,
+   1700000014,
+   1700000019,
+   1700000020,
+   1700000023,
+   1700000027,
+   1700000030,
+   1700000047,
+   1700000048,
+   1700000052
+  ],
+  "one_sided_p": 0.5,
+  "improved": false
+ },
+ "arms": {
+  "baseline": {
+   "games": 60,
+   "goals": 31,
+   "win_rate": 0.5166666666666667,
+   "limits": 0,
+   "moves": 114418,
+   "total_wall": 502.8998744119999,
+   "search_wall": 489.17383507298354,
+   "choose_wall_per_move": 0.004275322371243891
+  },
+  "finalist": {
+   "games": 60,
+   "goals": 32,
+   "win_rate": 0.5333333333333333,
+   "limits": 0,
+   "moves": 118032,
+   "total_wall": 508.1860192070004,
+   "search_wall": 494.8584249459998,
+   "choose_wall_per_move": 0.004192578495204689
+  }
+ },
+ "confirmed_improvement": false,
+ "choose_wall_ratio": 0.9806461668023577,
+ "actual_cost_within_10_percent": true,
+ "freeze_sha256": "59da6590d66a5e308ff10518b554358a1d397ac1f5aebe9cda7d7e4649107d8b",
+ "control_sha256": "1d536db457ca1dfe76eaf37d1c455f27c9af97729d758b6d7a6ea91ea19c2176",
+ "stop_reason": "bounded_neighborhood_exhausted",
+ "rounds": [
+  {
+   "round": 1,
+   "previous_best": 3,
+   "best_goals": 6,
+   "improved": true
+  },
+  {
+   "round": 2,
+   "previous_best": 6,
+   "best_goals": 6,
+   "improved": false
+  }
+ ],
+ "stop": "after all seven predetermined arms: local_plateau only if neither round1 nor round2 improves previous best goal count; otherwise bounded_neighborhood_exhausted. Both labels refer only to this fixed bounded neighborhood, never global optimum. No weights tuned on control.",
+ "scope": "offline modeled Bonk only; nominal10ms is not actual-cost equality and does not establish10s/phone win-rate; no tuning on control"
+}

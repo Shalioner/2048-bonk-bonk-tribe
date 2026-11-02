@@ -1,0 +1,39 @@
+screen (macOS /usr/bin/time -l)
+503.49 real      1193.05 user        33.40 sys
+           106217472  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             2081593  page reclaims
+                3300  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                1243  voluntary context switches
+             3471375  involuntary context switches
+      14144473120102  instructions retired
+       2870250212357  cycles elapsed
+            65259328  peak memory footprint
+
+control (macOS /usr/bin/time -l)
+1018.41 real      2408.15 user        69.93 sys
+           120930304  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             4201890  page reclaims
+                3015  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                1389  voluntary context switches
+             7249534  involuntary context switches
+      26302748126988  instructions retired
+       5348135451941  cycles elapsed
+            64620288  peak memory footprint
