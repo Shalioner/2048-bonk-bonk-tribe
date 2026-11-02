@@ -1,0 +1,11 @@
+{
+  "discordant": 23,
+  "gained": 17,
+  "lost": 6,
+  "tail_numerator": 145499,
+  "tail_denominator": 8388608,
+  "p": 0.01734483242034912,
+  "same_42_exact_second_cap_seeds": true,
+  "control_goal_states": true,
+  "direct_final_board_goal_sets_verified": true
+}

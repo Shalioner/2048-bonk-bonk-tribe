@@ -1,0 +1,21 @@
+{
+ "actual_readonly_gate": true,
+ "profile": {
+  "mode": "ledger",
+  "nominal_allowance": 0.01,
+  "early_call_cap": 0.01,
+  "two_cap_call_cap": 0.04
+ },
+ "thresholds": [
+  0.0001,
+  1e-05,
+  1e-06
+ ],
+ "api": 2,
+ "cap": 11,
+ "goal": 3,
+ "data_hashes_unchanged": true,
+ "called_bot_main": false,
+ "called_choose": false,
+ "phone_calls": 0
+}

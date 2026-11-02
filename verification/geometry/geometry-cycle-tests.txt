@@ -1,0 +1,26 @@
+test_baseline_tie_priority_keeps_separate_control_labels (test_geometry_cycle.GeometryCycleTests) ... ok
+test_build_refuses_source_change_during_mock_compilation (test_geometry_cycle.GeometryCycleTests) ... ok
+test_build_validation_checks_actual_source_and_binary (test_geometry_cycle.GeometryCycleTests) ... ok
+test_changed_config_source_or_order_refuses_resume (test_geometry_cycle.GeometryCycleTests) ... ok
+test_feature_source_producer_reads_current_bytes_without_module_cache (test_geometry_cycle.GeometryCycleTests) ... ok
+test_freeze_and_finalize_never_continue_incomplete_stage (test_geometry_cycle.GeometryCycleTests) ... ok
+test_freeze_rejects_changed_selection_policy_and_raw_screen (test_geometry_cycle.GeometryCycleTests) ... ok
+test_freeze_requires_exact_hash_key_set (test_geometry_cycle.GeometryCycleTests) ... ok
+test_full_pipeline_fresh_control_and_exact_test (test_geometry_cycle.GeometryCycleTests) ... ok
+test_last_round_growth_cannot_be_called_plateau (test_geometry_cycle.GeometryCycleTests) ... ok
+test_limit_is_saved_and_halts_without_loss_or_continuation (test_geometry_cycle.GeometryCycleTests) ... ok
+test_malformed_telemetry_and_terminal_cap_snapshot_rejected (test_geometry_cycle.GeometryCycleTests) ... ok
+test_paired_duplicate_or_missing_seed_and_negative_outcomes (test_geometry_cycle.GeometryCycleTests) ... ok
+test_raw_telemetry_cannot_hide_behind_trimmed_freeze (test_geometry_cycle.GeometryCycleTests) ... ok
+test_real_protocol_fixed_two_rounds_and_lazy_feature_contract (test_geometry_cycle.GeometryCycleTests) ... ok
+test_relative_feature_fingerprints_and_header_changes_are_required (test_geometry_cycle.GeometryCycleTests) ... ok
+test_relative_module_filename_has_identical_source_fingerprint (test_geometry_cycle.GeometryCycleTests) ... ok
+test_saved_inventory_explicitly_covers_history_and_new_ranges (test_geometry_cycle.GeometryCycleTests) ... ok
+test_seed_extraction_prior_ranges_and_hidden_overlap (test_geometry_cycle.GeometryCycleTests) ... ok
+test_serial_rotation_and_resume_exact_prefix (test_geometry_cycle.GeometryCycleTests) ... ok
+test_synthetic_goal_uses_progressive_and_stops_before_spawn (test_geometry_cycle.GeometryCycleTests) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.904s
+
+OK

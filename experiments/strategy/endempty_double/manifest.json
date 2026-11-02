@@ -1,0 +1,8 @@
+{
+  "variant": "endempty_double",
+  "parameters": {
+    "endempty": 3240
+  },
+  "source_sha256": "ded43278bddbe5f55526134d4abcadd09b7cfcb6ecb01494e29cb5308a818602",
+  "engine_sha256": "31651301dd83841ed713fec5fdc977de84251cb412a1d17335de7c8706d92034"
+}

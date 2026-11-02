@@ -27,3 +27,21 @@ build.sh also builds engine.so on Linux (tests and simulation).
 2026-10-31 (review): the budget is hard — every full pass, including the first, stops at the
 deadline; a depth-1 fallback computed before the passes provides the move if none completes
 (info[7]). engine_api_version() = 2 lets bot.py reject a library built from older sources.
+
+2026-11-01, local/strategy-learning-20261101, baseline 9b4120f:
+the transposition key now includes remaining depth and exact cprob bits (cprob
+omitted when the probability cutoff is disabled). An optional uncached
+score_levels_reference validates the cache contract. Added optional
+solve_budget_progressive; the original solve_budget algorithm remains available.
+Original 2048.cpp, 2048.h, platdefs.h and LICENSE are unchanged.
+
+2026-11-02, pure mathematical branch:
+engine_adapted.cpp restored byte-for-byte from pure commit e28aad0; cache/progressive
+search retained. Removed active MC/TD inference, trainers, model files and donor
+copy. Complete ML source/license/results archives remain in commits
+6e421feeb92f11271d63ccc9be60daa3498d3024 (local/strategy-td-port-20261102) and
+45fd360ce3fbb080823ef6544cdd4d5d54f329f1 (local/strategy-learning-20261101).
+Spawn frequency estimation is retained. The new experiments/math runner builds
+isolated variants of pinned pure e28aad0 and fingerprints actual source/binary
+bytes. See ../MATHEMATICAL.md. No new heuristic weights are adopted without
+fresh independent control.

@@ -1,0 +1,92 @@
+{
+  "reason": "Round3 focus5 improved incumbent4->5; preregister training-only trigger refinements before new games, holdout untouched",
+  "parent_protocol_commit": "e04f902",
+  "parent_plan_sha256": "f98bf2725fde0dc97f752e1f198f00661bf47ab3b15dac9f1a2ecd14884a7a7b",
+  "parent_runner_sha256": "34ab1d3dc877a4973211b5b040880bcf91d70166695ff82b017cde9f1ea54520",
+  "starting_incumbent": "focus5",
+  "starting_training_goals": 5,
+  "variants": {
+    "focus4": {
+      "focus_empty": 4
+    },
+    "focus6": {
+      "focus_empty": 6
+    },
+    "focus2": {
+      "focus_empty": 2
+    },
+    "focus7": {
+      "focus_empty": 7
+    },
+    "focus8": {
+      "focus_empty": 8
+    },
+    "focus9": {
+      "focus_empty": 9
+    },
+    "focus10": {
+      "focus_empty": 10
+    },
+    "focus11": {
+      "focus_empty": 11
+    },
+    "focus12": {
+      "focus_empty": 12
+    },
+    "focus13": {
+      "focus_empty": 13
+    },
+    "focus14": {
+      "focus_empty": 14
+    },
+    "focus15": {
+      "focus_empty": 15
+    },
+    "focus0": {
+      "focus_empty": 0
+    },
+    "focus16": {
+      "focus_empty": 16
+    }
+  },
+  "rounds": [
+    [
+      "focus4",
+      "focus6"
+    ],
+    [
+      "focus2",
+      "focus7"
+    ],
+    [
+      "focus8",
+      "focus9"
+    ],
+    [
+      "focus10",
+      "focus11"
+    ],
+    [
+      "focus12",
+      "focus13"
+    ],
+    [
+      "focus14",
+      "focus15"
+    ],
+    [
+      "focus0",
+      "focus16"
+    ]
+  ],
+  "stopping": "Stop after two successive complete rounds with no strict increase; unused rounds are not run. Exhausting finite trigger grid0..16 means plateau only in that grid. No tuning after holdout.",
+  "training_seeds": [
+    202611010,
+    202611021
+  ],
+  "holdout_seeds": [
+    202611100,
+    202611159
+  ],
+  "selection": "Same strict-wins policy and deterministic order."
+}

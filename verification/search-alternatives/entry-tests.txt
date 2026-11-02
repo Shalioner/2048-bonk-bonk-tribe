@@ -1,0 +1,14 @@
+test_drifted_profile_thresholds_or_search_settings_refused (test_search_entry.SearchEntryTests) ... ok
+test_exception_charged_and_runtime_state_restored (test_search_entry.SearchEntryTests) ... ok
+test_help_and_invalid_args_never_load_native_cycle_or_adb (test_search_entry.SearchEntryTests) ... ok
+test_ledger_reuses_math_late40_debt_and_none_charge (test_search_entry.SearchEntryTests) ... ok
+test_native_load_failure_restores_state_without_runtime (test_search_entry.SearchEntryTests) ... ok
+test_negative_unconfirmed_baseline_partial_and_stale_summary_gate (test_search_entry.SearchEntryTests) ... ok
+test_reset_on_each_main_and_no_wrapper_stacking (test_search_entry.SearchEntryTests) ... ok
+test_runtime_routing_verified_under_lease_and_restored (test_search_entry.SearchEntryTests) ... ok
+test_wrapper_rejects_unmeasured_mode_before_choose (test_search_entry.SearchEntryTests) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.026s
+
+OK

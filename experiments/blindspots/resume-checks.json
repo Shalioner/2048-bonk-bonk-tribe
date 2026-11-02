@@ -1,0 +1,23 @@
+[
+  {
+    "runner": "lab.py",
+    "variant": "baseline",
+    "completed_resume_skips": true,
+    "overwrite_refused": true,
+    "sha256": "8fd7b683cbdb0f26d38429f0b4d52b42a0bfd0450ab80e1af634e004046b67dd"
+  },
+  {
+    "runner": "lab.py",
+    "variant": "focus5",
+    "completed_resume_skips": true,
+    "overwrite_refused": true,
+    "sha256": "5cc352dfcd584b6c03831c69633205d04552af6f4f74514f320e1d4c2dd4ea93"
+  },
+  {
+    "runner": "extension.py",
+    "variant": "focus4",
+    "completed_resume_skips": true,
+    "overwrite_refused": true,
+    "sha256": "ccbf1567759d94e9ba10fbb979a011ba4c330d3f72a008c6620854f7988f5eea"
+  }
+]

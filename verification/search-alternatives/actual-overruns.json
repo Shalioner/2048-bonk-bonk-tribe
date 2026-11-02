@@ -1,0 +1,12 @@
+{
+ "baseline": {
+  "calls": 196495,
+  "beyond_supplied_plus_50ms": 4,
+  "max_budget_excess_s": 0.1080170420000195
+ },
+ "finalist": {
+  "calls": 205377,
+  "beyond_supplied_plus_50ms": 6,
+  "max_budget_excess_s": 0.128107917000043
+ }
+}

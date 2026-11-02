@@ -1,0 +1,11 @@
+{
+  "variant": "progress40000",
+  "parameters": {
+    "progress": 40000
+  },
+  "baseline_commit": "61158f580e53f06b3188c0ea02a094446dc40bc0",
+  "cpp_sha256": "45b26121d753cd5b0449b48308370a49eebd898d6ae8bd54a87a660a6de98df3",
+  "engine_sha256": "3d0c4a3214977982d12f3ffbc08c06f33ea8e1313afa87069e592f7c6c7ce3f3",
+  "runner_sha256": "34ab1d3dc877a4973211b5b040880bcf91d70166695ff82b017cde9f1ea54520",
+  "baseline_cpp_sha256": "583a27980489193d30a40e6a9ce7ffafa736562691f6bc1c6d8a7a15346f27a7"
+}

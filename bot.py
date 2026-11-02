@@ -235,6 +235,9 @@ def load_engine(path=ENGINE):
     lib.solve_levels.restype=ctypes.c_int
     lib.solve_budget.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int,ctypes.POINTER(ctypes.c_float),ctypes.c_int,ctypes.c_double,ctypes.c_double,ctypes.POINTER(ctypes.c_double)]
     lib.solve_budget.restype=ctypes.c_int
+    if hasattr(lib,"solve_budget_progressive"):
+        lib.solve_budget_progressive.argtypes=lib.solve_budget.argtypes
+        lib.solve_budget_progressive.restype=ctypes.c_int
     lib.execute_move.argtypes=[ctypes.c_int,ctypes.c_uint64]
     lib.execute_move.restype=ctypes.c_uint64
     lib.set_spawn_probs.argtypes=[ctypes.c_float]*3
@@ -317,17 +320,25 @@ def pack(b):
     if any(not 0<=v<=15 for v in b):raise RuntimeError("Уровень вне диапазона движка")
     return sum(v<<(4*i) for i,v in enumerate(b))
 
-def choose(b,depth=DEFAULT_DEPTH,think=DEFAULT_THINK,info=None):
+def choose(b,depth=DEFAULT_DEPTH,think=DEFAULT_THINK,info=None,policy="legacy"):
+    if policy not in ("legacy","progressive"):raise ValueError("Неизвестная политика поиска: "+str(policy))
+    if policy=="progressive" and depth<1:raise ValueError("Глубина progressive должна быть положительной")
     legal=legal_moves(b)
     if not legal:return None
     allowed=sum(1<<DIRECTIONS[d] for d,_ in legal)
-    out=(ctypes.c_double*8)()
+    progressive=policy=="progressive"
+    if progressive and not hasattr(NATIVE,"solve_budget_progressive"):
+        raise RuntimeError("Движок не поддерживает progressive: пересоберите sh vendor/build.sh")
+    out=(ctypes.c_double*(10 if progressive else 8))()
     thresholds=(ctypes.c_float*len(THRESHOLDS))(*THRESHOLDS)
-    result=NATIVE.solve_budget(pack(b),allowed,depth,thresholds,len(THRESHOLDS),think,GROWTH,out)
+    solver=NATIVE.solve_budget_progressive if progressive else NATIVE.solve_budget
+    result=solver(pack(b),allowed,depth,thresholds,len(THRESHOLDS),think,GROWTH,out)
     if info is not None:
         fallback=bool(out[7])
-        info.update(depth=1 if fallback else depth,passes=int(out[0]),threshold=float(f"{out[1]:.0e}") if out[1] else None,
+        has_threshold=out[0]>0 if progressive else bool(out[1])
+        info.update(depth=int(out[8]) if progressive else 1 if fallback else depth,passes=int(out[0]),threshold=float(f"{out[1]:.0e}") if has_threshold else None,
                     positions=int(out[2]),search_s=round(out[3],3),cut=bool(out[4]),skipped=bool(out[5]),fallback=fallback)
+        if progressive:info.update(requested_depth=int(out[9]),policy=policy)
     return DIRECTIONS.index(result) if result>=0 else None
 
 apply_spawn_model(default_spawn_model())
@@ -340,7 +351,11 @@ def main():
     ap.add_argument("--dry-run",action="store_true")
     ap.add_argument("--depth",type=int,default=DEFAULT_DEPTH,help="предел глубины поиска (ходов вперёд)")
     ap.add_argument("--think",type=float,default=DEFAULT_THINK,help="бюджет расчёта хода, с")
+    ap.add_argument("--search-policy",choices=("legacy","progressive"),default="progressive",help="планировщик поиска; progressive последовательно углубляет завершённые проходы")
     args=ap.parse_args()
+    if args.search_policy=="progressive":
+        if args.depth<1:ap.error("Глубина progressive должна быть положительной")
+        if not hasattr(NATIVE,"solve_budget_progressive"):ap.error("Движок не поддерживает progressive: пересоберите sh vendor/build.sh")
     lock=open(ROOT/"bot.lock","w")
     try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
     except BlockingIOError:raise RuntimeError("Бот уже запущен")
@@ -411,7 +426,7 @@ def main():
             decode_screen(adb("exec-out","screencap")).save(ROOT/"goal.png")
             print(f"ЦЕЛЬ ДОСТИГНУТА: {GOAL_COUNT} плитки уровня {CAP} одновременно. "+str(b),flush=True);break
         search={}
-        d=choose(b,args.depth,args.think,search)
+        d=choose(b,args.depth,args.think,search,policy=args.search_policy)
         print(json.dumps({"step":step,"board":b,"direction":None if d is None else ["left","right","up","down"][d],"capture_s":round(captured-started,3),"think_s":round(time.monotonic()-captured,3),"search":search},ensure_ascii=False),flush=True)
         if args.dry_run or d is None:
             decode_screen(data).save(ROOT/"latest.png");break

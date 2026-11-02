@@ -1,0 +1,129 @@
+{
+ "scope": "API and one-move smoke, not win-rate data; actual libraries backed up outside Git",
+ "rows": [
+  {
+   "arm": "baseline",
+   "api": 2,
+   "cap": 11,
+   "goal": 3,
+   "move": 3,
+   "thresholds": [
+    0.0001,
+    1e-05,
+    1e-06
+   ],
+   "search": {
+    "depth": 1,
+    "passes": 2,
+    "threshold": 1e-06,
+    "positions": 1056,
+    "search_s": 0.0,
+    "cut": false,
+    "skipped": false,
+    "fallback": false,
+    "requested_depth": 1,
+    "policy": "progressive"
+   },
+   "native_sha256": "0f02d42582a22dd63abcce22cf5fb81a4a493c02ca90f323c77a638f446b6ebc"
+  },
+  {
+   "arm": "canonical",
+   "api": 2,
+   "cap": 11,
+   "goal": 3,
+   "move": 3,
+   "thresholds": [
+    0.0001,
+    1e-05,
+    1e-06
+   ],
+   "search": {
+    "depth": 1,
+    "passes": 2,
+    "threshold": 1e-06,
+    "positions": 1056,
+    "search_s": 0.0,
+    "cut": false,
+    "skipped": false,
+    "fallback": false,
+    "requested_depth": 1,
+    "policy": "progressive"
+   },
+   "native_sha256": "4ccef09a5d819801278a0d58ec0460c4d344a6d2ca2bfbf239612aaa34979f4c"
+  },
+  {
+   "arm": "serial_shallow",
+   "api": 2,
+   "cap": 11,
+   "goal": 3,
+   "move": 3,
+   "thresholds": [
+    0.0001,
+    1e-05,
+    1e-06
+   ],
+   "search": {
+    "depth": 1,
+    "passes": 2,
+    "threshold": 1e-06,
+    "positions": 1056,
+    "search_s": 0.0,
+    "cut": false,
+    "skipped": false,
+    "fallback": false,
+    "requested_depth": 1,
+    "policy": "progressive"
+   },
+   "native_sha256": "dfcfa711b62241a8f45d0917dcc344d3a15349e0aace603b15d33981810249fe"
+  },
+  {
+   "arm": "precision",
+   "api": 2,
+   "cap": 11,
+   "goal": 3,
+   "move": 3,
+   "thresholds": [
+    1e-05,
+    1e-06
+   ],
+   "search": {
+    "depth": 1,
+    "passes": 1,
+    "threshold": 1e-06,
+    "positions": 704,
+    "search_s": 0.0,
+    "cut": false,
+    "skipped": false,
+    "fallback": false,
+    "requested_depth": 1,
+    "policy": "progressive"
+   },
+   "native_sha256": "fcfde36eb2801ea8ecfd1100dadd1d7e7960cd0649acce9f611705401a97a40e"
+  },
+  {
+   "arm": "banked_endgame",
+   "api": 2,
+   "cap": 11,
+   "goal": 3,
+   "move": 3,
+   "thresholds": [
+    0.0001,
+    1e-05,
+    1e-06
+   ],
+   "search": {
+    "depth": 1,
+    "passes": 2,
+    "threshold": 1e-06,
+    "positions": 1056,
+    "search_s": 0.0,
+    "cut": false,
+    "skipped": false,
+    "fallback": false,
+    "requested_depth": 1,
+    "policy": "progressive"
+   },
+   "native_sha256": "41af94fc8ef0b98a499a480cac4f4bd36d68473b90e7d197d41a272a455e1585"
+  }
+ ]
+}

@@ -1,0 +1,54 @@
+test_above_cap_move_parity (test_bot.BotTests) ... ok
+test_broken_seven (test_bot.BotTests) ... ok
+test_budget_deadline (test_bot.BotTests) ... ok
+test_budget_first_pass_matches_sequential (test_bot.BotTests) ... ok
+test_budget_is_hard (test_bot.BotTests) ... ok
+test_calibration (test_bot.BotTests) ... ok
+test_cap_count_never_decreases (test_bot.BotTests) ... ok
+test_cap_tiles_never_merge (test_bot.BotTests) ... ok
+test_crop_decode (test_bot.BotTests) ... ok
+test_default_spawn_stages (test_bot.BotTests) ... ok
+test_elevens_do_not_merge (test_bot.BotTests) ... ok
+test_engine_uses_stage_of_node (test_bot.BotTests) ... ok
+test_full_frame_fallback (test_bot.BotTests) ... {"observation_error": "temporary crop OCR failure", "action": "retry_full_frame"}
+ok
+test_goal (test_bot.BotTests) ... ok
+test_icon_resolves_bad_digit_three (test_bot.BotTests) ... ok
+test_live_level_ten (test_bot.BotTests) ... ok
+test_live_spawn_four (test_bot.BotTests) ... ok
+test_live_spawn_three (test_bot.BotTests) ... ok
+test_merge_once (test_bot.BotTests) ... ok
+test_native_goal_matches_all_cap_positions (test_bot.BotTests) ... ok
+test_native_move_parity (test_bot.BotTests) ... ok
+test_native_spawn_three_affects_search (test_bot.BotTests) ... ok
+test_old_engine_rejected (test_bot.BotTests) ... ok
+test_old_spawn_model_ignored (test_bot.BotTests) ... {"spawn_model": "старый формат spawn-model.json без стадий проигнорирован; используется spawn-model.default.json"}
+ok
+test_raw_matches_png (test_bot.BotTests) ... ok
+test_record_spawn_per_stage (test_bot.BotTests) ... ok
+test_reject_unexplained_change (test_bot.BotTests) ... ok
+test_saved_board (test_bot.BotTests) ... ok
+test_strips_decode (test_bot.BotTests) ... ok
+test_successor (test_bot.BotTests) ... ok
+test_two_digit_levels_synthetic (test_bot.BotTests) ... ok
+test_wait_for_acknowledged_move (test_bot.BotTests) ... ok
+test_comparison_reuses_seeds_and_reports_each_depth (test_benchmark.BenchmarkTests) ... ok
+test_endgame_depth_switches_and_counts_only_completed_moves (test_benchmark.BenchmarkTests) ... ok
+test_fixed_search_has_no_budget_and_matches_native (test_benchmark.BenchmarkTests) ... ok
+test_goal_on_last_move (test_benchmark.BenchmarkTests) ... ok
+test_limit_counts_completed_move (test_benchmark.BenchmarkTests) ... ok
+test_loss_on_last_move (test_benchmark.BenchmarkTests) ... ok
+test_solver_uses_simulator_model (test_benchmark.BenchmarkTests) ... ok
+test_zero_moves (test_benchmark.BenchmarkTests) ... ok
+test_endgame_config_is_forwarded_and_resume_mismatch_rejected (test_benchmark.CheckpointTests) ... ok
+test_failed_atomic_replace_keeps_previous_json (test_benchmark.CheckpointTests) ... ok
+test_incompatible_config_model_or_sources_preserves_file (test_benchmark.CheckpointTests) ... ok
+test_interruption_resume_and_completed_run_skips_every_game (test_benchmark.CheckpointTests) ... ok
+test_loaded_engine_change_rejected_without_overwrite (test_benchmark.CheckpointTests) ... ok
+test_missing_loaded_engine_has_user_error_without_overwrite (test_benchmark.CheckpointTests) ... ok
+test_missing_or_legacy_checkpoint_rejected (test_benchmark.CheckpointTests) ... ok
+
+----------------------------------------------------------------------
+Ran 47 tests in 13.399s
+
+OK

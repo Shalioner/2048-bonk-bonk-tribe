@@ -1,0 +1,11 @@
+{
+  "variant": "mobility2000",
+  "parameters": {
+    "mobility": 2000
+  },
+  "baseline_commit": "61158f580e53f06b3188c0ea02a094446dc40bc0",
+  "cpp_sha256": "d04ff6c5e575885b4a28ff698a0483cff538c846b287ad68b4173fa9f882ca7c",
+  "engine_sha256": "608e8228b9c186894e085479e8186d4c35821a88a1b634365fb8e6dc5db03361",
+  "runner_sha256": "34ab1d3dc877a4973211b5b040880bcf91d70166695ff82b017cde9f1ea54520",
+  "baseline_cpp_sha256": "583a27980489193d30a40e6a9ce7ffafa736562691f6bc1c6d8a7a15346f27a7"
+}

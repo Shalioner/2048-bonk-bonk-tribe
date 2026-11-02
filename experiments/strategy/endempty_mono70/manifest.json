@@ -1,0 +1,9 @@
+{
+  "variant": "endempty_mono70",
+  "parameters": {
+    "endempty": 1620,
+    "mono": 70
+  },
+  "source_sha256": "d2d8b5c4c96ade439a5f4c3a8e1916038a8b9c2a70bfd4ed6c215ae077f639d0",
+  "engine_sha256": "599426b837dc20627ba724d9642723d54452870734eaf46c075df51fb8e86fba"
+}

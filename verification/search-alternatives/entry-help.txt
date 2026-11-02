@@ -1,0 +1,22 @@
+usage: play_search_alternative.py [-h] [--serial SERIAL] [--steps STEPS]
+                                  [--delay DELAY] [--dry-run] [--depth DEPTH]
+                                  [--think THINK]
+                                  [--search-policy {progressive}]
+
+Opt-in banked_endgame: только измеренный профиль pure Bonk поиска.
+
+Контроль035e214:63/100 против49/100; wall/ход~1.595x, CPU/ход~1.562x.
+Это другая цена, не равный бюджет. Номинал10мс на вызов, до40мс при двух CAP
+и накопленном credit. Wall не имеет строгого потолка: максимум в контроле~168мс;
+это наблюдение, не гарантия. Телефон и режим10с/ход этим контролем не проверены.
+Баланс начинается с0 для одного запуска/одной игры; перерасход остаётся долгом.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --serial SERIAL
+  --steps STEPS
+  --delay DELAY
+  --dry-run
+  --depth DEPTH         только измеренное значение8
+  --think THINK         только номинал0.01с; late-call cap0.04с с credit
+  --search-policy {progressive}

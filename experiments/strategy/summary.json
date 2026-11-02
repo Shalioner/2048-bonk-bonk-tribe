@@ -1,0 +1,38 @@
+{
+  "games": 60,
+  "baseline_goals": 20,
+  "candidate_goals": 18,
+  "gained": [
+    10017,
+    10021,
+    10028,
+    10035,
+    10043,
+    10044,
+    10045,
+    10052,
+    10057
+  ],
+  "lost": [
+    10006,
+    10008,
+    10011,
+    10031,
+    10037,
+    10046,
+    10047,
+    10056,
+    10058,
+    10059,
+    10060
+  ],
+  "same": 40,
+  "one_sided_p": 0.7482776641845703,
+  "baseline_seconds": 833.7271000000002,
+  "candidate_seconds": 919.9963999999998,
+  "adopted": false,
+  "total_training_games": 230,
+  "total_control_games": 120,
+  "total_games": 350,
+  "reason": "Frozen candidate did not improve independent holdout; default unchanged."
+}

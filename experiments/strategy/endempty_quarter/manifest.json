@@ -1,0 +1,8 @@
+{
+  "variant": "endempty_quarter",
+  "parameters": {
+    "endempty": 405
+  },
+  "source_sha256": "5f5d487d26a846df9a896caa04ba529e50fc22f8ec10fed55c855c4b734a6d1b",
+  "engine_sha256": "c8e1831e383900c3407fab075c08c5d25c981feda4796907859ff94eeb9c9f5a"
+}

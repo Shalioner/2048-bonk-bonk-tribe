@@ -1,0 +1,10 @@
+--- a/vendor/engine_adapted.cpp
++++ b/vendor/engine_adapted.cpp
+@@ -335,5 +335,6 @@
+ static float score_heur_board(board_t board) {
+     if(goal(board)) return 1e9f;
+-    return score_helper(          board , heur_score_table) +
++    float bonus = count_cap(board) == 2 ? 1620.0f * count_empty(board) : 0.0f;
++    return bonus + score_helper(          board , heur_score_table) +
+            score_helper(transpose(board), heur_score_table);
+ }

@@ -1,0 +1,8 @@
+{
+  "variant": "goal10m",
+  "parameters": {
+    "goal": 10000000
+  },
+  "source_sha256": "ae3728d45e008606fb6a6070cc826946e53c54fff2ddb2a682a67258ad7033b6",
+  "engine_sha256": "e4ec6ccb941828a207812ce482fe5f3ce925d185be4f234cd53ff04e365c42b7"
+}

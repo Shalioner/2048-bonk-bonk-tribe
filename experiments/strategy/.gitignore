@@ -1,0 +1,4 @@
+build/
+*/engine.cpp
+*/engine.dylib
+*/engine.so

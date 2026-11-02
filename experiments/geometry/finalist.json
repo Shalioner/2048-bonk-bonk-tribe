@@ -1,0 +1,215 @@
+{
+ "version": 1,
+ "finalist": "baseline",
+ "screen": {
+  "baseline": {
+   "games": 12,
+   "goals": 9,
+   "win_rate": 0.75,
+   "limits": 0,
+   "moves": 22768,
+   "total_wall": 96.71334953999995,
+   "search_wall": 93.03740183100402,
+   "choose_wall_per_move": 0.004086322989766515,
+   "depth_counts": {
+    "1": 15,
+    "2": 346,
+    "3": 16654,
+    "4": 5510,
+    "5": 201,
+    "6": 22,
+    "7": 10,
+    "8": 10
+   },
+   "positions": 12536975648,
+   "positions_scope": "legacy search-node counter excludes feature arithmetic; production risk makes no execute_move calls"
+  },
+  "geometry_r1": {
+   "games": 12,
+   "goals": 8,
+   "win_rate": 0.6666666666666666,
+   "limits": 0,
+   "moves": 24260,
+   "total_wall": 102.523144749,
+   "search_wall": 99.28224854600697,
+   "choose_wall_per_move": 0.00409242574385849,
+   "depth_counts": {
+    "1": 3,
+    "2": 223,
+    "3": 18177,
+    "4": 5540,
+    "5": 274,
+    "6": 32,
+    "7": 4,
+    "8": 7
+   },
+   "positions": 13446290648,
+   "positions_scope": "legacy search-node counter excludes feature arithmetic; production risk makes no execute_move calls"
+  },
+  "geometry_r2": {
+   "games": 12,
+   "goals": 5,
+   "win_rate": 0.4166666666666667,
+   "limits": 0,
+   "moves": 24704,
+   "total_wall": 105.24488804000015,
+   "search_wall": 101.82926378100072,
+   "choose_wall_per_move": 0.004121974732067711,
+   "depth_counts": {
+    "1": 5,
+    "2": 383,
+    "3": 18203,
+    "4": 5827,
+    "5": 249,
+    "6": 19,
+    "7": 2,
+    "8": 16
+   },
+   "positions": 13386638420,
+   "positions_scope": "legacy search-node counter excludes feature arithmetic; production risk makes no execute_move calls"
+  },
+  "risk_r1": {
+   "games": 12,
+   "goals": 6,
+   "win_rate": 0.5,
+   "limits": 0,
+   "moves": 22548,
+   "total_wall": 94.86917933300013,
+   "search_wall": 92.33876472699639,
+   "choose_wall_per_move": 0.0040952086538494055,
+   "depth_counts": {
+    "1": 9,
+    "2": 654,
+    "3": 19145,
+    "4": 2617,
+    "5": 96,
+    "6": 21,
+    "7": 2,
+    "8": 4
+   },
+   "positions": 8374212456,
+   "positions_scope": "legacy search-node counter excludes feature arithmetic; production risk makes no execute_move calls"
+  },
+  "risk_r2": {
+   "games": 12,
+   "goals": 3,
+   "win_rate": 0.25,
+   "limits": 0,
+   "moves": 22445,
+   "total_wall": 98.96257520799998,
+   "search_wall": 96.05371154500405,
+   "choose_wall_per_move": 0.004279514882824863,
+   "depth_counts": {
+    "1": 4,
+    "2": 1111,
+    "3": 19132,
+    "4": 2068,
+    "5": 109,
+    "6": 11,
+    "7": 2,
+    "8": 8
+   },
+   "positions": 7731974264,
+   "positions_scope": "legacy search-node counter excludes feature arithmetic; production risk makes no execute_move calls"
+  },
+  "segments_r1": {
+   "games": 12,
+   "goals": 4,
+   "win_rate": 0.3333333333333333,
+   "limits": 0,
+   "moves": 24923,
+   "total_wall": 110.79448795900008,
+   "search_wall": 105.85139795899786,
+   "choose_wall_per_move": 0.004247137100629855,
+   "depth_counts": {
+    "1": 82,
+    "2": 996,
+    "3": 17507,
+    "4": 6038,
+    "5": 251,
+    "6": 43,
+    "7": 3,
+    "8": 3
+   },
+   "positions": 14292742940,
+   "positions_scope": "legacy search-node counter excludes feature arithmetic; production risk makes no execute_move calls"
+  },
+  "segments_r2": {
+   "games": 12,
+   "goals": 0,
+   "win_rate": 0.0,
+   "limits": 0,
+   "moves": 19353,
+   "total_wall": 83.44721787499992,
+   "search_wall": 80.73211909699822,
+   "choose_wall_per_move": 0.004171555784477767,
+   "depth_counts": {
+    "1": 7,
+    "2": 165,
+    "3": 13616,
+    "4": 5228,
+    "5": 269,
+    "6": 42,
+    "7": 14,
+    "8": 12
+   },
+   "positions": 12342172484,
+   "positions_scope": "legacy search-node counter excludes feature arithmetic; production risk makes no execute_move calls"
+  }
+ },
+ "policy": {
+  "seed_start": 1900000000,
+  "games": 60,
+  "labels": [
+   "baseline",
+   "finalist"
+  ],
+  "order": "alternate first label by seed, serial even when both labels use baseline"
+ },
+ "selection": "most goals; ties baseline first, then lower measured choose-wall/completed-move, then declared arm order",
+ "stop_reason": "local_plateau",
+ "rounds": [
+  {
+   "round": 1,
+   "previous_best": 9,
+   "best_goals": 9,
+   "improved": false
+  },
+  {
+   "round": 2,
+   "previous_best": 9,
+   "best_goals": 9,
+   "improved": false
+  }
+ ],
+ "hashes": {
+  "benchmark.py": "f1a00e91928ed6e41964747d205e669d9fbb1b55c8ddc2199e1a7731e5ae60f3",
+  "bot.py": "c7be4abdd61e5b8b2f64d967deeae703b6838796d4a8e9625f7257bfd4918f15",
+  "experiments/geometry/build/baseline/engine.cpp": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d",
+  "experiments/geometry/build/baseline/engine.dylib": "ec74e617df06bf0e71936aaa4974f34a59061198bb804eb8bbc2470acc4a3cf2",
+  "experiments/geometry/build/geometry_r1/engine.cpp": "2b664395a574b39f1d79f2ee62b7b514ba69c4b6534007518c65b192a158134c",
+  "experiments/geometry/build/geometry_r1/engine.dylib": "95a18796997be95c1519afcf71acde3f93ce49375b934d204d33d83876660142",
+  "experiments/geometry/build/geometry_r2/engine.cpp": "a8c0a50cf28d554a49ec92759c6a1d8b6b9baecb59b1dd7d643da68613197809",
+  "experiments/geometry/build/geometry_r2/engine.dylib": "24e56b6036b3771c96d0a8cd27f5446f1dd06887ccd25d8acd294d6d9be02321",
+  "experiments/geometry/build/manifest.json": "652df0d946d6a427cf260009da6e2bf9d48e55eb6f46534f20857b6de6a44297",
+  "experiments/geometry/build/risk_r1/engine.cpp": "b9c99ae2146582b731de8fbfc8715307006c448f509108c48ea25bd5ab573154",
+  "experiments/geometry/build/risk_r1/engine.dylib": "7184c3993e030c0fb3d5efb907b43b98c375bedfc5eaca41929e457ff9347661",
+  "experiments/geometry/build/risk_r2/engine.cpp": "a48c0e910a700cfd9f40ae56d4f5756ac60680e42703666735c99fbcd9759314",
+  "experiments/geometry/build/risk_r2/engine.dylib": "ca0cc61a1ee3a9d0ff214805d0210ed3fd3d3901ce5f866bd2e21af91447b1fa",
+  "experiments/geometry/build/segments_r1/engine.cpp": "817272f21683b91d63d755c1a6ece29c178925c00b6f538fd0d4b791151cd759",
+  "experiments/geometry/build/segments_r1/engine.dylib": "1433a4dc7b096535386e0ded55f6cfb57cd8e7e465715d14789e065b359dd354",
+  "experiments/geometry/build/segments_r2/engine.cpp": "026e35b6f240cbff75c6848f18b12d54b142f1d6eecf6d4c8d7c653183dbdecf",
+  "experiments/geometry/build/segments_r2/engine.dylib": "59c1d94cdcf2e31b8fdbf443dffe80383e364b63557856419acfb576742883a7",
+  "experiments/geometry/features.py": "22f73c6e92afa46e75f82bd8c6eb2cb485a9fe3f17b29f72f8d14ec1e7636f7c",
+  "experiments/geometry/plan.json": "e50e1d866bb8b5cf59f4003242c78423fd9c2be5f3b2e5ceb8ef4802c40e7a4d",
+  "experiments/geometry/run.py": "10b01096fb68201b26f4292874ff88fc80e1f0013313d39f2093ea4ca0ba34bf",
+  "experiments/geometry/screen.json": "bd0c7666c3bd37f2ce152ea5a2f5599039c719f43e05b89e53d630c1c551cb83",
+  "experiments/geometry/seed-inventory.json": "a4f74bcc3575a05300b6774139f7552dbd50aada65feaaf26948135f7d573989",
+  "spawn-model.default.json": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+  "vendor/2048.h": "2597ae4726e872494bb57997154fdb0279cfc706bb0aad7dcb758be5231ec85d",
+  "vendor/config.h": "5bbfde3aedbd34414eb6a7c1fb1a8b7f5fb2b76b66bb014318be496f24c7bda1",
+  "vendor/engine_adapted.cpp": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d",
+  "vendor/geometry_features.h": "0fdcf578cbf02e6f03028e41d1890786423d2298a489e18ac9037861d51d925f",
+  "vendor/platdefs.h": "5b3923979efb21112335319ff92a807cf47620002b446864eddea5f9925d983c"
+ }
+}

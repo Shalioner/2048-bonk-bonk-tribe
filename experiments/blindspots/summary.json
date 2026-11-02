@@ -1,0 +1,71 @@
+{
+  "games": 60,
+  "baseline_goals": 18,
+  "candidate_goals": 29,
+  "gained": [
+    202611102,
+    202611104,
+    202611108,
+    202611111,
+    202611113,
+    202611115,
+    202611120,
+    202611121,
+    202611123,
+    202611138,
+    202611144,
+    202611148,
+    202611149,
+    202611150,
+    202611151,
+    202611156,
+    202611158
+  ],
+  "lost": [
+    202611101,
+    202611131,
+    202611145,
+    202611152,
+    202611153,
+    202611159
+  ],
+  "same": 37,
+  "one_sided_p": 0.01734483242034912,
+  "baseline_seconds": 498.5018,
+  "candidate_seconds": 907.8039000000002,
+  "finalist": "focus7",
+  "parameters": {
+    "focus_empty": 7
+  },
+  "frozen_provenance_verified": true,
+  "training_games": 216,
+  "control_games": 120,
+  "total_games": 336,
+  "unique_training_seeds": 12,
+  "unique_holdout_seeds": 60,
+  "no_seed_overlap": true,
+  "limits": 0,
+  "offline_improvement": true,
+  "default_changed": false,
+  "phone_or_8_10_validated": false,
+  "difference_percentage_points": 18.333333333333332,
+  "cost": {
+    "baseline": {
+      "nodes": 20792721948,
+      "clipped_maxima": 276936338,
+      "moves": 109117,
+      "depth4_moves": 0,
+      "reached_two": 42,
+      "seconds": 498.5018
+    },
+    "candidate": {
+      "nodes": 41447422741,
+      "clipped_maxima": 2217434021,
+      "moves": 111600,
+      "depth4_moves": 25483,
+      "reached_two": 42,
+      "seconds": 907.8039000000002
+    },
+    "node_ratio": 1.9933620448854568
+  }
+}

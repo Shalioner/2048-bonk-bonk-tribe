@@ -1,0 +1,143 @@
+{
+  "finalist": "focus7",
+  "parameters": {
+    "focus_empty": 7
+  },
+  "training_games_per_variant": 12,
+  "baseline_training_goals": 2,
+  "candidate_training_goals": 6,
+  "plateau_rounds": [
+    {
+      "variants": {
+        "progress20000": 2,
+        "mobility2000": 4,
+        "focus3": 4
+      },
+      "incumbent": "mobility2000",
+      "goals": 4,
+      "no_gain_streak": 0
+    },
+    {
+      "variants": {
+        "progress10000": 3,
+        "mobility1000": 1,
+        "focus1": 2
+      },
+      "incumbent": "mobility2000",
+      "goals": 4,
+      "no_gain_streak": 1
+    },
+    {
+      "variants": {
+        "progress40000": 4,
+        "mobility4000": 4,
+        "focus5": 5
+      },
+      "incumbent": "focus5",
+      "goals": 5,
+      "no_gain_streak": 0
+    },
+    {
+      "variants": {
+        "focus4": 3,
+        "focus6": 4
+      },
+      "incumbent": "focus5",
+      "goals": 5,
+      "no_gain_streak": 1
+    },
+    {
+      "variants": {
+        "focus2": 2,
+        "focus7": 6
+      },
+      "incumbent": "focus7",
+      "goals": 6,
+      "no_gain_streak": 0
+    },
+    {
+      "variants": {
+        "focus8": 5,
+        "focus9": 5
+      },
+      "incumbent": "focus7",
+      "goals": 6,
+      "no_gain_streak": 1
+    },
+    {
+      "variants": {
+        "focus10": 5,
+        "focus11": 5
+      },
+      "incumbent": "focus7",
+      "goals": 6,
+      "no_gain_streak": 2
+    }
+  ],
+  "training_total_games": 216,
+  "frozen_at_utc": "2026-11-01T16:50:47.769002+00:00",
+  "training_commit": "d9427ec5b2de9eed48620e776095598dc68ec374",
+  "holdout_seeds": [
+    202611100,
+    202611159
+  ],
+  "holdout_games_per_arm": 60,
+  "no_further_tuning": true,
+  "holdout_policy": "One candidate only. Exact one-sided paired binomial p<=0.05 AND more holdout wins AND no limits supports offline improvement; otherwise no convincing improvement. No default/runtime adoption without separate 8/10s and phone evidence.",
+  "frozen_hashes": {
+    "experiments/blindspots/plan.json": "f98bf2725fde0dc97f752e1f198f00661bf47ab3b15dac9f1a2ecd14884a7a7b",
+    "experiments/blindspots/extension-plan.json": "bce74cefe50fa2ea03e3f1844386e7895b3e796a4071c05f151150a09e9bc3dc",
+    "experiments/blindspots/lab.py": "34ab1d3dc877a4973211b5b040880bcf91d70166695ff82b017cde9f1ea54520",
+    "experiments/blindspots/extension.py": "11f9b6767f757fbf0c247516f535857581000c0ba91d4c632323d3bc837e6fdb",
+    "bot.py": "6495f1ad41272048679eee8f7a65a1d91c90508ec2b1e49d8c95e0e5437f288a",
+    "benchmark.py": "6a361da30ceb112bde886815c35f8b8bb656d25fc451d0b5d1a8b6e68d34e3cd",
+    "vendor/engine_adapted.cpp": "583a27980489193d30a40e6a9ce7ffafa736562691f6bc1c6d8a7a15346f27a7",
+    "spawn-model.default.json": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+    "experiments/blindspots/baseline/engine.cpp": "028a1534631bc6e7386326a09156f4cfc9acb96c899ac5744d23ed73337fc657",
+    "experiments/blindspots/baseline/manifest.json": "11d109390f30db3dddeb592663e41ea3968bfefc980b4918fb885e11c149b394",
+    "experiments/blindspots/baseline/training.json": "8fd7b683cbdb0f26d38429f0b4d52b42a0bfd0450ab80e1af634e004046b67dd",
+    "experiments/blindspots/build/baseline/engine.dylib": "bf6a0cae04dc5d52cb64dd94070e36b501a05189a6e72de1a01a50a5acee05a6",
+    "experiments/blindspots/focus7/engine.cpp": "028a1534631bc6e7386326a09156f4cfc9acb96c899ac5744d23ed73337fc657",
+    "experiments/blindspots/focus7/manifest.json": "856a676ddb411466de4b291bebc1588b864806ff86273aea9203a3029cd241a1",
+    "experiments/blindspots/focus7/training.json": "c97929d7512488b82e885c8b08dd57f948eafcf108798ae82c8129b8f059c354",
+    "experiments/blindspots/build/focus7/engine.dylib": "ba6fb97924a4426e2abb78f49d9512f7ba0bacf53c2c7bac5f5eb7658dc854f9"
+  },
+  "all_training_results": {
+    "baseline": "8fd7b683cbdb0f26d38429f0b4d52b42a0bfd0450ab80e1af634e004046b67dd",
+    "progress20000": "829599d3b746f1d8d3c275c6c2250e62e4e3e6be48e564d50b8ce359ebbfa8ed",
+    "mobility2000": "840f8b20c15c9366fe12ef387358cbb1dbac35a45b532bea112c4f2d8bbcd3ed",
+    "focus3": "4113b91f48197712568577ff6e6db18c6e7559da6f2359f0172295fa82289500",
+    "progress10000": "fa9f4cd874bcaa3b5128a3e9b142930b90498ea15787eb4af651c5101216a3b2",
+    "mobility1000": "e82d38e319ec5abcc46523e5973759853015f34a6a274d51bf81b47c75bc7e3d",
+    "focus1": "924c2b0325dfc72dfa61f73c9d279e5f07401dd49691bc6cbd958ef37924276e",
+    "progress40000": "f5e8f8ad7060fa303c7b11a429100a152ab3df2dd44424e8d081b678da964a48",
+    "mobility4000": "d167b0354ed8d8f7010553521e223808570448949685cbb3c18fde6be7aa2360",
+    "focus5": "5cc352dfcd584b6c03831c69633205d04552af6f4f74514f320e1d4c2dd4ea93",
+    "focus4": "ccbf1567759d94e9ba10fbb979a011ba4c330d3f72a008c6620854f7988f5eea",
+    "focus6": "ca6f96f51adb9606ee2bbb826be9b30b7226d9a6f9171f361bc18ef55f5bc677",
+    "focus2": "7da0e14f38cef81d099b3f8ad3e8eca24aef1baf4e73333854aefe7b51129d37",
+    "focus7": "c97929d7512488b82e885c8b08dd57f948eafcf108798ae82c8129b8f059c354",
+    "focus8": "11ab51a66fa0283c67e592e6d07795d0f7f24e0ab3d92729e9af6e02baa6bf9e",
+    "focus9": "64ebdb8210ba27bb5905fb80a0f02dbd5d53f5db7f6f62d3d92be7f76dc9f1fd",
+    "focus10": "0400400a6969d471fd57a9b2a9ccbbe3f5f0629282041726926b8f5061c0a6a4",
+    "focus11": "abed2bb920e9a97f393c570c2f24faf7f69d6cc27d694ec690b133c0df7de362"
+  },
+  "commands": [
+    [
+      "python3",
+      "experiments/blindspots/lab.py",
+      "run",
+      "baseline",
+      "--stage",
+      "holdout"
+    ],
+    [
+      "python3",
+      "experiments/blindspots/extension.py",
+      "run",
+      "focus7",
+      "--stage",
+      "holdout"
+    ]
+  ]
+}

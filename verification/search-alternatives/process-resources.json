@@ -1,0 +1,15 @@
+{
+ "screen": {
+  "wall_seconds": 920.2,
+  "user_seconds": 1875.53,
+  "system_seconds": 82.76,
+  "maximum_rss_bytes": 105136128
+ },
+ "control": {
+  "wall_seconds": 2490.64,
+  "user_seconds": 6090.87,
+  "system_seconds": 124.27,
+  "maximum_rss_bytes": 155123712
+ },
+ "scope": "/usr/bin/time -l entire offline runner including growing telemetry/checkpoints; not a standalone bot/phone RAM measurement"
+}

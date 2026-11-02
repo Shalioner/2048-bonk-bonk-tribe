@@ -1,0 +1,2559 @@
+{
+ "checkpoint_version": 1,
+ "config": {
+  "games": 60,
+  "seed": 10001,
+  "depths": [
+   3
+  ],
+  "think": null,
+  "max_moves": 6000,
+  "endgame_depth": null
+ },
+ "spawn_model": {
+  "version": 2,
+  "description": "Счётчики появлений по стадиям. Ключ — максимальный уровень на поле после хода (до появления); стадия без своей строки берёт ближайшую меньшую. Значения — счётчики уровней 1..15 (1=2, 2=4, 3=8, 4=16, 5=32).",
+  "source": "play.log 2026-10: 702 восстановленных появления (стадии ≤7: 28, 8: 73, 9: 152, 10–11: 449; 10 и 11 объединены) плюс классический prior 9:1 для уровней 1 и 2 в каждой строке.",
+  "stages": {
+   "0": [
+    35,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "8": [
+    74,
+    8,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "9": [
+    143,
+    14,
+    4,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "10": [
+    391,
+    36,
+    16,
+    11,
+    5,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ "source_hashes": {
+  "bot.py": "6495f1ad41272048679eee8f7a65a1d91c90508ec2b1e49d8c95e0e5437f288a",
+  "vendor/engine_adapted.cpp": "583a27980489193d30a40e6a9ce7ffafa736562691f6bc1c6d8a7a15346f27a7",
+  "benchmark.py": "6a361da30ceb112bde886815c35f8b8bb656d25fc451d0b5d1a8b6e68d34e3cd",
+  "loaded_engine": "659229f821d7bdf443cdf5ee95d25c741fbf6cf52cefadb17a8299f69017fb6a"
+ },
+ "summary": {
+  "games": 60,
+  "goals": 18,
+  "losses": 42,
+  "limits": 0,
+  "win_rate": 0.3,
+  "depth": 3,
+  "think": null,
+  "mean_caps": 2.0166666666666666,
+  "mean_moves": 1861.1166666666666,
+  "mean_goal_moves": 2192.4444444444443,
+  "seconds": 919.9964,
+  "seconds_per_move": 0.008238749138062272
+ },
+ "comparisons": [
+  {
+   "games": 60,
+   "goals": 18,
+   "losses": 42,
+   "limits": 0,
+   "win_rate": 0.3,
+   "depth": 3,
+   "think": null,
+   "mean_caps": 2.0166666666666666,
+   "mean_moves": 1861.1166666666666,
+   "mean_goal_moves": 2192.4444444444443,
+   "seconds": 919.9964,
+   "seconds_per_move": 0.008238749138062272
+  }
+ ],
+ "spawn_table": [
+  [
+   35,
+   3,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   35,
+   3,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   35,
+   3,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   35,
+   3,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   35,
+   3,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   35,
+   3,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   35,
+   3,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   35,
+   3,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   74,
+   8,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   143,
+   14,
+   4,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   391,
+   36,
+   16,
+   11,
+   5,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   391,
+   36,
+   16,
+   11,
+   5,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   391,
+   36,
+   16,
+   11,
+   5,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   391,
+   36,
+   16,
+   11,
+   5,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   391,
+   36,
+   16,
+   11,
+   5,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   391,
+   36,
+   16,
+   11,
+   5,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ]
+ ],
+ "games": [
+  {
+   "seed": 10001,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1362
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1362,
+   "caps": 1,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 783
+   },
+   "board": [
+    5,
+    1,
+    3,
+    4,
+    8,
+    4,
+    2,
+    1,
+    10,
+    7,
+    4,
+    3,
+    11,
+    8,
+    5,
+    1
+   ],
+   "seconds": 7.0002
+  },
+  {
+   "seed": 10002,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2024
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2024,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 791,
+    "2": 1518
+   },
+   "board": [
+    3,
+    2,
+    4,
+    2,
+    1,
+    4,
+    3,
+    1,
+    2,
+    6,
+    7,
+    9,
+    5,
+    10,
+    11,
+    11
+   ],
+   "seconds": 11.7326
+  },
+  {
+   "seed": 10003,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2227
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2227,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 828,
+    "2": 1595,
+    "3": 2227
+   },
+   "board": [
+    11,
+    1,
+    1,
+    1,
+    2,
+    11,
+    11,
+    0,
+    4,
+    3,
+    0,
+    0,
+    1,
+    0,
+    0,
+    1
+   ],
+   "seconds": 25.2929
+  },
+  {
+   "seed": 10004,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2224
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2224,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 805,
+    "2": 1469
+   },
+   "board": [
+    1,
+    3,
+    2,
+    1,
+    4,
+    6,
+    5,
+    4,
+    9,
+    8,
+    7,
+    1,
+    11,
+    11,
+    10,
+    4
+   ],
+   "seconds": 38.8289
+  },
+  {
+   "seed": 10005,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1555
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1555,
+   "caps": 1,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 816
+   },
+   "board": [
+    2,
+    3,
+    2,
+    1,
+    3,
+    5,
+    6,
+    4,
+    9,
+    8,
+    7,
+    1,
+    11,
+    10,
+    1,
+    3
+   ],
+   "seconds": 13.539
+  },
+  {
+   "seed": 10006,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2112
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2112,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 794,
+    "2": 1436
+   },
+   "board": [
+    4,
+    1,
+    2,
+    4,
+    5,
+    6,
+    5,
+    6,
+    11,
+    9,
+    7,
+    2,
+    11,
+    10,
+    8,
+    1
+   ],
+   "seconds": 27.1593
+  },
+  {
+   "seed": 10007,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2069
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2069,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 822,
+    "2": 1515
+   },
+   "board": [
+    11,
+    10,
+    8,
+    5,
+    11,
+    8,
+    6,
+    3,
+    2,
+    5,
+    4,
+    2,
+    3,
+    1,
+    2,
+    1
+   ],
+   "seconds": 23.1364
+  },
+  {
+   "seed": 10008,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2080
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2080,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 831,
+    "2": 1556
+   },
+   "board": [
+    2,
+    10,
+    11,
+    11,
+    3,
+    7,
+    8,
+    9,
+    2,
+    6,
+    5,
+    4,
+    1,
+    4,
+    2,
+    3
+   ],
+   "seconds": 17.7816
+  },
+  {
+   "seed": 10009,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1777
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1777,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 835,
+    "2": 1548
+   },
+   "board": [
+    11,
+    11,
+    9,
+    5,
+    7,
+    6,
+    1,
+    3,
+    4,
+    3,
+    5,
+    2,
+    1,
+    2,
+    4,
+    1
+   ],
+   "seconds": 26.3628
+  },
+  {
+   "seed": 10010,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1937
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1937,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 809,
+    "2": 1466
+   },
+   "board": [
+    1,
+    3,
+    2,
+    1,
+    7,
+    6,
+    4,
+    3,
+    10,
+    8,
+    5,
+    1,
+    11,
+    11,
+    6,
+    3
+   ],
+   "seconds": 13.1588
+  },
+  {
+   "seed": 10011,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1581
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1581,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 782,
+    "2": 1467
+   },
+   "board": [
+    4,
+    3,
+    2,
+    1,
+    2,
+    5,
+    6,
+    7,
+    4,
+    6,
+    3,
+    2,
+    11,
+    11,
+    7,
+    4
+   ],
+   "seconds": 10.4043
+  },
+  {
+   "seed": 10012,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1007
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1007,
+   "caps": 1,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 887
+   },
+   "board": [
+    4,
+    2,
+    1,
+    3,
+    1,
+    4,
+    5,
+    6,
+    5,
+    3,
+    2,
+    8,
+    2,
+    4,
+    6,
+    11
+   ],
+   "seconds": 7.0667
+  },
+  {
+   "seed": 10013,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2144
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2144,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 802,
+    "2": 1521
+   },
+   "board": [
+    11,
+    11,
+    7,
+    1,
+    9,
+    10,
+    6,
+    4,
+    7,
+    6,
+    5,
+    3,
+    1,
+    2,
+    4,
+    1
+   ],
+   "seconds": 18.4437
+  },
+  {
+   "seed": 10014,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1927
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1927,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 722,
+    "2": 1516
+   },
+   "board": [
+    4,
+    3,
+    2,
+    1,
+    7,
+    6,
+    3,
+    5,
+    11,
+    8,
+    4,
+    1,
+    11,
+    10,
+    6,
+    2
+   ],
+   "seconds": 15.1108
+  },
+  {
+   "seed": 10015,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2224
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2224,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 847,
+    "2": 1555,
+    "3": 2224
+   },
+   "board": [
+    11,
+    11,
+    1,
+    2,
+    11,
+    3,
+    2,
+    1,
+    5,
+    2,
+    4,
+    0,
+    4,
+    1,
+    1,
+    0
+   ],
+   "seconds": 19.6209
+  },
+  {
+   "seed": 10016,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2253
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2253,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 801,
+    "2": 1544,
+    "3": 2253
+   },
+   "board": [
+    1,
+    11,
+    0,
+    0,
+    11,
+    11,
+    5,
+    0,
+    3,
+    5,
+    1,
+    4,
+    5,
+    1,
+    2,
+    3
+   ],
+   "seconds": 22.3796
+  },
+  {
+   "seed": 10017,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2242
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2242,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 856,
+    "2": 1524,
+    "3": 2242
+   },
+   "board": [
+    2,
+    6,
+    11,
+    1,
+    4,
+    11,
+    11,
+    0,
+    3,
+    5,
+    3,
+    1,
+    1,
+    3,
+    1,
+    0
+   ],
+   "seconds": 13.7181
+  },
+  {
+   "seed": 10018,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1950
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1950,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 811,
+    "2": 1493
+   },
+   "board": [
+    1,
+    3,
+    2,
+    4,
+    6,
+    4,
+    3,
+    1,
+    10,
+    7,
+    8,
+    2,
+    11,
+    11,
+    2,
+    1
+   ],
+   "seconds": 12.2869
+  },
+  {
+   "seed": 10019,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2197
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2197,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 814,
+    "2": 1531
+   },
+   "board": [
+    2,
+    4,
+    1,
+    4,
+    8,
+    6,
+    5,
+    3,
+    10,
+    9,
+    4,
+    2,
+    11,
+    11,
+    8,
+    1
+   ],
+   "seconds": 13.6188
+  },
+  {
+   "seed": 10020,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1874
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1874,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 799,
+    "2": 1629
+   },
+   "board": [
+    1,
+    2,
+    3,
+    11,
+    4,
+    3,
+    4,
+    11,
+    1,
+    5,
+    7,
+    10,
+    2,
+    1,
+    6,
+    2
+   ],
+   "seconds": 20.0852
+  },
+  {
+   "seed": 10021,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2192
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2192,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 804,
+    "2": 1591,
+    "3": 2192
+   },
+   "board": [
+    11,
+    1,
+    4,
+    3,
+    11,
+    11,
+    5,
+    1,
+    3,
+    3,
+    1,
+    0,
+    0,
+    1,
+    2,
+    0
+   ],
+   "seconds": 24.6966
+  },
+  {
+   "seed": 10022,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1502
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1502,
+   "caps": 1,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 802
+   },
+   "board": [
+    1,
+    8,
+    10,
+    11,
+    2,
+    7,
+    9,
+    7,
+    4,
+    6,
+    4,
+    5,
+    1,
+    2,
+    3,
+    1
+   ],
+   "seconds": 15.3528
+  },
+  {
+   "seed": 10023,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1481
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1481,
+   "caps": 1,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 828
+   },
+   "board": [
+    1,
+    4,
+    1,
+    2,
+    2,
+    5,
+    6,
+    4,
+    6,
+    4,
+    8,
+    9,
+    2,
+    7,
+    10,
+    11
+   ],
+   "seconds": 9.697
+  },
+  {
+   "seed": 10024,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1316
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1316,
+   "caps": 1,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 778
+   },
+   "board": [
+    11,
+    10,
+    8,
+    6,
+    8,
+    6,
+    5,
+    4,
+    3,
+    5,
+    3,
+    6,
+    1,
+    2,
+    4,
+    1
+   ],
+   "seconds": 12.3163
+  },
+  {
+   "seed": 10025,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1681
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1681,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 810,
+    "2": 1422
+   },
+   "board": [
+    1,
+    4,
+    2,
+    1,
+    6,
+    5,
+    1,
+    4,
+    9,
+    7,
+    2,
+    1,
+    11,
+    11,
+    5,
+    2
+   ],
+   "seconds": 8.9041
+  },
+  {
+   "seed": 10026,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2187
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2187,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 804,
+    "2": 1500,
+    "3": 2187
+   },
+   "board": [
+    11,
+    11,
+    2,
+    1,
+    11,
+    5,
+    3,
+    0,
+    1,
+    3,
+    4,
+    1,
+    3,
+    1,
+    3,
+    1
+   ],
+   "seconds": 14.364
+  },
+  {
+   "seed": 10027,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 638
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 638,
+   "caps": 0,
+   "max": 10,
+   "cap_reached_at": {},
+   "board": [
+    3,
+    8,
+    2,
+    10,
+    5,
+    4,
+    6,
+    2,
+    3,
+    7,
+    2,
+    1,
+    1,
+    4,
+    5,
+    3
+   ],
+   "seconds": 3.14
+  },
+  {
+   "seed": 10028,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2122
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2122,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 938,
+    "2": 1524,
+    "3": 2122
+   },
+   "board": [
+    3,
+    1,
+    1,
+    0,
+    4,
+    1,
+    11,
+    0,
+    2,
+    11,
+    11,
+    0,
+    2,
+    3,
+    2,
+    0
+   ],
+   "seconds": 12.6861
+  },
+  {
+   "seed": 10029,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2194
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2194,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 911,
+    "2": 1548
+   },
+   "board": [
+    1,
+    2,
+    1,
+    2,
+    4,
+    7,
+    4,
+    3,
+    5,
+    8,
+    9,
+    11,
+    2,
+    3,
+    10,
+    11
+   ],
+   "seconds": 17.9179
+  },
+  {
+   "seed": 10030,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1392
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1392,
+   "caps": 1,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 799
+   },
+   "board": [
+    2,
+    1,
+    2,
+    1,
+    4,
+    5,
+    4,
+    5,
+    5,
+    1,
+    6,
+    4,
+    7,
+    9,
+    10,
+    11
+   ],
+   "seconds": 14.1552
+  },
+  {
+   "seed": 10031,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2111
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2111,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 825,
+    "2": 1528
+   },
+   "board": [
+    2,
+    5,
+    3,
+    2,
+    1,
+    4,
+    6,
+    5,
+    3,
+    7,
+    8,
+    11,
+    1,
+    8,
+    10,
+    11
+   ],
+   "seconds": 12.6039
+  },
+  {
+   "seed": 10032,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2081
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2081,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 844,
+    "2": 1439,
+    "3": 2081
+   },
+   "board": [
+    11,
+    2,
+    3,
+    1,
+    11,
+    11,
+    3,
+    0,
+    3,
+    5,
+    2,
+    0,
+    1,
+    0,
+    1,
+    0
+   ],
+   "seconds": 10.3776
+  },
+  {
+   "seed": 10033,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 784
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 784,
+   "caps": 0,
+   "max": 10,
+   "cap_reached_at": {},
+   "board": [
+    1,
+    3,
+    1,
+    2,
+    5,
+    4,
+    2,
+    3,
+    8,
+    6,
+    5,
+    1,
+    10,
+    9,
+    7,
+    6
+   ],
+   "seconds": 3.2605
+  },
+  {
+   "seed": 10034,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2208
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2208,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 812,
+    "2": 1455,
+    "3": 2208
+   },
+   "board": [
+    1,
+    11,
+    11,
+    1,
+    2,
+    11,
+    2,
+    0,
+    4,
+    3,
+    2,
+    3,
+    1,
+    7,
+    2,
+    1
+   ],
+   "seconds": 11.5699
+  },
+  {
+   "seed": 10035,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2126
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2126,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 881,
+    "2": 1469,
+    "3": 2126
+   },
+   "board": [
+    3,
+    1,
+    2,
+    1,
+    1,
+    3,
+    6,
+    11,
+    3,
+    11,
+    2,
+    0,
+    3,
+    11,
+    1,
+    0
+   ],
+   "seconds": 8.1349
+  },
+  {
+   "seed": 10036,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1745
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1745,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 812,
+    "2": 1611
+   },
+   "board": [
+    1,
+    5,
+    1,
+    4,
+    3,
+    6,
+    4,
+    2,
+    2,
+    9,
+    5,
+    4,
+    1,
+    4,
+    11,
+    11
+   ],
+   "seconds": 9.3382
+  },
+  {
+   "seed": 10037,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2099
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2099,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 866,
+    "2": 1483
+   },
+   "board": [
+    2,
+    9,
+    11,
+    11,
+    3,
+    7,
+    8,
+    10,
+    1,
+    4,
+    5,
+    6,
+    2,
+    1,
+    2,
+    1
+   ],
+   "seconds": 15.8955
+  },
+  {
+   "seed": 10038,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1791
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1791,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 818,
+    "2": 1519
+   },
+   "board": [
+    2,
+    1,
+    2,
+    4,
+    1,
+    5,
+    3,
+    1,
+    8,
+    7,
+    4,
+    2,
+    11,
+    11,
+    9,
+    5
+   ],
+   "seconds": 10.8303
+  },
+  {
+   "seed": 10039,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2262
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2262,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 816,
+    "2": 1559,
+    "3": 2262
+   },
+   "board": [
+    3,
+    1,
+    3,
+    2,
+    2,
+    2,
+    11,
+    1,
+    0,
+    5,
+    11,
+    11,
+    0,
+    2,
+    2,
+    1
+   ],
+   "seconds": 11.0164
+  },
+  {
+   "seed": 10040,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2214
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2214,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 803,
+    "2": 1524,
+    "3": 2214
+   },
+   "board": [
+    2,
+    1,
+    2,
+    3,
+    11,
+    3,
+    4,
+    0,
+    11,
+    11,
+    2,
+    0,
+    1,
+    3,
+    1,
+    0
+   ],
+   "seconds": 17.6664
+  },
+  {
+   "seed": 10041,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2170
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2170,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 805,
+    "2": 1502
+   },
+   "board": [
+    3,
+    4,
+    2,
+    1,
+    1,
+    5,
+    7,
+    8,
+    2,
+    6,
+    9,
+    11,
+    4,
+    7,
+    10,
+    11
+   ],
+   "seconds": 13.5128
+  },
+  {
+   "seed": 10042,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2003
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2003,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 867,
+    "2": 1613
+   },
+   "board": [
+    2,
+    1,
+    10,
+    11,
+    1,
+    4,
+    7,
+    11,
+    5,
+    3,
+    5,
+    7,
+    2,
+    1,
+    4,
+    5
+   ],
+   "seconds": 10.1083
+  },
+  {
+   "seed": 10043,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2095
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2095,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 788,
+    "2": 1432,
+    "3": 2095
+   },
+   "board": [
+    2,
+    2,
+    2,
+    1,
+    5,
+    11,
+    3,
+    3,
+    0,
+    0,
+    4,
+    11,
+    0,
+    0,
+    11,
+    1
+   ],
+   "seconds": 21.7288
+  },
+  {
+   "seed": 10044,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2193
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2193,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 843,
+    "2": 1525,
+    "3": 2193
+   },
+   "board": [
+    3,
+    11,
+    11,
+    1,
+    4,
+    11,
+    0,
+    0,
+    4,
+    1,
+    0,
+    0,
+    1,
+    1,
+    0,
+    0
+   ],
+   "seconds": 21.4233
+  },
+  {
+   "seed": 10045,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2233
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2233,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 837,
+    "2": 1485,
+    "3": 2233
+   },
+   "board": [
+    4,
+    2,
+    1,
+    0,
+    1,
+    7,
+    11,
+    11,
+    2,
+    11,
+    0,
+    0,
+    1,
+    3,
+    0,
+    1
+   ],
+   "seconds": 19.5977
+  },
+  {
+   "seed": 10046,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1539
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1539,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 862,
+    "2": 1501
+   },
+   "board": [
+    4,
+    5,
+    6,
+    1,
+    2,
+    3,
+    4,
+    2,
+    6,
+    4,
+    1,
+    4,
+    11,
+    11,
+    2,
+    1
+   ],
+   "seconds": 12.9688
+  },
+  {
+   "seed": 10047,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1543
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1543,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 780,
+    "2": 1517
+   },
+   "board": [
+    11,
+    5,
+    3,
+    1,
+    11,
+    6,
+    5,
+    4,
+    2,
+    7,
+    3,
+    2,
+    5,
+    3,
+    5,
+    1
+   ],
+   "seconds": 13.5815
+  },
+  {
+   "seed": 10048,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 976
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 976,
+   "caps": 1,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 955
+   },
+   "board": [
+    2,
+    4,
+    1,
+    3,
+    5,
+    3,
+    6,
+    5,
+    4,
+    7,
+    8,
+    3,
+    1,
+    3,
+    1,
+    11
+   ],
+   "seconds": 6.3885
+  },
+  {
+   "seed": 10049,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2152
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2152,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 855,
+    "2": 1532,
+    "3": 2152
+   },
+   "board": [
+    1,
+    3,
+    2,
+    1,
+    4,
+    2,
+    11,
+    0,
+    2,
+    1,
+    2,
+    11,
+    1,
+    3,
+    1,
+    11
+   ],
+   "seconds": 17.1662
+  },
+  {
+   "seed": 10050,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 893
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 893,
+   "caps": 0,
+   "max": 10,
+   "cap_reached_at": {},
+   "board": [
+    1,
+    8,
+    2,
+    5,
+    8,
+    7,
+    1,
+    2,
+    9,
+    6,
+    3,
+    1,
+    1,
+    10,
+    5,
+    3
+   ],
+   "seconds": 6.563
+  },
+  {
+   "seed": 10051,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1510
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1510,
+   "caps": 1,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 852
+   },
+   "board": [
+    2,
+    3,
+    1,
+    3,
+    1,
+    6,
+    2,
+    5,
+    2,
+    8,
+    1,
+    4,
+    6,
+    9,
+    10,
+    11
+   ],
+   "seconds": 15.1038
+  },
+  {
+   "seed": 10052,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2202
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2202,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 831,
+    "2": 1489,
+    "3": 2202
+   },
+   "board": [
+    11,
+    11,
+    3,
+    2,
+    3,
+    2,
+    11,
+    0,
+    1,
+    4,
+    2,
+    1,
+    2,
+    0,
+    0,
+    0
+   ],
+   "seconds": 21.0056
+  },
+  {
+   "seed": 10053,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1394
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1394,
+   "caps": 1,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 839
+   },
+   "board": [
+    1,
+    5,
+    2,
+    1,
+    2,
+    9,
+    4,
+    3,
+    10,
+    3,
+    6,
+    1,
+    11,
+    4,
+    2,
+    3
+   ],
+   "seconds": 16.3718
+  },
+  {
+   "seed": 10054,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1977
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1977,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 903,
+    "2": 1588
+   },
+   "board": [
+    1,
+    5,
+    2,
+    3,
+    2,
+    3,
+    4,
+    5,
+    9,
+    8,
+    7,
+    1,
+    11,
+    11,
+    9,
+    5
+   ],
+   "seconds": 16.5529
+  },
+  {
+   "seed": 10055,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 1300
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 1300,
+   "caps": 1,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 812
+   },
+   "board": [
+    2,
+    5,
+    2,
+    3,
+    8,
+    6,
+    3,
+    6,
+    10,
+    7,
+    4,
+    5,
+    11,
+    5,
+    3,
+    1
+   ],
+   "seconds": 10.1161
+  },
+  {
+   "seed": 10056,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2164
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2164,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 847,
+    "2": 1490
+   },
+   "board": [
+    2,
+    5,
+    2,
+    1,
+    3,
+    6,
+    7,
+    6,
+    4,
+    5,
+    9,
+    11,
+    2,
+    8,
+    10,
+    11
+   ],
+   "seconds": 17.0084
+  },
+  {
+   "seed": 10057,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2251
+   },
+   "think": null,
+   "result": "goal",
+   "moves": 2251,
+   "caps": 3,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 863,
+    "2": 1574,
+    "3": 2251
+   },
+   "board": [
+    3,
+    1,
+    11,
+    0,
+    3,
+    11,
+    11,
+    1,
+    2,
+    3,
+    4,
+    2,
+    3,
+    2,
+    4,
+    0
+   ],
+   "seconds": 24.581
+  },
+  {
+   "seed": 10058,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2024
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2024,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 821,
+    "2": 1469
+   },
+   "board": [
+    4,
+    10,
+    11,
+    11,
+    3,
+    6,
+    7,
+    9,
+    5,
+    3,
+    4,
+    5,
+    1,
+    2,
+    3,
+    1
+   ],
+   "seconds": 17.9729
+  },
+  {
+   "seed": 10059,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2078
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2078,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 766,
+    "2": 1448
+   },
+   "board": [
+    4,
+    1,
+    3,
+    4,
+    5,
+    3,
+    2,
+    1,
+    10,
+    9,
+    6,
+    5,
+    11,
+    11,
+    8,
+    1
+   ],
+   "seconds": 21.141
+  },
+  {
+   "seed": 10060,
+   "depth": 3,
+   "endgame_depth": null,
+   "depth_counts": {
+    "3": 2078
+   },
+   "think": null,
+   "result": "loss",
+   "moves": 2078,
+   "caps": 2,
+   "max": 11,
+   "cap_reached_at": {
+    "1": 832,
+    "2": 1535
+   },
+   "board": [
+    1,
+    2,
+    3,
+    4,
+    10,
+    6,
+    5,
+    6,
+    11,
+    8,
+    4,
+    2,
+    11,
+    9,
+    3,
+    1
+   ],
+   "seconds": 16.4529
+  }
+ ],
+ "complete": true
+}

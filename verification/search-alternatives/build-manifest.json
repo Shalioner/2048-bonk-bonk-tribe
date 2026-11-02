@@ -1,0 +1,49 @@
+{
+ "version": 1,
+ "sources": {
+  "benchmark.py": "f1a00e91928ed6e41964747d205e669d9fbb1b55c8ddc2199e1a7731e5ae60f3",
+  "bot.py": "c7be4abdd61e5b8b2f64d967deeae703b6838796d4a8e9625f7257bfd4918f15",
+  "experiments/search_alternatives/plan.json": "54240d47a5f6ad7d1b4e8b29e6a742c173c8fab53968df8afdd1d68630b0a7e4",
+  "experiments/search_alternatives/run.py": "63d64b539b824691df562e628a8f05d4c5ebbf7eaac41de6a418587085bb9fbf",
+  "experiments/search_alternatives/seed-inventory.json": "47412033bf131e77ab4e257ee99aba074b2277415045310b836ecce54c817eac",
+  "experiments/search_alternatives/variants.py": "44fbc53bca63339854bfaba95bf36a92cff25e1223533a80b5514b26fbafdd53",
+  "spawn-model.default.json": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+  "vendor/2048.h": "2597ae4726e872494bb57997154fdb0279cfc706bb0aad7dcb758be5231ec85d",
+  "vendor/config.h": "5bbfde3aedbd34414eb6a7c1fb1a8b7f5fb2b76b66bb014318be496f24c7bda1",
+  "vendor/engine_adapted.cpp": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d",
+  "vendor/geometry_features.h": "0fdcf578cbf02e6f03028e41d1890786423d2298a489e18ac9037861d51d925f",
+  "vendor/platdefs.h": "5b3923979efb21112335319ff92a807cf47620002b446864eddea5f9925d983c",
+  "vendor/search_variants.h": "1ebebc1a487d0b16fe33fe0e766a7e6c1637c75f99486d364146e71b924d7651"
+ },
+ "pure_commit": "e28aad01f8c8e3aa725e41640625e5fda7a02701",
+ "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin24.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+ "flags": [
+  "clang++",
+  "-O3",
+  "-std=c++11",
+  "-dynamiclib",
+  "-pthread"
+ ],
+ "engines": {
+  "baseline": {
+   "sha256": "0f02d42582a22dd63abcce22cf5fb81a4a493c02ca90f323c77a638f446b6ebc",
+   "source_sha256": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d"
+  },
+  "canonical": {
+   "sha256": "4ccef09a5d819801278a0d58ec0460c4d344a6d2ca2bfbf239612aaa34979f4c",
+   "source_sha256": "8d2001b3e6f0ab268717ab7139fef3000580e2456eecccbef2badf1e3c3757e3"
+  },
+  "serial_shallow": {
+   "sha256": "dfcfa711b62241a8f45d0917dcc344d3a15349e0aace603b15d33981810249fe",
+   "source_sha256": "1e4330c480b610890b0415ac9fd801f6f02b1ad61d73f1677dffeb54c3a7eee6"
+  },
+  "precision": {
+   "sha256": "fcfde36eb2801ea8ecfd1100dadd1d7e7960cd0649acce9f611705401a97a40e",
+   "source_sha256": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d"
+  },
+  "banked_endgame": {
+   "sha256": "41af94fc8ef0b98a499a480cac4f4bd36d68473b90e7d197d41a272a455e1585",
+   "source_sha256": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d"
+  }
+ }
+}

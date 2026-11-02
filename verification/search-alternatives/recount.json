@@ -1,0 +1,37 @@
+{
+ "games_checked": 280,
+ "freeze_hashes_checked": 25,
+ "gained": 30,
+ "lost": 16,
+ "exact_p": "951315613005/35184372088832",
+ "one_sided_p": 0.027038015929434778,
+ "totals": {
+  "baseline": {
+   "goals": 49,
+   "moves": 196444,
+   "choose_wall_per_move": 0.004306233586355301,
+   "choose_cpu_per_move": 0.011569577279021038,
+   "latency": {
+    "count": 196495,
+    "median_seconds": 0.0035512090000224816,
+    "p95_nearest_rank_seconds": 0.008036208000021361,
+    "max_seconds": 0.1180170420000195,
+    "above_nominal_rate": 0.0009720349118298176
+   }
+  },
+  "finalist": {
+   "goals": 63,
+   "moves": 205340,
+   "choose_wall_per_move": 0.006867466308366428,
+   "choose_cpu_per_move": 0.01807127926366044,
+   "latency": {
+    "count": 205377,
+    "median_seconds": 0.005832542000007379,
+    "p95_nearest_rank_seconds": 0.020192999999835592,
+    "max_seconds": 0.16810791700004302,
+    "above_nominal_rate": 0.17283824381503285
+   }
+  }
+ },
+ "scope": "raw outcome/ledger/order/hash/latency recount; no complete trajectory replay or fresh games"
+}

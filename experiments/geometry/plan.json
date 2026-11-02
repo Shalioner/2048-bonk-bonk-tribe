@@ -1,0 +1,112 @@
+{
+ "version": 1,
+ "pure_commit": "e28aad01f8c8e3aa725e41640625e5fda7a02701",
+ "pure_sha256": "257050c392bf3a743f894b0f674ff8d7da5c8f2165e2dff003f0e3b4192cb24d",
+ "archive_commit": "08b8b9536070ef493f755b5c130ff89ff4e05512",
+ "archive_root": "/Users/shalioner/orca/projects/Всякое разное/output/2048-math-20261102/worktree",
+ "workspace": "/Users/shalioner/orca/projects/Всякое разное",
+ "arms": [
+  {
+   "name": "baseline",
+   "round": 0,
+   "kind": "baseline",
+   "strength": 0
+  },
+  {
+   "name": "segments_r1",
+   "round": 1,
+   "kind": "segments",
+   "strength": 0.5
+  },
+  {
+   "name": "geometry_r1",
+   "round": 1,
+   "kind": "geometry",
+   "strength": 2000
+  },
+  {
+   "name": "risk_r1",
+   "round": 1,
+   "kind": "risk",
+   "strength": 0.5
+  },
+  {
+   "name": "segments_r2",
+   "round": 2,
+   "kind": "segments",
+   "strength": 1
+  },
+  {
+   "name": "geometry_r2",
+   "round": 2,
+   "kind": "geometry",
+   "strength": 4000
+  },
+  {
+   "name": "risk_r2",
+   "round": 2,
+   "kind": "risk",
+   "strength": 1
+  }
+ ],
+ "hypotheses": {
+  "segments": {
+   "effect": "Compute monotonicity separately in segments split by immutable CAP cells; strength .5/1 interpolates the correction.",
+   "cost": "Segment arithmetic is computed once in init_tables over 65536 rows; runtime leaf keeps the same eight row/column lookups. May weaken useful global ordering."
+  },
+  "geometry": {
+   "effect": "Soft penalty for CAP geometry that constricts free-space mobility; strengths2000/4000. CAP tiles are never hard walls for legal moves.",
+   "cost": "One-time initialization of a 65536-entry adjacency LUT; per leaf CAP-mask extraction plus LUT/popcount arithmetic. May over-penalize useful CAP positions."
+  },
+  "risk": {
+   "effect": "Exact probability of immediate no-legal-move loss after the next spawn, only with two CAP and <=3 empty cells; strengths .5/1.",
+   "cost": "Per-leaf CAP/empty and adjacency arithmetic; closed-form probability sum for exactly one empty cell, zero risk with >=2 empties. No production execute_move calls; this arithmetic is absent from the legacy positions counter, so judge wall time/depth."
+  }
+ },
+ "search": {
+  "policy": "progressive",
+  "depth": 8,
+  "think": 0.01,
+  "max_moves": 6000
+ },
+ "screen": {
+  "seed_start": 1800000000,
+  "games": 12,
+  "order": "rotate all seven arms by seed; strictly serial"
+ },
+ "selection": "most goals; ties baseline first, then lower measured choose-wall/completed-move, then declared arm order",
+ "control": {
+  "seed_start": 1900000000,
+  "games": 60,
+  "labels": [
+   "baseline",
+   "finalist"
+  ],
+  "order": "alternate first label by seed, serial even when both labels use baseline"
+ },
+ "criterion": "nonbaseline finalist goals>baseline goals AND exact paired one-sided p<=0.05 AND zero limits; otherwise retain baseline. Actual choose-wall cost within +/-10% is reported separately, never assumed from the nominal budget.",
+ "stop": "after all seven predetermined arms: local_plateau only if neither round1 nor round2 improves previous best goal count; otherwise bounded_neighborhood_exhausted. Both labels refer only to this fixed bounded neighborhood, never global optimum. No weights tuned on control.",
+ "scope": "offline modeled Bonk only, pure formulas without ML/training/fit; spawn-stage rules remain assumptions; nominal10ms is not actual-cost equality and does not establish10s/phone win-rate; legacy positions counts search nodes rather than feature arithmetic, and production risk makes no execute_move calls; no tuning on control",
+ "history": [
+  {
+   "name": "previous_pure_math",
+   "commit": "08b8b9536070ef493f755b5c130ff89ff4e05512",
+   "root": "/Users/shalioner/orca/projects/Всякое разное/output/2048-math-20261102/worktree"
+  },
+  {
+   "name": "previous_td",
+   "commit": "6e421feeb92f11271d63ccc9be60daa3498d3024",
+   "root": "/Users/shalioner/orca/projects/Всякое разное/output/2048-td-port-20261102/worktree"
+  }
+ ],
+ "required_seen_ranges": {
+  "previous_math_screen": [
+   1600000000,
+   1600000007
+  ],
+  "previous_math_control": [
+   1700000000,
+   1700000059
+  ]
+ }
+}

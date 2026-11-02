@@ -13,16 +13,45 @@
 
 #include "2048.h"
 
+// Значение узла относится к точному горизонту и вероятностному контексту.
+// Порог отсечения и spawn-модель неизменны в пределах одного eval_state.
+struct search_cache_key {
+    board_t board;
+    int remaining_depth;
+    uint32_t probability_bits;
+
+    bool operator==(const search_cache_key &other) const {
+        return board == other.board && remaining_depth == other.remaining_depth &&
+               probability_bits == other.probability_bits;
+    }
+
+    bool operator<(const search_cache_key &other) const {
+        if (board != other.board) return board < other.board;
+        if (remaining_depth != other.remaining_depth) return remaining_depth < other.remaining_depth;
+        return probability_bits < other.probability_bits;
+    }
+};
+
+struct search_cache_hash {
+    size_t operator()(const search_cache_key &key) const {
+        uint64_t x = key.board ^ (static_cast<uint64_t>(key.remaining_depth) * 0x9e3779b97f4a7c15ULL) ^
+                     (static_cast<uint64_t>(key.probability_bits) * 0xbf58476d1ce4e5b9ULL);
+        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9ULL;
+        x = (x ^ (x >> 27)) * 0x94d049bb133111ebULL;
+        return static_cast<size_t>(x ^ (x >> 31));
+    }
+};
+
 #include "config.h"
 #if defined(HAVE_UNORDERED_MAP)
     #include <unordered_map>
-    typedef std::unordered_map<board_t, trans_table_entry_t> trans_table_t;
+    typedef std::unordered_map<search_cache_key, float, search_cache_hash> trans_table_t;
 #elif defined(HAVE_TR1_UNORDERED_MAP)
     #include <tr1/unordered_map>
-    typedef std::tr1::unordered_map<board_t, trans_table_entry_t> trans_table_t;
+    typedef std::tr1::unordered_map<search_cache_key, float, search_cache_hash> trans_table_t;
 #else
     #include <map>
-    typedef std::map<board_t, trans_table_entry_t> trans_table_t;
+    typedef std::map<search_cache_key, float> trans_table_t;
 #endif
 
 /* MSVC compatibility: undefine max and min macros */
@@ -142,7 +171,7 @@ void init_tables() {
             if (rank == 0) {
                 empty++;
             } else {
-                if (prev == rank && rank != CAP_RANK) { // CAP_RANK pairs never merge
+                if (prev == rank && rank < CAP_RANK) { // Ranks at or above CAP_RANK never merge
                     counter++;
                 } else if (counter > 0) {
                     merges += 1 + counter;
@@ -183,7 +212,7 @@ void init_tables() {
                 line[i] = line[j];
                 line[j] = 0;
                 i--; // retry this entry
-            } else if (line[i] == line[j] && line[i] != (unsigned)CAP_RANK) {
+            } else if (line[i] == line[j] && line[i] < (unsigned)CAP_RANK) {
                 if(line[i] != 0xf) {
                     /* Pretend that 32768 + 32768 = 32768 (representational limit). */
                     line[i]++;
@@ -297,6 +326,7 @@ struct eval_state {
     unsigned long moves_evaled;
     int depth_limit;
     float cprob_thresh;              // branches with cumulative probability below this are cut
+    bool cache_enabled;
     bool has_deadline;               // abort the search once deadline has passed
     std::chrono::steady_clock::time_point deadline;
     std::atomic<bool> *stop;         // shared between the threads of one pass
@@ -304,7 +334,7 @@ struct eval_state {
     unsigned long checks;
 
     eval_state() : maxdepth(0), curdepth(0), cachehits(0), moves_evaled(0), depth_limit(0),
-                   cprob_thresh(0.0001f), has_deadline(false), stop(NULL), aborted(false), checks(0) {
+                   cprob_thresh(0.0001f), cache_enabled(true), has_deadline(false), stop(NULL), aborted(false), checks(0) {
     }
 };
 
@@ -325,7 +355,12 @@ static float score_helper(board_t board, const float* table) {
            table[(board >> 48) & ROW_MASK];
 }
 
-static int count_cap(board_t b) { int n=0; for(int i=0;i<16;i++,b>>=4) n+=(int)(b&15)==CAP_RANK; return n; }
+static inline int count_cap(board_t b) {
+    // Compare all sixteen packed ranks at once; each matching nibble contributes one bit.
+    const board_t x = b ^ (0x1111111111111111ULL * CAP_RANK);
+    const board_t matches = ~(x | (x >> 1) | (x >> 2) | (x >> 3)) & 0x1111111111111111ULL;
+    return __builtin_popcountll(matches);
+}
 static bool goal(board_t b) { return count_cap(b)>=GOAL_COUNT; }
 static float score_heur_board(board_t board) {
     if(goal(board)) return 1e9f;
@@ -355,21 +390,19 @@ static float score_tilechoose_node(eval_state &state, board_t board, float cprob
         state.maxdepth = std::max(state.curdepth, state.maxdepth);
         return score_heur_board(board);
     }
-    if (state.curdepth < CACHE_DEPTH_LIMIT) {
-        const trans_table_t::iterator &i = state.trans_table.find(board);
+    search_cache_key cache_key = {board, state.depth_limit - state.curdepth, 0};
+    if (state.cprob_thresh > 0.0f) {
+        // memcpy сохраняет точные float-биты без нарушения strict aliasing.
+        // Без вероятностного отсечения cprob не влияет на значение узла.
+        static_assert(sizeof(cprob) == sizeof(cache_key.probability_bits), "Unexpected float size");
+        memcpy(&cache_key.probability_bits, &cprob, sizeof(cprob));
+    }
+    const bool use_cache = state.cache_enabled && state.curdepth < CACHE_DEPTH_LIMIT;
+    if (use_cache) {
+        const trans_table_t::iterator i = state.trans_table.find(cache_key);
         if (i != state.trans_table.end()) {
-            trans_table_entry_t entry = i->second;
-            /*
-            return heuristic from transposition table only if it means that
-            the node will have been evaluated to a minimum depth of state.depth_limit.
-            This will result in slightly fewer cache hits, but should not impact the
-            strength of the ai negatively.
-            */
-            if(entry.depth <= state.curdepth)
-            {
-                state.cachehits++;
-                return entry.heuristic;
-            }
+            state.cachehits++;
+            return i->second;
         }
     }
 
@@ -392,9 +425,8 @@ static float score_tilechoose_node(eval_state &state, board_t board, float cprob
     }
     res = res / num_open;
 
-    if (state.curdepth < CACHE_DEPTH_LIMIT) {
-        trans_table_entry_t entry = {static_cast<uint8_t>(state.curdepth), res};
-        state.trans_table[board] = entry;
+    if (use_cache) {
+        state.trans_table[cache_key] = res;
     }
 
     return res;
@@ -597,6 +629,12 @@ extern "C" float score_levels_thresh(board_t board,int move,int depth,float thre
     return _score_toplevel_move(state,board,move);
 }
 
+// Диагностический reference с теми же листьями/отсечением, но без cache.
+extern "C" float score_levels_reference(board_t board,int move,int depth,float thresh) {
+    eval_state state;state.depth_limit=depth;state.cprob_thresh=thresh;state.cache_enabled=false;
+    return _score_toplevel_move(state,board,move);
+}
+
 /* Time-budgeted search with a hard deadline.
  * 1. Fallback: depth 1 with thresholds[0], sequential, no deadline (microseconds). It only
  *    guarantees that a move exists if no full pass finishes in time.
@@ -605,7 +643,7 @@ extern "C" float score_levels_thresh(board_t board,int move,int depth,float thre
  *    first, is aborted at start+budget_s-margin and then discarded. A pass after the first
  *    is not started when previous_pass_time*growth would not fit before the deadline.
  * 3. The move of the last completed full pass is returned (the fallback move if none).
- * margin = min(1 s, 10% of the budget) leaves time to free the transposition tables of an
+ * margin = min(1 s, 25% of the budget) leaves time to free the transposition tables of an
  * aborted pass (measured up to ~0.6 s for 10-second passes).
  * info[0] completed full passes, [1] threshold of the last completed full pass (0 if none),
  * [2] positions evaluated (all passes), [3] total seconds, [4] 1 if a pass was cut by the
@@ -616,7 +654,7 @@ extern "C" int solve_budget(board_t board, int allowed, int depth, const float *
     typedef std::chrono::steady_clock clock_t_;
     clock_t_::time_point start = clock_t_::now();
     budget_s = std::max(0.0, std::min(budget_s, 1e6));
-    double margin = std::min(1.0, 0.1 * budget_s);
+    double margin = std::min(1.0, 0.25 * budget_s);
     clock_t_::time_point deadline = start + std::chrono::duration_cast<clock_t_::duration>(
         std::chrono::duration<double>(budget_s - margin));
     int best_move = -1;
@@ -677,6 +715,101 @@ extern "C" int solve_budget(board_t board, int allowed, int depth, const float *
         info[0] = completed; info[1] = last_thresh; info[2] = positions;
         info[3] = std::chrono::duration<double>(clock_t_::now() - start).count();
         info[4] = cut; info[5] = skipped; info[6] = last_pass; info[7] = completed == 0;
+    }
+    return best_move;
+}
+
+/* Opt-in последовательное углубление. API2 и solve_budget остаются прежними.
+ * Сначала готовится depth1, затем целиком завершаются уровни 2..depth при первом
+ * пороге. Уточнение остальных порогов начинается лишь после достижения depth.
+ * Незавершённый проход не заменяет сохранённый результат. info[0..7] имеют тот
+ * же смысл, что в solve_budget; info[8] — возвращённая глубина, info[9] — запрос. */
+extern "C" int solve_budget_progressive(board_t board, int allowed, int depth, const float *thresholds,
+                                        int n_thresholds, double budget_s, double growth, double *info) {
+    typedef std::chrono::steady_clock clock_t_;
+    const clock_t_::time_point start = clock_t_::now();
+    budget_s = std::max(0.0, std::min(budget_s, 1e6));
+    const double margin = std::min(1.0, 0.25 * budget_s);
+    const clock_t_::time_point deadline = start + std::chrono::duration_cast<clock_t_::duration>(
+        std::chrono::duration<double>(budget_s - margin));
+    const int target = std::max(1, depth);
+    const float first_thresh = n_thresholds > 0 ? thresholds[0] : 0.0001f;
+    int best_move = -1, reached_depth = 1;
+    int completed = 0, cut = 0, skipped = 0;
+    double positions = 0, last_pass = 0, last_thresh = 0;
+
+    float fallback_best = -1;
+    for (int d = 0; d < 4; ++d) {
+        if (!(allowed & (1 << d))) continue;
+        eval_state st;
+        st.depth_limit = 1;
+        st.cprob_thresh = first_thresh;
+        const float score = _score_toplevel_move(st, board, d);
+        positions += st.moves_evaled;
+        if (score > fallback_best) { fallback_best = score; best_move = d; }
+    }
+
+    // Один проход оценивает все разрешённые направления на одной глубине.
+    const auto pass = [&](int pass_depth, float threshold) -> bool {
+        const clock_t_::time_point pass_start = clock_t_::now();
+        const double elapsed = std::chrono::duration<double>(pass_start - start).count();
+        if (pass_start >= deadline ||
+            (completed > 0 && elapsed + last_pass * growth > budget_s - margin)) {
+            skipped = 1;
+            return false;
+        }
+        std::atomic<bool> stop(false);
+        float scores[4] = {0, 0, 0, 0};
+        unsigned long evaled[4] = {0, 0, 0, 0};
+        bool aborted[4] = {false, false, false, false};
+        std::vector<std::thread> workers;
+        for (int d = 0; d < 4; ++d) {
+            if (!(allowed & (1 << d))) continue;
+            workers.push_back(std::thread([&, d, pass_depth, threshold]() {
+                if (clock_t_::now() >= deadline) { aborted[d] = true; stop.store(true); return; }
+                eval_state st;
+                st.depth_limit = pass_depth;
+                st.cprob_thresh = threshold;
+                st.has_deadline = true;
+                st.deadline = deadline;
+                st.stop = &stop;
+                scores[d] = _score_toplevel_move(st, board, d);
+                evaled[d] = st.moves_evaled;
+                // Последний короткий фрагмент может не попасть на periodic check.
+                aborted[d] = st.aborted || clock_t_::now() >= deadline;
+                if (aborted[d]) stop.store(true);
+            }));
+        }
+        for (size_t w = 0; w < workers.size(); ++w) workers[w].join();
+        bool any_abort = false;
+        for (int d = 0; d < 4; ++d) { positions += evaled[d]; any_abort = any_abort || aborted[d]; }
+        if (any_abort) { cut = 1; return false; }
+        float best = -1;
+        int move = -1;
+        for (int d = 0; d < 4; ++d)
+            if ((allowed & (1 << d)) && scores[d] > best) { best = scores[d]; move = d; }
+        best_move = move;
+        reached_depth = pass_depth;
+        completed++;
+        last_thresh = threshold;
+        last_pass = std::chrono::duration<double>(clock_t_::now() - pass_start).count();
+        return true;
+    };
+
+    bool target_complete = target == 1;
+    for (int level = 2; level <= target; ++level) {
+        if (!pass(level, first_thresh)) break;
+        target_complete = level == target;
+    }
+    if (target_complete && !cut && !skipped) {
+        for (int k = 1; k < n_thresholds; ++k)
+            if (!pass(target, thresholds[k])) break;
+    }
+    if (info) {
+        info[0] = completed; info[1] = last_thresh; info[2] = positions;
+        info[3] = std::chrono::duration<double>(clock_t_::now() - start).count();
+        info[4] = cut; info[5] = skipped; info[6] = last_pass; info[7] = completed == 0;
+        info[8] = reached_depth; info[9] = depth;
     }
     return best_move;
 }

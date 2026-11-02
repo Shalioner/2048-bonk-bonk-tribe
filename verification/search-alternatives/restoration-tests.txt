@@ -1,0 +1,2 @@
+Restored five exact measured libraries; no games run
+{'games_checked': 280, 'freeze_hashes_checked': 25, 'gained': 30, 'lost': 16, 'exact_p': '951315613005/35184372088832', 'one_sided_p': 0.027038015929434778, 'scope': 'raw outcome/ledger/order/hash/latency recount; no complete trajectory replay or fresh games'}

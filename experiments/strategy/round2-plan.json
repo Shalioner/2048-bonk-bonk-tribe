@@ -1,0 +1,21 @@
+{
+  "seeds": [
+    1001,
+    1020
+  ],
+  "variants": {
+    "highmerges_soft": {
+      "highmerges": true,
+      "merge_start": 7
+    },
+    "combined": {
+      "highmerges": true,
+      "endempty": 1620
+    },
+    "endempty_half": {
+      "endempty": 810
+    }
+  },
+  "policy": "Compare all three on 20 selection seeds, incumbent selected after highmerges/endempty extras finish. No holdout access.",
+  "no_improvement_rounds_before": 0
+}
