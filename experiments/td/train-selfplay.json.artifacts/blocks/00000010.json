@@ -1,0 +1,5558 @@
+{
+ "run_id": "863c255e497a36380366777a5cb644971ba4ec7fca70b9cd4c62583a0e687b1c",
+ "block": 10,
+ "records": [
+  {
+   "index": 1280,
+   "seed": 1000001280,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001280,
+     "result": "loss",
+     "moves": 862,
+     "caps": 0,
+     "board": [
+      1,
+      3,
+      5,
+      7,
+      4,
+      5,
+      7,
+      8,
+      1,
+      4,
+      6,
+      9,
+      3,
+      5,
+      4,
+      10
+     ],
+     "first_caps": {},
+     "updates": 862,
+     "attempted_updates": 862,
+     "trajectory_digest": "7cd6b6ef95edee87",
+     "seconds": 0.002775540999998327,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1281,
+   "seed": 1000001281,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001281,
+     "result": "loss",
+     "moves": 789,
+     "caps": 0,
+     "board": [
+      1,
+      2,
+      4,
+      2,
+      6,
+      7,
+      6,
+      5,
+      7,
+      9,
+      4,
+      2,
+      10,
+      7,
+      3,
+      1
+     ],
+     "first_caps": {},
+     "updates": 789,
+     "attempted_updates": 789,
+     "trajectory_digest": "a0b52e4ff8d96509",
+     "seconds": 0.0032922919999975875,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1282,
+   "seed": 1000001282,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001282,
+     "result": "loss",
+     "moves": 799,
+     "caps": 0,
+     "board": [
+      1,
+      2,
+      5,
+      1,
+      2,
+      4,
+      3,
+      4,
+      5,
+      8,
+      9,
+      2,
+      10,
+      7,
+      5,
+      1
+     ],
+     "first_caps": {},
+     "updates": 799,
+     "attempted_updates": 799,
+     "trajectory_digest": "776743140800eb6c",
+     "seconds": 0.002263541999997898,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1283,
+   "seed": 1000001283,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001283,
+     "result": "loss",
+     "moves": 462,
+     "caps": 0,
+     "board": [
+      1,
+      4,
+      2,
+      1,
+      3,
+      1,
+      3,
+      6,
+      5,
+      4,
+      2,
+      1,
+      9,
+      8,
+      7,
+      3
+     ],
+     "first_caps": {},
+     "updates": 462,
+     "attempted_updates": 462,
+     "trajectory_digest": "e3dcc7f3fcf340be",
+     "seconds": 0.0014146669999988148,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1284,
+   "seed": 1000001284,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001284,
+     "result": "loss",
+     "moves": 970,
+     "caps": 1,
+     "board": [
+      11,
+      8,
+      1,
+      3,
+      3,
+      7,
+      3,
+      4,
+      7,
+      1,
+      5,
+      1,
+      4,
+      3,
+      1,
+      2
+     ],
+     "first_caps": {
+      "1": [
+       11,
+       8,
+       1,
+       0,
+       2,
+       7,
+       4,
+       1,
+       5,
+       3,
+       4,
+       5,
+       3,
+       1,
+       0,
+       0
+      ]
+     },
+     "updates": 970,
+     "attempted_updates": 970,
+     "trajectory_digest": "e96867f0dd2b5419",
+     "seconds": 0.0028462079999975742,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1285,
+   "seed": 1000001285,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001285,
+     "result": "loss",
+     "moves": 1005,
+     "caps": 1,
+     "board": [
+      4,
+      6,
+      7,
+      11,
+      2,
+      5,
+      3,
+      7,
+      1,
+      4,
+      5,
+      6,
+      2,
+      1,
+      2,
+      1
+     ],
+     "first_caps": {
+      "1": [
+       2,
+       1,
+       2,
+       11,
+       0,
+       4,
+       3,
+       3,
+       0,
+       1,
+       1,
+       0,
+       1,
+       2,
+       0,
+       0
+      ]
+     },
+     "updates": 1005,
+     "attempted_updates": 1005,
+     "trajectory_digest": "47a7bffae84017da",
+     "seconds": 0.003036791999999622,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1286,
+   "seed": 1000001286,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001286,
+     "result": "loss",
+     "moves": 1070,
+     "caps": 1,
+     "board": [
+      2,
+      1,
+      2,
+      1,
+      1,
+      5,
+      3,
+      4,
+      7,
+      6,
+      2,
+      1,
+      11,
+      9,
+      7,
+      3
+     ],
+     "first_caps": {
+      "1": [
+       1,
+       2,
+       1,
+       0,
+       1,
+       3,
+       0,
+       0,
+       3,
+       5,
+       0,
+       0,
+       11,
+       9,
+       4,
+       0
+      ]
+     },
+     "updates": 1070,
+     "attempted_updates": 1070,
+     "trajectory_digest": "a7f6a08cecd88581",
+     "seconds": 0.003135457999999147,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1287,
+   "seed": 1000001287,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001287,
+     "result": "loss",
+     "moves": 470,
+     "caps": 0,
+     "board": [
+      9,
+      7,
+      2,
+      1,
+      8,
+      6,
+      4,
+      2,
+      3,
+      4,
+      3,
+      1,
+      2,
+      3,
+      4,
+      2
+     ],
+     "first_caps": {},
+     "updates": 470,
+     "attempted_updates": 470,
+     "trajectory_digest": "2154e70cb1c3c6f5",
+     "seconds": 0.0016455409999984738,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1288,
+   "seed": 1000001288,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001288,
+     "result": "loss",
+     "moves": 756,
+     "caps": 0,
+     "board": [
+      10,
+      9,
+      6,
+      1,
+      8,
+      4,
+      2,
+      3,
+      5,
+      1,
+      3,
+      5,
+      1,
+      2,
+      1,
+      2
+     ],
+     "first_caps": {},
+     "updates": 756,
+     "attempted_updates": 756,
+     "trajectory_digest": "2556fb1a5430d8e6",
+     "seconds": 0.002592124999999612,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1289,
+   "seed": 1000001289,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001289,
+     "result": "loss",
+     "moves": 719,
+     "caps": 0,
+     "board": [
+      10,
+      8,
+      7,
+      3,
+      8,
+      3,
+      4,
+      1,
+      7,
+      6,
+      2,
+      4,
+      1,
+      4,
+      3,
+      1
+     ],
+     "first_caps": {},
+     "updates": 719,
+     "attempted_updates": 719,
+     "trajectory_digest": "4d2256d7726c0bd6",
+     "seconds": 0.002595541999998119,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1290,
+   "seed": 1000001290,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001290,
+     "result": "loss",
+     "moves": 873,
+     "caps": 0,
+     "board": [
+      2,
+      1,
+      4,
+      2,
+      6,
+      3,
+      2,
+      1,
+      9,
+      7,
+      5,
+      3,
+      10,
+      8,
+      6,
+      2
+     ],
+     "first_caps": {},
+     "updates": 873,
+     "attempted_updates": 873,
+     "trajectory_digest": "dbecf1535e78e873",
+     "seconds": 0.003133749999999935,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1291,
+   "seed": 1000001291,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001291,
+     "result": "loss",
+     "moves": 1634,
+     "caps": 1,
+     "board": [
+      11,
+      9,
+      6,
+      2,
+      10,
+      7,
+      5,
+      3,
+      8,
+      6,
+      4,
+      2,
+      7,
+      4,
+      3,
+      1
+     ],
+     "first_caps": {
+      "1": [
+       11,
+       2,
+       1,
+       1,
+       8,
+       1,
+       4,
+       0,
+       4,
+       3,
+       2,
+       0,
+       0,
+       0,
+       0,
+       3
+      ]
+     },
+     "updates": 1634,
+     "attempted_updates": 1634,
+     "trajectory_digest": "89de8b9b4588630c",
+     "seconds": 0.005086792000000173,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1292,
+   "seed": 1000001292,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001292,
+     "result": "loss",
+     "moves": 739,
+     "caps": 0,
+     "board": [
+      10,
+      9,
+      3,
+      1,
+      3,
+      4,
+      7,
+      6,
+      2,
+      5,
+      3,
+      5,
+      1,
+      4,
+      1,
+      2
+     ],
+     "first_caps": {},
+     "updates": 739,
+     "attempted_updates": 739,
+     "trajectory_digest": "9abfb85f0eca3162",
+     "seconds": 0.002946041000001287,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1293,
+   "seed": 1000001293,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001293,
+     "result": "loss",
+     "moves": 681,
+     "caps": 0,
+     "board": [
+      3,
+      2,
+      4,
+      10,
+      2,
+      1,
+      6,
+      8,
+      1,
+      3,
+      5,
+      3,
+      2,
+      6,
+      7,
+      1
+     ],
+     "first_caps": {},
+     "updates": 681,
+     "attempted_updates": 681,
+     "trajectory_digest": "e079e309cd968d51",
+     "seconds": 0.002337457999999515,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1294,
+   "seed": 1000001294,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001294,
+     "result": "loss",
+     "moves": 760,
+     "caps": 0,
+     "board": [
+      10,
+      5,
+      4,
+      2,
+      9,
+      7,
+      3,
+      1,
+      7,
+      5,
+      1,
+      2,
+      2,
+      3,
+      4,
+      1
+     ],
+     "first_caps": {},
+     "updates": 760,
+     "attempted_updates": 760,
+     "trajectory_digest": "39f89813829da0f9",
+     "seconds": 0.0026997499999978913,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1295,
+   "seed": 1000001295,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001295,
+     "result": "loss",
+     "moves": 1515,
+     "caps": 1,
+     "board": [
+      2,
+      9,
+      10,
+      11,
+      3,
+      6,
+      8,
+      7,
+      2,
+      4,
+      3,
+      2,
+      1,
+      5,
+      1,
+      4
+     ],
+     "first_caps": {
+      "1": [
+       2,
+       3,
+       2,
+       11,
+       0,
+       1,
+       4,
+       7,
+       0,
+       0,
+       5,
+       1,
+       1,
+       0,
+       2,
+       0
+      ]
+     },
+     "updates": 1515,
+     "attempted_updates": 1515,
+     "trajectory_digest": "b65119e0f9fe4fbb",
+     "seconds": 0.004827249999998173,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1296,
+   "seed": 1000001296,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001296,
+     "result": "loss",
+     "moves": 626,
+     "caps": 0,
+     "board": [
+      1,
+      5,
+      1,
+      3,
+      4,
+      3,
+      2,
+      1,
+      1,
+      4,
+      6,
+      7,
+      3,
+      6,
+      7,
+      10
+     ],
+     "first_caps": {},
+     "updates": 626,
+     "attempted_updates": 626,
+     "trajectory_digest": "bf264279418be8e4",
+     "seconds": 0.0022597080000004155,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1297,
+   "seed": 1000001297,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001297,
+     "result": "loss",
+     "moves": 669,
+     "caps": 0,
+     "board": [
+      1,
+      2,
+      3,
+      2,
+      3,
+      6,
+      7,
+      10,
+      5,
+      4,
+      1,
+      8,
+      1,
+      3,
+      7,
+      4
+     ],
+     "first_caps": {},
+     "updates": 669,
+     "attempted_updates": 669,
+     "trajectory_digest": "65ae8344ee3fd214",
+     "seconds": 0.002434041000000775,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1298,
+   "seed": 1000001298,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001298,
+     "result": "loss",
+     "moves": 711,
+     "caps": 0,
+     "board": [
+      10,
+      3,
+      1,
+      4,
+      9,
+      7,
+      6,
+      1,
+      6,
+      4,
+      3,
+      2,
+      2,
+      5,
+      1,
+      3
+     ],
+     "first_caps": {},
+     "updates": 711,
+     "attempted_updates": 711,
+     "trajectory_digest": "65ca60c364ceed83",
+     "seconds": 0.002392374999999447,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1299,
+   "seed": 1000001299,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001299,
+     "result": "loss",
+     "moves": 921,
+     "caps": 1,
+     "board": [
+      1,
+      6,
+      2,
+      1,
+      2,
+      3,
+      5,
+      6,
+      8,
+      5,
+      2,
+      4,
+      11,
+      2,
+      3,
+      2
+     ],
+     "first_caps": {
+      "1": [
+       4,
+       1,
+       5,
+       1,
+       2,
+       4,
+       6,
+       2,
+       8,
+       2,
+       1,
+       1,
+       11,
+       1,
+       2,
+       3
+      ]
+     },
+     "updates": 921,
+     "attempted_updates": 921,
+     "trajectory_digest": "3427159249ddde94",
+     "seconds": 0.003268000000002047,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1300,
+   "seed": 1000001300,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001300,
+     "result": "loss",
+     "moves": 1308,
+     "caps": 1,
+     "board": [
+      2,
+      3,
+      6,
+      11,
+      1,
+      4,
+      3,
+      10,
+      2,
+      5,
+      6,
+      8,
+      4,
+      3,
+      2,
+      3
+     ],
+     "first_caps": {
+      "1": [
+       1,
+       1,
+       3,
+       11,
+       0,
+       0,
+       4,
+       3,
+       0,
+       1,
+       3,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     },
+     "updates": 1308,
+     "attempted_updates": 1308,
+     "trajectory_digest": "6449083c539a7989",
+     "seconds": 0.003911000000002218,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1301,
+   "seed": 1000001301,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001301,
+     "result": "loss",
+     "moves": 537,
+     "caps": 0,
+     "board": [
+      10,
+      6,
+      5,
+      2,
+      3,
+      2,
+      4,
+      5,
+      2,
+      4,
+      5,
+      6,
+      1,
+      3,
+      2,
+      3
+     ],
+     "first_caps": {},
+     "updates": 537,
+     "attempted_updates": 537,
+     "trajectory_digest": "7aba5ae3e3af1a9b",
+     "seconds": 0.0016546250000004648,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1302,
+   "seed": 1000001302,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001302,
+     "result": "loss",
+     "moves": 832,
+     "caps": 0,
+     "board": [
+      1,
+      4,
+      5,
+      1,
+      3,
+      1,
+      3,
+      4,
+      2,
+      5,
+      7,
+      8,
+      6,
+      7,
+      9,
+      10
+     ],
+     "first_caps": {},
+     "updates": 832,
+     "attempted_updates": 832,
+     "trajectory_digest": "14a73e4bc86f4ae5",
+     "seconds": 0.0026789169999972273,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1303,
+   "seed": 1000001303,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001303,
+     "result": "loss",
+     "moves": 815,
+     "caps": 0,
+     "board": [
+      10,
+      9,
+      8,
+      7,
+      6,
+      4,
+      2,
+      3,
+      3,
+      1,
+      6,
+      2,
+      1,
+      2,
+      3,
+      1
+     ],
+     "first_caps": {},
+     "updates": 815,
+     "attempted_updates": 815,
+     "trajectory_digest": "93adb701632996aa",
+     "seconds": 0.002849292000000503,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1304,
+   "seed": 1000001304,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001304,
+     "result": "loss",
+     "moves": 830,
+     "caps": 0,
+     "board": [
+      1,
+      6,
+      5,
+      10,
+      2,
+      5,
+      7,
+      1,
+      1,
+      4,
+      9,
+      8,
+      3,
+      7,
+      3,
+      2
+     ],
+     "first_caps": {},
+     "updates": 830,
+     "attempted_updates": 830,
+     "trajectory_digest": "5b30967cddbaf1fd",
+     "seconds": 0.002486749999999205,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1305,
+   "seed": 1000001305,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001305,
+     "result": "loss",
+     "moves": 1317,
+     "caps": 1,
+     "board": [
+      3,
+      1,
+      3,
+      1,
+      6,
+      5,
+      4,
+      2,
+      7,
+      1,
+      6,
+      3,
+      11,
+      10,
+      8,
+      2
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       0,
+       0,
+       2,
+       0,
+       0,
+       1,
+       2,
+       0,
+       1,
+       3,
+       5,
+       0,
+       0,
+       1,
+       11
+      ]
+     },
+     "updates": 1317,
+     "attempted_updates": 1317,
+     "trajectory_digest": "b6f00918848d027c",
+     "seconds": 0.0040863749999999754,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1306,
+   "seed": 1000001306,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001306,
+     "result": "loss",
+     "moves": 899,
+     "caps": 0,
+     "board": [
+      3,
+      2,
+      1,
+      2,
+      6,
+      5,
+      4,
+      1,
+      8,
+      7,
+      6,
+      2,
+      10,
+      9,
+      7,
+      1
+     ],
+     "first_caps": {},
+     "updates": 899,
+     "attempted_updates": 899,
+     "trajectory_digest": "03e9f544d6763be0",
+     "seconds": 0.0027561250000012194,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1307,
+   "seed": 1000001307,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001307,
+     "result": "loss",
+     "moves": 1023,
+     "caps": 1,
+     "board": [
+      1,
+      4,
+      2,
+      1,
+      6,
+      5,
+      3,
+      2,
+      3,
+      6,
+      9,
+      6,
+      2,
+      3,
+      4,
+      11
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       0,
+       0,
+       1,
+       0,
+       1,
+       3,
+       2,
+       1,
+       2,
+       5,
+       2,
+       0,
+       0,
+       7,
+       11
+      ]
+     },
+     "updates": 1023,
+     "attempted_updates": 1023,
+     "trajectory_digest": "87b692b61423589c",
+     "seconds": 0.002918832999998955,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1308,
+   "seed": 1000001308,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001308,
+     "result": "loss",
+     "moves": 786,
+     "caps": 0,
+     "board": [
+      1,
+      2,
+      4,
+      1,
+      6,
+      5,
+      1,
+      4,
+      1,
+      7,
+      6,
+      8,
+      3,
+      2,
+      9,
+      10
+     ],
+     "first_caps": {},
+     "updates": 786,
+     "attempted_updates": 786,
+     "trajectory_digest": "e562358bf51d8ff9",
+     "seconds": 0.002618749999999892,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1309,
+   "seed": 1000001309,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001309,
+     "result": "loss",
+     "moves": 1206,
+     "caps": 1,
+     "board": [
+      2,
+      1,
+      2,
+      1,
+      1,
+      5,
+      6,
+      7,
+      2,
+      6,
+      7,
+      8,
+      3,
+      4,
+      9,
+      11
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       0,
+       1,
+       0,
+       0,
+       0,
+       0,
+       2,
+       2,
+       4,
+       2,
+       1,
+       0,
+       3,
+       6,
+       11
+      ]
+     },
+     "updates": 1206,
+     "attempted_updates": 1206,
+     "trajectory_digest": "ff26a85c068ee8c0",
+     "seconds": 0.0034234580000003234,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1310,
+   "seed": 1000001310,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001310,
+     "result": "loss",
+     "moves": 1146,
+     "caps": 1,
+     "board": [
+      3,
+      2,
+      1,
+      5,
+      4,
+      7,
+      5,
+      3,
+      6,
+      9,
+      4,
+      1,
+      11,
+      7,
+      6,
+      2
+     ],
+     "first_caps": {
+      "1": [
+       1,
+       2,
+       3,
+       11,
+       0,
+       1,
+       4,
+       1,
+       0,
+       0,
+       1,
+       0,
+       0,
+       1,
+       0,
+       0
+      ]
+     },
+     "updates": 1146,
+     "attempted_updates": 1146,
+     "trajectory_digest": "1733c674a6f65d0b",
+     "seconds": 0.003261166999998011,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1311,
+   "seed": 1000001311,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001311,
+     "result": "loss",
+     "moves": 1277,
+     "caps": 1,
+     "board": [
+      5,
+      4,
+      2,
+      11,
+      3,
+      6,
+      4,
+      1,
+      10,
+      4,
+      1,
+      2,
+      1,
+      3,
+      8,
+      1
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       0,
+       1,
+       0,
+       0,
+       0,
+       0,
+       1,
+       0,
+       0,
+       2,
+       1,
+       0,
+       5,
+       7,
+       11
+      ]
+     },
+     "updates": 1277,
+     "attempted_updates": 1277,
+     "trajectory_digest": "c25e035afef0729a",
+     "seconds": 0.003908458000001502,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1312,
+   "seed": 1000001312,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001312,
+     "result": "loss",
+     "moves": 902,
+     "caps": 0,
+     "board": [
+      1,
+      7,
+      9,
+      10,
+      2,
+      5,
+      7,
+      8,
+      1,
+      4,
+      6,
+      7,
+      2,
+      1,
+      2,
+      3
+     ],
+     "first_caps": {},
+     "updates": 902,
+     "attempted_updates": 902,
+     "trajectory_digest": "16be8506495c9279",
+     "seconds": 0.002788583999997485,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1313,
+   "seed": 1000001313,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001313,
+     "result": "loss",
+     "moves": 969,
+     "caps": 0,
+     "board": [
+      1,
+      2,
+      4,
+      1,
+      2,
+      3,
+      7,
+      2,
+      1,
+      4,
+      8,
+      9,
+      2,
+      6,
+      9,
+      10
+     ],
+     "first_caps": {},
+     "updates": 969,
+     "attempted_updates": 969,
+     "trajectory_digest": "482788a5cc3906be",
+     "seconds": 0.0028069590000008304,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1314,
+   "seed": 1000001314,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001314,
+     "result": "loss",
+     "moves": 802,
+     "caps": 0,
+     "board": [
+      10,
+      6,
+      5,
+      1,
+      9,
+      8,
+      3,
+      2,
+      2,
+      7,
+      6,
+      5,
+      1,
+      3,
+      1,
+      3
+     ],
+     "first_caps": {},
+     "updates": 802,
+     "attempted_updates": 802,
+     "trajectory_digest": "e6210abbcc16f3c8",
+     "seconds": 0.0026038330000019982,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1315,
+   "seed": 1000001315,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001315,
+     "result": "loss",
+     "moves": 995,
+     "caps": 1,
+     "board": [
+      7,
+      4,
+      1,
+      3,
+      5,
+      3,
+      2,
+      8,
+      2,
+      6,
+      5,
+      11,
+      1,
+      2,
+      3,
+      1
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       0,
+       4,
+       2,
+       1,
+       5,
+       4,
+       2,
+       4,
+       6,
+       3,
+       2,
+       2,
+       1,
+       2,
+       11
+      ]
+     },
+     "updates": 995,
+     "attempted_updates": 995,
+     "trajectory_digest": "0042d0f706822ab5",
+     "seconds": 0.0029208340000010935,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1316,
+   "seed": 1000001316,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001316,
+     "result": "loss",
+     "moves": 346,
+     "caps": 0,
+     "board": [
+      1,
+      2,
+      6,
+      9,
+      3,
+      1,
+      5,
+      3,
+      2,
+      5,
+      4,
+      2,
+      6,
+      2,
+      3,
+      1
+     ],
+     "first_caps": {},
+     "updates": 346,
+     "attempted_updates": 346,
+     "trajectory_digest": "8fa269ff232c76ca",
+     "seconds": 0.0011732079999973166,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1317,
+   "seed": 1000001317,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001317,
+     "result": "loss",
+     "moves": 893,
+     "caps": 0,
+     "board": [
+      3,
+      6,
+      8,
+      10,
+      2,
+      4,
+      7,
+      9,
+      1,
+      3,
+      6,
+      7,
+      5,
+      2,
+      1,
+      4
+     ],
+     "first_caps": {},
+     "updates": 893,
+     "attempted_updates": 893,
+     "trajectory_digest": "260f7c66fa412e1f",
+     "seconds": 0.0025974170000004904,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1318,
+   "seed": 1000001318,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001318,
+     "result": "loss",
+     "moves": 619,
+     "caps": 0,
+     "board": [
+      4,
+      1,
+      2,
+      10,
+      2,
+      5,
+      4,
+      8,
+      3,
+      2,
+      6,
+      7,
+      5,
+      4,
+      1,
+      3
+     ],
+     "first_caps": {},
+     "updates": 619,
+     "attempted_updates": 619,
+     "trajectory_digest": "14a17cf406bde89e",
+     "seconds": 0.002172250000000986,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1319,
+   "seed": 1000001319,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001319,
+     "result": "loss",
+     "moves": 1442,
+     "caps": 1,
+     "board": [
+      11,
+      10,
+      3,
+      1,
+      7,
+      9,
+      5,
+      2,
+      5,
+      4,
+      6,
+      3,
+      2,
+      3,
+      8,
+      2
+     ],
+     "first_caps": {
+      "1": [
+       11,
+       5,
+       3,
+       0,
+       2,
+       4,
+       1,
+       0,
+       2,
+       3,
+       2,
+       0,
+       2,
+       0,
+       1,
+       0
+      ]
+     },
+     "updates": 1442,
+     "attempted_updates": 1442,
+     "trajectory_digest": "010953344d62b050",
+     "seconds": 0.005483208000001127,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1320,
+   "seed": 1000001320,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001320,
+     "result": "loss",
+     "moves": 877,
+     "caps": 0,
+     "board": [
+      10,
+      9,
+      2,
+      1,
+      8,
+      6,
+      8,
+      6,
+      6,
+      5,
+      4,
+      1,
+      3,
+      2,
+      5,
+      2
+     ],
+     "first_caps": {},
+     "updates": 877,
+     "attempted_updates": 877,
+     "trajectory_digest": "e9326d9ae8b36f7c",
+     "seconds": 0.002930291000001972,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1321,
+   "seed": 1000001321,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001321,
+     "result": "loss",
+     "moves": 884,
+     "caps": 1,
+     "board": [
+      4,
+      11,
+      2,
+      1,
+      3,
+      5,
+      4,
+      3,
+      2,
+      7,
+      2,
+      1,
+      1,
+      4,
+      1,
+      4
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       4,
+       1,
+       11,
+       4,
+       3,
+       4,
+       1,
+       1,
+       6,
+       2,
+       3,
+       1,
+       3,
+       4,
+       1
+      ]
+     },
+     "updates": 884,
+     "attempted_updates": 884,
+     "trajectory_digest": "63cb5cea05ccb311",
+     "seconds": 0.003382667000000339,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1322,
+   "seed": 1000001322,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001322,
+     "result": "loss",
+     "moves": 1056,
+     "caps": 1,
+     "board": [
+      3,
+      2,
+      3,
+      6,
+      4,
+      1,
+      4,
+      3,
+      2,
+      3,
+      6,
+      1,
+      11,
+      9,
+      7,
+      3
+     ],
+     "first_caps": {
+      "1": [
+       2,
+       0,
+       0,
+       0,
+       4,
+       4,
+       0,
+       0,
+       2,
+       2,
+       0,
+       0,
+       11,
+       9,
+       2,
+       0
+      ]
+     },
+     "updates": 1056,
+     "attempted_updates": 1056,
+     "trajectory_digest": "5001cfe504172665",
+     "seconds": 0.0033826250000004165,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1323,
+   "seed": 1000001323,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001323,
+     "result": "loss",
+     "moves": 1421,
+     "caps": 1,
+     "board": [
+      2,
+      1,
+      9,
+      11,
+      1,
+      2,
+      7,
+      10,
+      2,
+      3,
+      6,
+      7,
+      4,
+      5,
+      4,
+      2
+     ],
+     "first_caps": {
+      "1": [
+       1,
+       3,
+       1,
+       11,
+       0,
+       1,
+       4,
+       7,
+       0,
+       0,
+       3,
+       5,
+       0,
+       0,
+       1,
+       0
+      ]
+     },
+     "updates": 1421,
+     "attempted_updates": 1421,
+     "trajectory_digest": "4c3ec6046bdca06b",
+     "seconds": 0.003964792000001438,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1324,
+   "seed": 1000001324,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001324,
+     "result": "loss",
+     "moves": 1021,
+     "caps": 1,
+     "board": [
+      1,
+      2,
+      4,
+      1,
+      3,
+      5,
+      6,
+      2,
+      6,
+      1,
+      3,
+      1,
+      11,
+      7,
+      8,
+      4
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       1,
+       0,
+       1,
+       2,
+       3,
+       5,
+       0,
+       5,
+       2,
+       1,
+       0,
+       11,
+       1,
+       3,
+       4
+      ]
+     },
+     "updates": 1021,
+     "attempted_updates": 1021,
+     "trajectory_digest": "96a168bab0b7f557",
+     "seconds": 0.0033101669999986427,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1325,
+   "seed": 1000001325,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001325,
+     "result": "loss",
+     "moves": 735,
+     "caps": 0,
+     "board": [
+      5,
+      2,
+      1,
+      5,
+      7,
+      4,
+      3,
+      2,
+      3,
+      2,
+      4,
+      5,
+      10,
+      9,
+      6,
+      2
+     ],
+     "first_caps": {},
+     "updates": 735,
+     "attempted_updates": 735,
+     "trajectory_digest": "506f768be26b1e6c",
+     "seconds": 0.002506874999998132,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1326,
+   "seed": 1000001326,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001326,
+     "result": "loss",
+     "moves": 637,
+     "caps": 0,
+     "board": [
+      10,
+      1,
+      2,
+      1,
+      6,
+      8,
+      4,
+      2,
+      4,
+      5,
+      3,
+      6,
+      3,
+      4,
+      2,
+      1
+     ],
+     "first_caps": {},
+     "updates": 637,
+     "attempted_updates": 637,
+     "trajectory_digest": "549d3c78462816eb",
+     "seconds": 0.0023894580000032306,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1327,
+   "seed": 1000001327,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001327,
+     "result": "loss",
+     "moves": 1417,
+     "caps": 1,
+     "board": [
+      2,
+      3,
+      4,
+      1,
+      4,
+      5,
+      1,
+      5,
+      9,
+      7,
+      5,
+      2,
+      11,
+      10,
+      6,
+      4
+     ],
+     "first_caps": {
+      "1": [
+       1,
+       2,
+       1,
+       1,
+       3,
+       1,
+       0,
+       0,
+       2,
+       5,
+       6,
+       0,
+       11,
+       5,
+       0,
+       0
+      ]
+     },
+     "updates": 1417,
+     "attempted_updates": 1417,
+     "trajectory_digest": "bae5b9b081295baf",
+     "seconds": 0.00426991700000201,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1328,
+   "seed": 1000001328,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001328,
+     "result": "loss",
+     "moves": 651,
+     "caps": 0,
+     "board": [
+      3,
+      5,
+      2,
+      1,
+      1,
+      4,
+      1,
+      3,
+      3,
+      7,
+      6,
+      7,
+      1,
+      2,
+      8,
+      10
+     ],
+     "first_caps": {},
+     "updates": 651,
+     "attempted_updates": 651,
+     "trajectory_digest": "78b38b194df3ccb4",
+     "seconds": 0.0021347089999999014,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1329,
+   "seed": 1000001329,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001329,
+     "result": "loss",
+     "moves": 1089,
+     "caps": 1,
+     "board": [
+      2,
+      1,
+      2,
+      4,
+      3,
+      2,
+      3,
+      5,
+      1,
+      4,
+      6,
+      7,
+      2,
+      7,
+      9,
+      11
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       4,
+       1,
+       0,
+       2,
+       3,
+       6,
+       2,
+       3,
+       2,
+       11
+      ]
+     },
+     "updates": 1089,
+     "attempted_updates": 1089,
+     "trajectory_digest": "e69b5aac2347fa07",
+     "seconds": 0.003446249999999651,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1330,
+   "seed": 1000001330,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001330,
+     "result": "loss",
+     "moves": 958,
+     "caps": 1,
+     "board": [
+      5,
+      3,
+      4,
+      11,
+      2,
+      6,
+      8,
+      3,
+      7,
+      3,
+      5,
+      1,
+      4,
+      1,
+      2,
+      3
+     ],
+     "first_caps": {
+      "1": [
+       2,
+       4,
+       2,
+       11,
+       3,
+       2,
+       6,
+       1,
+       1,
+       1,
+       3,
+       4,
+       1,
+       2,
+       1,
+       0
+      ]
+     },
+     "updates": 958,
+     "attempted_updates": 958,
+     "trajectory_digest": "55606ed929ea27c4",
+     "seconds": 0.0028117499999993356,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1331,
+   "seed": 1000001331,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001331,
+     "result": "loss",
+     "moves": 795,
+     "caps": 0,
+     "board": [
+      1,
+      4,
+      7,
+      10,
+      2,
+      1,
+      5,
+      9,
+      1,
+      3,
+      1,
+      8,
+      2,
+      5,
+      2,
+      5
+     ],
+     "first_caps": {},
+     "updates": 795,
+     "attempted_updates": 795,
+     "trajectory_digest": "abc3afd90d1b56cf",
+     "seconds": 0.0025463330000015105,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1332,
+   "seed": 1000001332,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001332,
+     "result": "loss",
+     "moves": 550,
+     "caps": 0,
+     "board": [
+      10,
+      3,
+      4,
+      1,
+      7,
+      5,
+      2,
+      4,
+      2,
+      1,
+      3,
+      2,
+      1,
+      2,
+      5,
+      1
+     ],
+     "first_caps": {},
+     "updates": 550,
+     "attempted_updates": 550,
+     "trajectory_digest": "87411af1175a0818",
+     "seconds": 0.0016808749999981387,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1333,
+   "seed": 1000001333,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001333,
+     "result": "loss",
+     "moves": 853,
+     "caps": 0,
+     "board": [
+      10,
+      5,
+      1,
+      2,
+      9,
+      7,
+      3,
+      1,
+      8,
+      6,
+      5,
+      3,
+      7,
+      3,
+      1,
+      2
+     ],
+     "first_caps": {},
+     "updates": 853,
+     "attempted_updates": 853,
+     "trajectory_digest": "7763cc153bf764dc",
+     "seconds": 0.002768291999998951,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1334,
+   "seed": 1000001334,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001334,
+     "result": "loss",
+     "moves": 576,
+     "caps": 0,
+     "board": [
+      3,
+      5,
+      7,
+      10,
+      2,
+      4,
+      6,
+      5,
+      4,
+      3,
+      5,
+      1,
+      1,
+      2,
+      1,
+      3
+     ],
+     "first_caps": {},
+     "updates": 576,
+     "attempted_updates": 576,
+     "trajectory_digest": "25c5f9912e22e30f",
+     "seconds": 0.001906208000001186,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1335,
+   "seed": 1000001335,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001335,
+     "result": "loss",
+     "moves": 581,
+     "caps": 0,
+     "board": [
+      1,
+      4,
+      5,
+      1,
+      2,
+      5,
+      3,
+      4,
+      8,
+      2,
+      4,
+      1,
+      10,
+      3,
+      2,
+      3
+     ],
+     "first_caps": {},
+     "updates": 581,
+     "attempted_updates": 581,
+     "trajectory_digest": "7418605348927a6d",
+     "seconds": 0.002142791000000699,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1336,
+   "seed": 1000001336,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001336,
+     "result": "loss",
+     "moves": 615,
+     "caps": 0,
+     "board": [
+      2,
+      7,
+      2,
+      1,
+      1,
+      4,
+      3,
+      2,
+      3,
+      2,
+      6,
+      8,
+      5,
+      1,
+      4,
+      10
+     ],
+     "first_caps": {},
+     "updates": 615,
+     "attempted_updates": 615,
+     "trajectory_digest": "c6a64c21f71c68bd",
+     "seconds": 0.0021035829999966893,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1337,
+   "seed": 1000001337,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001337,
+     "result": "loss",
+     "moves": 1315,
+     "caps": 1,
+     "board": [
+      11,
+      5,
+      2,
+      1,
+      10,
+      7,
+      3,
+      4,
+      8,
+      6,
+      1,
+      3,
+      1,
+      2,
+      4,
+      5
+     ],
+     "first_caps": {
+      "1": [
+       11,
+       2,
+       1,
+       1,
+       8,
+       3,
+       0,
+       1,
+       5,
+       4,
+       0,
+       0,
+       0,
+       2,
+       0,
+       0
+      ]
+     },
+     "updates": 1315,
+     "attempted_updates": 1315,
+     "trajectory_digest": "c7601b5062946536",
+     "seconds": 0.0037739590000001044,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1338,
+   "seed": 1000001338,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001338,
+     "result": "loss",
+     "moves": 415,
+     "caps": 0,
+     "board": [
+      2,
+      1,
+      2,
+      1,
+      3,
+      5,
+      3,
+      5,
+      1,
+      2,
+      4,
+      2,
+      9,
+      8,
+      6,
+      4
+     ],
+     "first_caps": {},
+     "updates": 415,
+     "attempted_updates": 415,
+     "trajectory_digest": "a2ee7ec639ef1cab",
+     "seconds": 0.001463582999999602,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1339,
+   "seed": 1000001339,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001339,
+     "result": "loss",
+     "moves": 749,
+     "caps": 0,
+     "board": [
+      10,
+      9,
+      4,
+      1,
+      3,
+      8,
+      5,
+      3,
+      4,
+      6,
+      4,
+      1,
+      2,
+      1,
+      3,
+      5
+     ],
+     "first_caps": {},
+     "updates": 749,
+     "attempted_updates": 749,
+     "trajectory_digest": "1ccf95ce0914d07a",
+     "seconds": 0.0024268750000011607,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1340,
+   "seed": 1000001340,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001340,
+     "result": "loss",
+     "moves": 261,
+     "caps": 0,
+     "board": [
+      2,
+      3,
+      6,
+      8,
+      1,
+      2,
+      4,
+      6,
+      7,
+      4,
+      2,
+      1,
+      1,
+      2,
+      1,
+      3
+     ],
+     "first_caps": {},
+     "updates": 261,
+     "attempted_updates": 261,
+     "trajectory_digest": "a57f92cb01de21e2",
+     "seconds": 0.000902040999999798,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1341,
+   "seed": 1000001341,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001341,
+     "result": "loss",
+     "moves": 714,
+     "caps": 0,
+     "board": [
+      5,
+      3,
+      2,
+      5,
+      4,
+      2,
+      1,
+      2,
+      6,
+      7,
+      6,
+      3,
+      10,
+      8,
+      7,
+      1
+     ],
+     "first_caps": {},
+     "updates": 714,
+     "attempted_updates": 714,
+     "trajectory_digest": "49346b67e0bbbca4",
+     "seconds": 0.002115082999999629,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1342,
+   "seed": 1000001342,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001342,
+     "result": "loss",
+     "moves": 601,
+     "caps": 0,
+     "board": [
+      4,
+      3,
+      2,
+      1,
+      5,
+      4,
+      1,
+      3,
+      8,
+      7,
+      6,
+      2,
+      9,
+      8,
+      7,
+      4
+     ],
+     "first_caps": {},
+     "updates": 601,
+     "attempted_updates": 601,
+     "trajectory_digest": "6e6b14feca815345",
+     "seconds": 0.001789166999998315,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1343,
+   "seed": 1000001343,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001343,
+     "result": "loss",
+     "moves": 554,
+     "caps": 0,
+     "board": [
+      9,
+      8,
+      6,
+      2,
+      8,
+      5,
+      3,
+      1,
+      6,
+      4,
+      2,
+      3,
+      1,
+      2,
+      3,
+      1
+     ],
+     "first_caps": {},
+     "updates": 554,
+     "attempted_updates": 554,
+     "trajectory_digest": "39cc491f7985f3cf",
+     "seconds": 0.0017746249999994745,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1344,
+   "seed": 1000001344,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001344,
+     "result": "loss",
+     "moves": 773,
+     "caps": 0,
+     "board": [
+      10,
+      8,
+      2,
+      5,
+      2,
+      7,
+      4,
+      2,
+      5,
+      9,
+      3,
+      5,
+      2,
+      6,
+      2,
+      1
+     ],
+     "first_caps": {},
+     "updates": 773,
+     "attempted_updates": 773,
+     "trajectory_digest": "0dffaa93cd5ec0a8",
+     "seconds": 0.002329207999999028,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1345,
+   "seed": 1000001345,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001345,
+     "result": "loss",
+     "moves": 707,
+     "caps": 0,
+     "board": [
+      3,
+      1,
+      9,
+      10,
+      1,
+      2,
+      6,
+      3,
+      3,
+      4,
+      5,
+      2,
+      2,
+      3,
+      6,
+      3
+     ],
+     "first_caps": {},
+     "updates": 707,
+     "attempted_updates": 707,
+     "trajectory_digest": "7f6a2dac88139d08",
+     "seconds": 0.0024645419999984597,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1346,
+   "seed": 1000001346,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001346,
+     "result": "loss",
+     "moves": 733,
+     "caps": 0,
+     "board": [
+      1,
+      5,
+      2,
+      1,
+      2,
+      4,
+      1,
+      5,
+      8,
+      7,
+      5,
+      1,
+      10,
+      8,
+      6,
+      2
+     ],
+     "first_caps": {},
+     "updates": 733,
+     "attempted_updates": 733,
+     "trajectory_digest": "3e43e7f068380465",
+     "seconds": 0.0022023749999995346,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1347,
+   "seed": 1000001347,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001347,
+     "result": "loss",
+     "moves": 1882,
+     "caps": 2,
+     "board": [
+      5,
+      1,
+      3,
+      1,
+      6,
+      4,
+      5,
+      6,
+      2,
+      5,
+      7,
+      8,
+      1,
+      9,
+      11,
+      11
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       0,
+       0,
+       4,
+       0,
+       1,
+       4,
+       3,
+       1,
+       3,
+       2,
+       4,
+       0,
+       1,
+       8,
+       11
+      ],
+      "2": [
+       1,
+       2,
+       1,
+       0,
+       6,
+       1,
+       1,
+       0,
+       1,
+       4,
+       3,
+       1,
+       5,
+       1,
+       11,
+       11
+      ]
+     },
+     "updates": 1882,
+     "attempted_updates": 1882,
+     "trajectory_digest": "4ecf1380cc238e97",
+     "seconds": 0.004720917000000213,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1348,
+   "seed": 1000001348,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001348,
+     "result": "loss",
+     "moves": 570,
+     "caps": 0,
+     "board": [
+      4,
+      1,
+      7,
+      10,
+      5,
+      2,
+      4,
+      1,
+      1,
+      4,
+      3,
+      6,
+      2,
+      1,
+      2,
+      4
+     ],
+     "first_caps": {},
+     "updates": 570,
+     "attempted_updates": 570,
+     "trajectory_digest": "8c1006510d8d9c05",
+     "seconds": 0.0017843749999997272,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1349,
+   "seed": 1000001349,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001349,
+     "result": "loss",
+     "moves": 325,
+     "caps": 0,
+     "board": [
+      1,
+      7,
+      3,
+      1,
+      3,
+      6,
+      5,
+      7,
+      5,
+      2,
+      3,
+      4,
+      8,
+      4,
+      2,
+      1
+     ],
+     "first_caps": {},
+     "updates": 325,
+     "attempted_updates": 325,
+     "trajectory_digest": "4b9de2b61f3497c1",
+     "seconds": 0.0010494160000007469,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1350,
+   "seed": 1000001350,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001350,
+     "result": "loss",
+     "moves": 554,
+     "caps": 0,
+     "board": [
+      1,
+      2,
+      8,
+      9,
+      4,
+      5,
+      6,
+      8,
+      3,
+      2,
+      5,
+      6,
+      1,
+      3,
+      4,
+      1
+     ],
+     "first_caps": {},
+     "updates": 554,
+     "attempted_updates": 554,
+     "trajectory_digest": "a16d72807acc1419",
+     "seconds": 0.0018058750000022883,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1351,
+   "seed": 1000001351,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001351,
+     "result": "loss",
+     "moves": 1127,
+     "caps": 1,
+     "board": [
+      5,
+      6,
+      9,
+      11,
+      2,
+      4,
+      2,
+      8,
+      1,
+      3,
+      4,
+      5,
+      2,
+      1,
+      2,
+      1
+     ],
+     "first_caps": {
+      "1": [
+       2,
+       5,
+       6,
+       11,
+       1,
+       3,
+       4,
+       7,
+       1,
+       0,
+       0,
+       3,
+       0,
+       0,
+       0,
+       0
+      ]
+     },
+     "updates": 1127,
+     "attempted_updates": 1127,
+     "trajectory_digest": "87198c1640a338f6",
+     "seconds": 0.004167125000002159,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1352,
+   "seed": 1000001352,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001352,
+     "result": "loss",
+     "moves": 704,
+     "caps": 0,
+     "board": [
+      1,
+      8,
+      3,
+      2,
+      10,
+      7,
+      5,
+      1,
+      8,
+      4,
+      3,
+      4,
+      3,
+      5,
+      2,
+      1
+     ],
+     "first_caps": {},
+     "updates": 704,
+     "attempted_updates": 704,
+     "trajectory_digest": "6ac061bd9342447a",
+     "seconds": 0.0024409580000011033,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1353,
+   "seed": 1000001353,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001353,
+     "result": "loss",
+     "moves": 1141,
+     "caps": 1,
+     "board": [
+      2,
+      3,
+      4,
+      1,
+      1,
+      2,
+      5,
+      4,
+      3,
+      4,
+      7,
+      9,
+      2,
+      5,
+      8,
+      11
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       0,
+       1,
+       0,
+       0,
+       0,
+       5,
+       6,
+       0,
+       0,
+       3,
+       7,
+       1,
+       3,
+       2,
+       11
+      ]
+     },
+     "updates": 1141,
+     "attempted_updates": 1141,
+     "trajectory_digest": "4d086d9549deca74",
+     "seconds": 0.006613957999999087,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1354,
+   "seed": 1000001354,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001354,
+     "result": "loss",
+     "moves": 1056,
+     "caps": 0,
+     "board": [
+      1,
+      2,
+      4,
+      1,
+      8,
+      6,
+      7,
+      5,
+      9,
+      8,
+      5,
+      1,
+      1,
+      10,
+      9,
+      3
+     ],
+     "first_caps": {},
+     "updates": 1056,
+     "attempted_updates": 1056,
+     "trajectory_digest": "832e73c72dd1eeb3",
+     "seconds": 0.0031281669999998485,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1355,
+   "seed": 1000001355,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001355,
+     "result": "loss",
+     "moves": 843,
+     "caps": 0,
+     "board": [
+      1,
+      5,
+      3,
+      1,
+      2,
+      6,
+      4,
+      3,
+      8,
+      5,
+      2,
+      1,
+      9,
+      1,
+      10,
+      8
+     ],
+     "first_caps": {},
+     "updates": 843,
+     "attempted_updates": 843,
+     "trajectory_digest": "a987f3e4450b8c64",
+     "seconds": 0.0027125419999975975,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1356,
+   "seed": 1000001356,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001356,
+     "result": "loss",
+     "moves": 691,
+     "caps": 0,
+     "board": [
+      8,
+      3,
+      2,
+      4,
+      4,
+      1,
+      5,
+      8,
+      3,
+      5,
+      3,
+      10,
+      1,
+      7,
+      2,
+      1
+     ],
+     "first_caps": {},
+     "updates": 691,
+     "attempted_updates": 691,
+     "trajectory_digest": "2cb8ae3466210207",
+     "seconds": 0.002188916000001484,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1357,
+   "seed": 1000001357,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001357,
+     "result": "loss",
+     "moves": 699,
+     "caps": 0,
+     "board": [
+      2,
+      1,
+      2,
+      1,
+      4,
+      2,
+      5,
+      2,
+      1,
+      5,
+      6,
+      9,
+      3,
+      6,
+      7,
+      10
+     ],
+     "first_caps": {},
+     "updates": 699,
+     "attempted_updates": 699,
+     "trajectory_digest": "cb03dbeb19384006",
+     "seconds": 0.0026814579999978605,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1358,
+   "seed": 1000001358,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001358,
+     "result": "loss",
+     "moves": 590,
+     "caps": 0,
+     "board": [
+      10,
+      4,
+      3,
+      5,
+      7,
+      6,
+      2,
+      1,
+      6,
+      5,
+      4,
+      3,
+      4,
+      3,
+      5,
+      1
+     ],
+     "first_caps": {},
+     "updates": 590,
+     "attempted_updates": 590,
+     "trajectory_digest": "306c5dd56acba1e1",
+     "seconds": 0.0019029590000023688,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1359,
+   "seed": 1000001359,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001359,
+     "result": "loss",
+     "moves": 620,
+     "caps": 0,
+     "board": [
+      3,
+      2,
+      1,
+      10,
+      1,
+      6,
+      4,
+      8,
+      2,
+      5,
+      6,
+      5,
+      1,
+      3,
+      2,
+      1
+     ],
+     "first_caps": {},
+     "updates": 620,
+     "attempted_updates": 620,
+     "trajectory_digest": "cee3bbc51ed297a1",
+     "seconds": 0.0019286249999979077,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1360,
+   "seed": 1000001360,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001360,
+     "result": "loss",
+     "moves": 1091,
+     "caps": 1,
+     "board": [
+      3,
+      4,
+      6,
+      4,
+      2,
+      3,
+      1,
+      2,
+      6,
+      7,
+      5,
+      4,
+      11,
+      9,
+      1,
+      2
+     ],
+     "first_caps": {
+      "1": [
+       11,
+       3,
+       1,
+       2,
+       1,
+       3,
+       5,
+       0,
+       5,
+       2,
+       1,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     },
+     "updates": 1091,
+     "attempted_updates": 1091,
+     "trajectory_digest": "2c14b3552936d964",
+     "seconds": 0.0039884589999985565,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1361,
+   "seed": 1000001361,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001361,
+     "result": "loss",
+     "moves": 1410,
+     "caps": 1,
+     "board": [
+      3,
+      4,
+      2,
+      1,
+      8,
+      6,
+      5,
+      4,
+      11,
+      7,
+      6,
+      2,
+      1,
+      10,
+      8,
+      1
+     ],
+     "first_caps": {
+      "1": [
+       2,
+       0,
+       0,
+       1,
+       3,
+       2,
+       0,
+       0,
+       2,
+       5,
+       3,
+       0,
+       11,
+       3,
+       5,
+       0
+      ]
+     },
+     "updates": 1410,
+     "attempted_updates": 1410,
+     "trajectory_digest": "3275de183f5bab9c",
+     "seconds": 0.004631416999998805,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1362,
+   "seed": 1000001362,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001362,
+     "result": "loss",
+     "moves": 646,
+     "caps": 0,
+     "board": [
+      6,
+      2,
+      3,
+      10,
+      3,
+      5,
+      4,
+      1,
+      2,
+      7,
+      1,
+      2,
+      1,
+      3,
+      6,
+      8
+     ],
+     "first_caps": {},
+     "updates": 646,
+     "attempted_updates": 646,
+     "trajectory_digest": "bcf34b77848dd8c4",
+     "seconds": 0.002211583000001127,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1363,
+   "seed": 1000001363,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001363,
+     "result": "loss",
+     "moves": 798,
+     "caps": 0,
+     "board": [
+      4,
+      3,
+      6,
+      1,
+      3,
+      6,
+      8,
+      2,
+      2,
+      5,
+      7,
+      9,
+      1,
+      3,
+      10,
+      1
+     ],
+     "first_caps": {},
+     "updates": 798,
+     "attempted_updates": 798,
+     "trajectory_digest": "74504da58021037e",
+     "seconds": 0.002361500000002792,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1364,
+   "seed": 1000001364,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001364,
+     "result": "loss",
+     "moves": 775,
+     "caps": 0,
+     "board": [
+      10,
+      9,
+      1,
+      3,
+      4,
+      5,
+      3,
+      2,
+      2,
+      3,
+      6,
+      8,
+      1,
+      4,
+      3,
+      1
+     ],
+     "first_caps": {},
+     "updates": 775,
+     "attempted_updates": 775,
+     "trajectory_digest": "7d0a185f6f7d1dff",
+     "seconds": 0.002548374999999936,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1365,
+   "seed": 1000001365,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001365,
+     "result": "loss",
+     "moves": 866,
+     "caps": 0,
+     "board": [
+      1,
+      4,
+      2,
+      8,
+      3,
+      1,
+      6,
+      3,
+      10,
+      8,
+      4,
+      2,
+      2,
+      9,
+      5,
+      1
+     ],
+     "first_caps": {},
+     "updates": 866,
+     "attempted_updates": 866,
+     "trajectory_digest": "2e5b4002f5195738",
+     "seconds": 0.002822082999998088,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1366,
+   "seed": 1000001366,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001366,
+     "result": "loss",
+     "moves": 1403,
+     "caps": 1,
+     "board": [
+      1,
+      2,
+      4,
+      1,
+      3,
+      5,
+      3,
+      6,
+      8,
+      7,
+      4,
+      1,
+      11,
+      10,
+      8,
+      5
+     ],
+     "first_caps": {
+      "1": [
+       1,
+       2,
+       4,
+       0,
+       2,
+       1,
+       4,
+       3,
+       1,
+       6,
+       5,
+       1,
+       11,
+       8,
+       2,
+       1
+      ]
+     },
+     "updates": 1403,
+     "attempted_updates": 1403,
+     "trajectory_digest": "03328bbca37722cc",
+     "seconds": 0.004603584000001604,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1367,
+   "seed": 1000001367,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001367,
+     "result": "loss",
+     "moves": 483,
+     "caps": 0,
+     "board": [
+      6,
+      5,
+      3,
+      1,
+      7,
+      6,
+      5,
+      2,
+      8,
+      4,
+      3,
+      1,
+      9,
+      2,
+      1,
+      2
+     ],
+     "first_caps": {},
+     "updates": 483,
+     "attempted_updates": 483,
+     "trajectory_digest": "5b73fe0dc0ebb88d",
+     "seconds": 0.0019187499999979707,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1368,
+   "seed": 1000001368,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001368,
+     "result": "loss",
+     "moves": 810,
+     "caps": 0,
+     "board": [
+      1,
+      7,
+      9,
+      10,
+      2,
+      3,
+      6,
+      8,
+      3,
+      4,
+      5,
+      6,
+      1,
+      2,
+      1,
+      3
+     ],
+     "first_caps": {},
+     "updates": 810,
+     "attempted_updates": 810,
+     "trajectory_digest": "73d49e09dbe5da4c",
+     "seconds": 0.0028539159999994013,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1369,
+   "seed": 1000001369,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001369,
+     "result": "loss",
+     "moves": 476,
+     "caps": 0,
+     "board": [
+      1,
+      3,
+      2,
+      7,
+      2,
+      6,
+      4,
+      1,
+      3,
+      5,
+      2,
+      3,
+      9,
+      8,
+      5,
+      1
+     ],
+     "first_caps": {},
+     "updates": 476,
+     "attempted_updates": 476,
+     "trajectory_digest": "c28ecd76739fb22b",
+     "seconds": 0.001629999999998688,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1370,
+   "seed": 1000001370,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001370,
+     "result": "loss",
+     "moves": 1260,
+     "caps": 1,
+     "board": [
+      1,
+      3,
+      10,
+      11,
+      2,
+      4,
+      7,
+      4,
+      3,
+      5,
+      6,
+      7,
+      1,
+      2,
+      1,
+      2
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       0,
+       1,
+       11,
+       0,
+       1,
+       6,
+       1,
+       0,
+       1,
+       3,
+       4,
+       0,
+       2,
+       4,
+       3
+      ]
+     },
+     "updates": 1260,
+     "attempted_updates": 1260,
+     "trajectory_digest": "449fef7a4b53c296",
+     "seconds": 0.004029958000000278,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1371,
+   "seed": 1000001371,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001371,
+     "result": "loss",
+     "moves": 764,
+     "caps": 0,
+     "board": [
+      2,
+      5,
+      2,
+      4,
+      1,
+      4,
+      5,
+      1,
+      6,
+      3,
+      6,
+      9,
+      2,
+      5,
+      7,
+      10
+     ],
+     "first_caps": {},
+     "updates": 764,
+     "attempted_updates": 764,
+     "trajectory_digest": "47899fc25c964b1e",
+     "seconds": 0.0025147089999997263,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1372,
+   "seed": 1000001372,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001372,
+     "result": "loss",
+     "moves": 947,
+     "caps": 1,
+     "board": [
+      11,
+      4,
+      3,
+      2,
+      8,
+      5,
+      1,
+      3,
+      7,
+      4,
+      2,
+      5,
+      4,
+      2,
+      4,
+      1
+     ],
+     "first_caps": {
+      "1": [
+       11,
+       2,
+       4,
+       1,
+       8,
+       4,
+       2,
+       1,
+       5,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     },
+     "updates": 947,
+     "attempted_updates": 947,
+     "trajectory_digest": "135ecca8f6e11a31",
+     "seconds": 0.003208292000000057,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1373,
+   "seed": 1000001373,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001373,
+     "result": "loss",
+     "moves": 600,
+     "caps": 0,
+     "board": [
+      5,
+      1,
+      4,
+      1,
+      7,
+      4,
+      6,
+      2,
+      5,
+      1,
+      3,
+      10,
+      1,
+      3,
+      7,
+      2
+     ],
+     "first_caps": {},
+     "updates": 600,
+     "attempted_updates": 600,
+     "trajectory_digest": "088428d8bc3ac323",
+     "seconds": 0.0018174159999979622,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1374,
+   "seed": 1000001374,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001374,
+     "result": "loss",
+     "moves": 765,
+     "caps": 0,
+     "board": [
+      1,
+      5,
+      6,
+      10,
+      2,
+      3,
+      4,
+      9,
+      3,
+      1,
+      3,
+      7,
+      1,
+      3,
+      1,
+      4
+     ],
+     "first_caps": {},
+     "updates": 765,
+     "attempted_updates": 765,
+     "trajectory_digest": "4320a974cd3f708a",
+     "seconds": 0.002688875000000479,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1375,
+   "seed": 1000001375,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001375,
+     "result": "loss",
+     "moves": 1138,
+     "caps": 1,
+     "board": [
+      4,
+      3,
+      2,
+      4,
+      7,
+      5,
+      4,
+      1,
+      9,
+      6,
+      5,
+      3,
+      11,
+      3,
+      2,
+      1
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       0,
+       0,
+       0,
+       6,
+       2,
+       0,
+       1,
+       7,
+       3,
+       4,
+       0,
+       11,
+       1,
+       1,
+       2
+      ]
+     },
+     "updates": 1138,
+     "attempted_updates": 1138,
+     "trajectory_digest": "41103d0571edbb9a",
+     "seconds": 0.003084000000001197,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1376,
+   "seed": 1000001376,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001376,
+     "result": "loss",
+     "moves": 1007,
+     "caps": 1,
+     "board": [
+      2,
+      11,
+      5,
+      6,
+      8,
+      7,
+      2,
+      1,
+      2,
+      6,
+      4,
+      3,
+      4,
+      3,
+      2,
+      1
+     ],
+     "first_caps": {
+      "1": [
+       11,
+       6,
+       1,
+       0,
+       2,
+       4,
+       2,
+       3,
+       4,
+       1,
+       0,
+       4,
+       4,
+       0,
+       0,
+       0
+      ]
+     },
+     "updates": 1007,
+     "attempted_updates": 1007,
+     "trajectory_digest": "78384fd85f16007e",
+     "seconds": 0.0032456660000015347,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1377,
+   "seed": 1000001377,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001377,
+     "result": "loss",
+     "moves": 1495,
+     "caps": 1,
+     "board": [
+      1,
+      3,
+      1,
+      2,
+      2,
+      1,
+      3,
+      6,
+      4,
+      6,
+      7,
+      8,
+      2,
+      9,
+      10,
+      11
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       0,
+       2,
+       2,
+       4,
+       5,
+       2,
+       0,
+       5,
+       9,
+       11
+      ]
+     },
+     "updates": 1495,
+     "attempted_updates": 1495,
+     "trajectory_digest": "26f95783c1dc4d3b",
+     "seconds": 0.004127875000001779,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1378,
+   "seed": 1000001378,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001378,
+     "result": "loss",
+     "moves": 726,
+     "caps": 0,
+     "board": [
+      9,
+      1,
+      3,
+      1,
+      4,
+      2,
+      7,
+      4,
+      2,
+      4,
+      6,
+      2,
+      1,
+      10,
+      4,
+      1
+     ],
+     "first_caps": {},
+     "updates": 726,
+     "attempted_updates": 726,
+     "trajectory_digest": "1f77b6876f575c56",
+     "seconds": 0.0026020419999994715,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1379,
+   "seed": 1000001379,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001379,
+     "result": "loss",
+     "moves": 604,
+     "caps": 0,
+     "board": [
+      10,
+      1,
+      4,
+      1,
+      8,
+      4,
+      5,
+      2,
+      1,
+      2,
+      3,
+      1,
+      4,
+      6,
+      2,
+      3
+     ],
+     "first_caps": {},
+     "updates": 604,
+     "attempted_updates": 604,
+     "trajectory_digest": "87fd93d45cbb52cd",
+     "seconds": 0.0021072499999981176,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1380,
+   "seed": 1000001380,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001380,
+     "result": "loss",
+     "moves": 935,
+     "caps": 0,
+     "board": [
+      3,
+      2,
+      9,
+      10,
+      1,
+      4,
+      8,
+      9,
+      5,
+      2,
+      4,
+      7,
+      1,
+      3,
+      1,
+      2
+     ],
+     "first_caps": {},
+     "updates": 935,
+     "attempted_updates": 935,
+     "trajectory_digest": "270e1a829f1df9a5",
+     "seconds": 0.0028226250000003006,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1381,
+   "seed": 1000001381,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001381,
+     "result": "loss",
+     "moves": 1135,
+     "caps": 1,
+     "board": [
+      1,
+      3,
+      2,
+      3,
+      4,
+      1,
+      3,
+      5,
+      2,
+      3,
+      6,
+      9,
+      5,
+      2,
+      8,
+      11
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       1,
+       3,
+       0,
+       0,
+       1,
+       4,
+       1,
+       1,
+       3,
+       6,
+       6,
+       3,
+       1,
+       2,
+       11
+      ]
+     },
+     "updates": 1135,
+     "attempted_updates": 1135,
+     "trajectory_digest": "35344e8121705f7d",
+     "seconds": 0.0035485000000008426,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1382,
+   "seed": 1000001382,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001382,
+     "result": "loss",
+     "moves": 579,
+     "caps": 0,
+     "board": [
+      6,
+      1,
+      5,
+      2,
+      2,
+      3,
+      2,
+      1,
+      7,
+      5,
+      1,
+      4,
+      10,
+      6,
+      4,
+      2
+     ],
+     "first_caps": {},
+     "updates": 579,
+     "attempted_updates": 579,
+     "trajectory_digest": "aeb39043c4218b06",
+     "seconds": 0.0018346250000007558,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1383,
+   "seed": 1000001383,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001383,
+     "result": "loss",
+     "moves": 384,
+     "caps": 0,
+     "board": [
+      1,
+      2,
+      7,
+      9,
+      2,
+      5,
+      4,
+      6,
+      3,
+      4,
+      3,
+      5,
+      4,
+      3,
+      2,
+      1
+     ],
+     "first_caps": {},
+     "updates": 384,
+     "attempted_updates": 384,
+     "trajectory_digest": "279cde1359a5d951",
+     "seconds": 0.0014035830000018734,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1384,
+   "seed": 1000001384,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001384,
+     "result": "loss",
+     "moves": 728,
+     "caps": 0,
+     "board": [
+      1,
+      6,
+      2,
+      1,
+      2,
+      7,
+      5,
+      3,
+      3,
+      5,
+      9,
+      2,
+      1,
+      2,
+      4,
+      10
+     ],
+     "first_caps": {},
+     "updates": 728,
+     "attempted_updates": 728,
+     "trajectory_digest": "bb8b0086e564ce4f",
+     "seconds": 0.0022063330000001713,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1385,
+   "seed": 1000001385,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001385,
+     "result": "loss",
+     "moves": 640,
+     "caps": 0,
+     "board": [
+      1,
+      5,
+      2,
+      1,
+      7,
+      4,
+      3,
+      5,
+      8,
+      1,
+      5,
+      2,
+      10,
+      2,
+      6,
+      1
+     ],
+     "first_caps": {},
+     "updates": 640,
+     "attempted_updates": 640,
+     "trajectory_digest": "32740148bc3604d5",
+     "seconds": 0.0020331660000003637,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1386,
+   "seed": 1000001386,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001386,
+     "result": "loss",
+     "moves": 383,
+     "caps": 0,
+     "board": [
+      2,
+      1,
+      3,
+      1,
+      4,
+      2,
+      4,
+      6,
+      2,
+      4,
+      2,
+      7,
+      1,
+      7,
+      1,
+      9
+     ],
+     "first_caps": {},
+     "updates": 383,
+     "attempted_updates": 383,
+     "trajectory_digest": "639958d1acb0c490",
+     "seconds": 0.0012587080000017181,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1387,
+   "seed": 1000001387,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001387,
+     "result": "loss",
+     "moves": 442,
+     "caps": 0,
+     "board": [
+      2,
+      7,
+      2,
+      1,
+      3,
+      6,
+      3,
+      2,
+      4,
+      7,
+      5,
+      3,
+      1,
+      2,
+      6,
+      9
+     ],
+     "first_caps": {},
+     "updates": 442,
+     "attempted_updates": 442,
+     "trajectory_digest": "7ac8383aa61226db",
+     "seconds": 0.001391665999999958,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1388,
+   "seed": 1000001388,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001388,
+     "result": "loss",
+     "moves": 644,
+     "caps": 0,
+     "board": [
+      10,
+      8,
+      7,
+      2,
+      2,
+      4,
+      6,
+      1,
+      1,
+      3,
+      4,
+      5,
+      2,
+      1,
+      2,
+      1
+     ],
+     "first_caps": {},
+     "updates": 644,
+     "attempted_updates": 644,
+     "trajectory_digest": "7a5022a57288ccba",
+     "seconds": 0.002141916000002908,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1389,
+   "seed": 1000001389,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001389,
+     "result": "loss",
+     "moves": 957,
+     "caps": 0,
+     "board": [
+      1,
+      2,
+      3,
+      1,
+      2,
+      3,
+      1,
+      4,
+      8,
+      7,
+      5,
+      3,
+      10,
+      9,
+      8,
+      7
+     ],
+     "first_caps": {},
+     "updates": 957,
+     "attempted_updates": 957,
+     "trajectory_digest": "541c522b89e4f804",
+     "seconds": 0.0028909170000019913,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1390,
+   "seed": 1000001390,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001390,
+     "result": "loss",
+     "moves": 1010,
+     "caps": 1,
+     "board": [
+      11,
+      8,
+      7,
+      6,
+      6,
+      4,
+      5,
+      4,
+      2,
+      1,
+      4,
+      5,
+      1,
+      5,
+      2,
+      1
+     ],
+     "first_caps": {
+      "1": [
+       11,
+       5,
+       0,
+       0,
+       3,
+       5,
+       4,
+       6,
+       4,
+       3,
+       1,
+       0,
+       3,
+       0,
+       0,
+       1
+      ]
+     },
+     "updates": 1010,
+     "attempted_updates": 1010,
+     "trajectory_digest": "05252df5875476df",
+     "seconds": 0.0033046250000019484,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1391,
+   "seed": 1000001391,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001391,
+     "result": "loss",
+     "moves": 902,
+     "caps": 0,
+     "board": [
+      1,
+      3,
+      1,
+      3,
+      5,
+      2,
+      6,
+      4,
+      4,
+      9,
+      8,
+      5,
+      10,
+      8,
+      4,
+      3
+     ],
+     "first_caps": {},
+     "updates": 902,
+     "attempted_updates": 902,
+     "trajectory_digest": "bf87bad2e1e6b58e",
+     "seconds": 0.0026497919999997066,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1392,
+   "seed": 1000001392,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001392,
+     "result": "loss",
+     "moves": 596,
+     "caps": 0,
+     "board": [
+      3,
+      1,
+      2,
+      1,
+      4,
+      2,
+      4,
+      5,
+      8,
+      5,
+      2,
+      3,
+      10,
+      6,
+      4,
+      1
+     ],
+     "first_caps": {},
+     "updates": 596,
+     "attempted_updates": 596,
+     "trajectory_digest": "491ed64570e0c0c8",
+     "seconds": 0.002130875000002419,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1393,
+   "seed": 1000001393,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001393,
+     "result": "loss",
+     "moves": 644,
+     "caps": 0,
+     "board": [
+      10,
+      5,
+      2,
+      1,
+      8,
+      4,
+      3,
+      2,
+      7,
+      3,
+      1,
+      3,
+      3,
+      1,
+      3,
+      2
+     ],
+     "first_caps": {},
+     "updates": 644,
+     "attempted_updates": 644,
+     "trajectory_digest": "236a9a4a48c1667a",
+     "seconds": 0.0019324589999989428,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1394,
+   "seed": 1000001394,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001394,
+     "result": "loss",
+     "moves": 1326,
+     "caps": 1,
+     "board": [
+      3,
+      1,
+      2,
+      5,
+      5,
+      4,
+      3,
+      1,
+      2,
+      5,
+      7,
+      6,
+      1,
+      8,
+      10,
+      11
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       0,
+       0,
+       1,
+       0,
+       1,
+       0,
+       0,
+       0,
+       2,
+       3,
+       2,
+       0,
+       4,
+       7,
+       11
+      ]
+     },
+     "updates": 1326,
+     "attempted_updates": 1326,
+     "trajectory_digest": "b5faff03991451ce",
+     "seconds": 0.004071874999997505,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1395,
+   "seed": 1000001395,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001395,
+     "result": "loss",
+     "moves": 605,
+     "caps": 0,
+     "board": [
+      5,
+      1,
+      3,
+      2,
+      7,
+      5,
+      4,
+      1,
+      10,
+      4,
+      3,
+      2,
+      1,
+      8,
+      2,
+      5
+     ],
+     "first_caps": {},
+     "updates": 605,
+     "attempted_updates": 605,
+     "trajectory_digest": "1272f2ea07a67d49",
+     "seconds": 0.002051832999999448,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1396,
+   "seed": 1000001396,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001396,
+     "result": "loss",
+     "moves": 524,
+     "caps": 0,
+     "board": [
+      9,
+      8,
+      2,
+      1,
+      7,
+      6,
+      3,
+      2,
+      1,
+      5,
+      1,
+      5,
+      2,
+      1,
+      7,
+      1
+     ],
+     "first_caps": {},
+     "updates": 524,
+     "attempted_updates": 524,
+     "trajectory_digest": "994d92ae53186a15",
+     "seconds": 0.0019075000000015052,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1397,
+   "seed": 1000001397,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001397,
+     "result": "loss",
+     "moves": 893,
+     "caps": 1,
+     "board": [
+      6,
+      2,
+      1,
+      2,
+      1,
+      3,
+      4,
+      3,
+      3,
+      5,
+      6,
+      7,
+      1,
+      2,
+      3,
+      11
+     ],
+     "first_caps": {
+      "1": [
+       1,
+       1,
+       4,
+       0,
+       3,
+       2,
+       5,
+       1,
+       1,
+       4,
+       3,
+       6,
+       3,
+       6,
+       2,
+       11
+      ]
+     },
+     "updates": 893,
+     "attempted_updates": 893,
+     "trajectory_digest": "4176ae4c079da462",
+     "seconds": 0.002522082999998787,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1398,
+   "seed": 1000001398,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001398,
+     "result": "loss",
+     "moves": 587,
+     "caps": 0,
+     "board": [
+      10,
+      2,
+      1,
+      2,
+      8,
+      5,
+      4,
+      1,
+      6,
+      4,
+      3,
+      4,
+      4,
+      3,
+      2,
+      1
+     ],
+     "first_caps": {},
+     "updates": 587,
+     "attempted_updates": 587,
+     "trajectory_digest": "40894ecc7985679f",
+     "seconds": 0.002170499999998299,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1399,
+   "seed": 1000001399,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001399,
+     "result": "loss",
+     "moves": 540,
+     "caps": 0,
+     "board": [
+      2,
+      3,
+      5,
+      3,
+      1,
+      5,
+      1,
+      10,
+      7,
+      3,
+      6,
+      2,
+      1,
+      4,
+      3,
+      1
+     ],
+     "first_caps": {},
+     "updates": 540,
+     "attempted_updates": 540,
+     "trajectory_digest": "647dfa3940679c79",
+     "seconds": 0.002051583000000079,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1400,
+   "seed": 1000001400,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001400,
+     "result": "loss",
+     "moves": 838,
+     "caps": 0,
+     "board": [
+      1,
+      8,
+      9,
+      2,
+      2,
+      7,
+      5,
+      1,
+      3,
+      4,
+      7,
+      3,
+      4,
+      2,
+      4,
+      10
+     ],
+     "first_caps": {},
+     "updates": 838,
+     "attempted_updates": 838,
+     "trajectory_digest": "270bd7d465397437",
+     "seconds": 0.00274837499999947,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1401,
+   "seed": 1000001401,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001401,
+     "result": "loss",
+     "moves": 1402,
+     "caps": 1,
+     "board": [
+      11,
+      8,
+      3,
+      2,
+      10,
+      6,
+      4,
+      1,
+      8,
+      5,
+      3,
+      2,
+      4,
+      3,
+      2,
+      5
+     ],
+     "first_caps": {
+      "1": [
+       11,
+       5,
+       0,
+       0,
+       1,
+       2,
+       4,
+       0,
+       2,
+       4,
+       1,
+       0,
+       2,
+       0,
+       0,
+       0
+      ]
+     },
+     "updates": 1402,
+     "attempted_updates": 1402,
+     "trajectory_digest": "431bf49f8db8a774",
+     "seconds": 0.0043347090000018795,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1402,
+   "seed": 1000001402,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001402,
+     "result": "loss",
+     "moves": 855,
+     "caps": 0,
+     "board": [
+      10,
+      9,
+      2,
+      1,
+      9,
+      5,
+      4,
+      3,
+      6,
+      3,
+      2,
+      1,
+      3,
+      2,
+      5,
+      3
+     ],
+     "first_caps": {},
+     "updates": 855,
+     "attempted_updates": 855,
+     "trajectory_digest": "320bbc849b7d8187",
+     "seconds": 0.002545292000000643,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1403,
+   "seed": 1000001403,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001403,
+     "result": "loss",
+     "moves": 528,
+     "caps": 0,
+     "board": [
+      1,
+      4,
+      7,
+      9,
+      7,
+      8,
+      6,
+      5,
+      1,
+      2,
+      4,
+      2,
+      3,
+      1,
+      3,
+      1
+     ],
+     "first_caps": {},
+     "updates": 528,
+     "attempted_updates": 528,
+     "trajectory_digest": "9da1b24d6e913d6b",
+     "seconds": 0.0014389170000015383,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1404,
+   "seed": 1000001404,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001404,
+     "result": "loss",
+     "moves": 899,
+     "caps": 1,
+     "board": [
+      5,
+      3,
+      6,
+      2,
+      4,
+      2,
+      4,
+      1,
+      3,
+      5,
+      6,
+      4,
+      11,
+      6,
+      3,
+      1
+     ],
+     "first_caps": {
+      "1": [
+       11,
+       6,
+       0,
+       0,
+       3,
+       5,
+       0,
+       0,
+       2,
+       1,
+       0,
+       0,
+       1,
+       0,
+       0,
+       0
+      ]
+     },
+     "updates": 899,
+     "attempted_updates": 899,
+     "trajectory_digest": "cc8ca6394ea8aac6",
+     "seconds": 0.0027963329999991515,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1405,
+   "seed": 1000001405,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001405,
+     "result": "loss",
+     "moves": 919,
+     "caps": 1,
+     "board": [
+      1,
+      2,
+      5,
+      3,
+      4,
+      3,
+      4,
+      7,
+      2,
+      4,
+      5,
+      11,
+      3,
+      5,
+      3,
+      1
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       0,
+       5,
+       1,
+       0,
+       3,
+       4,
+       0,
+       3,
+       1,
+       6,
+       6,
+       1,
+       3,
+       1,
+       11
+      ]
+     },
+     "updates": 919,
+     "attempted_updates": 919,
+     "trajectory_digest": "5b239d0ca0927de9",
+     "seconds": 0.0028248340000018857,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1406,
+   "seed": 1000001406,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001406,
+     "result": "loss",
+     "moves": 1146,
+     "caps": 1,
+     "board": [
+      11,
+      5,
+      2,
+      5,
+      9,
+      7,
+      3,
+      2,
+      2,
+      8,
+      1,
+      5,
+      1,
+      3,
+      6,
+      3
+     ],
+     "first_caps": {
+      "1": [
+       11,
+       2,
+       2,
+       2,
+       7,
+       5,
+       3,
+       0,
+       5,
+       0,
+       0,
+       0,
+       1,
+       0,
+       0,
+       0
+      ]
+     },
+     "updates": 1146,
+     "attempted_updates": 1146,
+     "trajectory_digest": "0d975ffb7c86a25a",
+     "seconds": 0.0031634999999994307,
+     "start_board": null
+    }
+   }
+  },
+  {
+   "index": 1407,
+   "seed": 1000001407,
+   "start_board": null,
+   "rows": {
+    "td_selfplay": {
+     "seed": 1000001407,
+     "result": "loss",
+     "moves": 973,
+     "caps": 1,
+     "board": [
+      1,
+      2,
+      8,
+      2,
+      2,
+      3,
+      7,
+      5,
+      6,
+      5,
+      6,
+      2,
+      2,
+      3,
+      2,
+      11
+     ],
+     "first_caps": {
+      "1": [
+       0,
+       0,
+       0,
+       0,
+       1,
+       0,
+       0,
+       2,
+       0,
+       0,
+       1,
+       6,
+       1,
+       3,
+       4,
+       11
+      ]
+     },
+     "updates": 973,
+     "attempted_updates": 973,
+     "trajectory_digest": "661a823d0d177890",
+     "seconds": 0.0032176670000012564,
+     "start_board": null
+    }
+   }
+  }
+ ]
+}

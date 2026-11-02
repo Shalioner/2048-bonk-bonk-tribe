@@ -61,3 +61,50 @@
 выборе победивших источников. Старый файл сохранён как pilot-pool-512.json,
 старый build — вне worktree. Первые512 seed намеренно повторяются как
 training-only prefix; их нельзя считать новым независимым контролем.
+
+Pool4096 завершён:64 cap1/59 cap2,4096 loss,0 limit,0 updates.
+Префикс512 совпал с пилотом по всем полям, кроме времени исполнения.
+
+Все три arm прошли по16384 эпизода (49152 суммарно). В каждом arm9216
+полных стартов,3584 cap1 и3584 cap2. Matched teacher дал17 побед только из
+cap2; TD-selfplay не выиграл. Все16384 matched траектории совпали, включая
+конечные поля, ходы и digest. Лимитов нет.
+
+Для каждого arm выполнены192 validation продолжения после0/2048/8192/16384
+эпизодов:2304 суммарно. Все метрики(full,cap1,cap2) равны(0,0,0).
+По правилу earliest-on-tie выбран **нулевой checkpoint: необученные V=.5**.
+Три последовательных неулучшения удовлетворяют заданному локальному плато.
+Обученные веса сохранены, но отбор их отклонил; дальнейшее сравнение не будет
+выдаваться за демонстрацию силы обученного TD. Оба завершённых checkpoint
+повторно открыты через строгий `--resume` без новых эпизодов.
+
+Это ограничение данного опыта, а не вывод о бесполезности TD. Validation
+проверяет greedy learned поведение, тогда как итоговый поиск использует
+expectimax; нулевые метрики не различают кандидатов. Редкая целевая награда,
+слабый учитель, четыре4-tuples и такой отбор остаются гипотезами причин,
+не изолированными объяснениями. Полные данные:experiments/td/training-summary.json.
+
+## Воспроизведение
+
+Команды выполняются в этом сохранённом worktree. Источники и пути входят в
+fingerprint; перенос абсолютных путей или пересборка не считаются `--resume`.
+Для уже завершённого этапа нужен `--resume`; модель/данные не перезаписываются.
+
+```sh
+rtk proxy sh vendor/build.sh
+rtk proxy python3 experiments/td/run.py build
+rtk proxy python3 experiments/td/run.py pool
+rtk proxy python3 experiments/td/run.py train --group matched
+rtk proxy python3 experiments/td/run.py train --group selfplay
+rtk proxy python3 experiments/td/run.py screen
+rtk proxy python3 experiments/td/run.py freeze
+rtk proxy python3 experiments/td/run.py holdout
+rtk proxy python3 experiments/td/run.py finalize
+```
+
+После начала screen общий marker запрещает новое обучение/сборку. Timed игры
+выполняются последовательно; обучение, сборки и тяжёлые проверки с ними не
+совмещаются. Заморозка до holdout сохраняет SHA фактических библиотек, всех
+моделей, данных и исходников. Ресурсы обучения отдельно зафиксированы в
+experiments/td/training-resource-usage.txt; это не RAM запущенного телефонного
+бота и не стоимость одного хода.
