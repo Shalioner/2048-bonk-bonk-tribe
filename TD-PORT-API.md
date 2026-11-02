@@ -40,7 +40,8 @@ first_caps (ключи'1'/'2', точный cap-count, board16 ПОСЛЕ spawn 
 TD0 обновляет предыдущее afterstate по следующему выбранному afterstate value,
 последний target — goal1/loss0. На nonterminal немедленная награда0, discount1.
 Для teacher фиксированный depth-limit1 ручной эвристики, никакой активной
-learned-модели; selfplay использует greedy afterstate-value +epsilon exploration.
+learned-модели и без epsilon exploration; epsilon применяется только к selfplay,
+который использует greedy afterstate-value +epsilon exploration.
 Tie-breaking детерминирован. После goal случайная плитка не появляется.
 
 PRNG принадлежит эпизоду, детерминирован по uint64 seed; uniform empty cell,

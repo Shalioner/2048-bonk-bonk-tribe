@@ -10,6 +10,7 @@
     "seed_start": 1000000000,
     "arms": ["mc_teacher", "td_teacher", "td_selfplay"],
     "teacher_depth": 1,
+    "teacher_epsilon": 0.0,
     "warmup_episodes": 2048,
     "milestones": [2048, 8192, 16384, 32768, 65536, 131072],
     "checkpoint_every": 128,
