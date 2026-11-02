@@ -23,6 +23,7 @@ extern "C" const float* debug_rows() { return heur_score_table; }
 '''
 EXTRA_DEBUG = b'''
 extern "C" unsigned debug_mask(board_t b) { return bonk_geometry::cap_mask(b); }
+extern "C" int debug_exact_caps(board_t b) { return bonk_geometry::exact_cap_count(b); }
 extern "C" const unsigned char* debug_edges() { bonk_geometry::init_geometry_tables(); return bonk_geometry::free_edges_table; }
 extern "C" const unsigned char* debug_max_edges() { bonk_geometry::init_geometry_tables(); return bonk_geometry::max_edges_table; }
 extern "C" float debug_segment(unsigned row, float strength) {
@@ -164,6 +165,7 @@ class GeometryFeatureTests(unittest.TestCase):
                 function.argtypes, function.restype = arguments, returns
             if index:
                 for name, arguments, returns in (("debug_mask", [ctypes.c_uint64], ctypes.c_uint),
+                        ("debug_exact_caps", [ctypes.c_uint64], ctypes.c_int),
                         ("debug_edges", [], ctypes.POINTER(ctypes.c_ubyte)), ("debug_max_edges", [], ctypes.POINTER(ctypes.c_ubyte)),
                         ("debug_segment", [ctypes.c_uint, ctypes.c_float], ctypes.c_float),
                         ("debug_risk", [ctypes.c_uint64], ctypes.c_float),
@@ -253,11 +255,15 @@ class GeometryFeatureTests(unittest.TestCase):
         for cell in range(16):
             for rank in range(16):
                 self.assertEqual(lib.debug_mask(rank << (4*cell)), (1 << cell) if rank >= 11 else 0)
+                self.assertEqual(lib.debug_exact_caps(rank << (4*cell)), int(rank == 11))
+        for count in range(17):
+            self.assertEqual(lib.debug_exact_caps(pack((11,) * count + (0,) * (16-count))), count)
         rng = random.Random(30119)
         for _ in range(4096):
             packed = rng.getrandbits(64)
             expected = sum((rank >= 11) << i for i, rank in enumerate(unpack(packed)))
             self.assertEqual(lib.debug_mask(packed), expected)
+            self.assertEqual(lib.debug_exact_caps(packed), unpack(packed).count(11))
 
     def test_risk_python_moves_boundary_custom_spawn_and_goal(self):
         lib = self.libs[6]

@@ -102,9 +102,10 @@ static inline int geometry_penalty(board_t board) {
 }
 
 static inline int exact_cap_count(board_t board) {
-    int count = 0;
-    for (int cell = 0; cell < 16; ++cell, board >>= 4) count += (board & 15) == 11;
-    return count;
+    // Same exact11 nibble equality as the core's count_cap; no per-cell loop.
+    const board_t x = board ^ (0x1111111111111111ULL * barrier_rank);
+    const board_t matches = ~(x | (x >> 1) | (x >> 2) | (x >> 3)) & 0x1111111111111111ULL;
+    return __builtin_popcountll(matches);
 }
 
 typedef board_t (*move_function)(int, board_t);

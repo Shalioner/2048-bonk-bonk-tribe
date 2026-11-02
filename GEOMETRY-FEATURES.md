@@ -117,3 +117,10 @@ nneonneo/2048-ai и локальная Bonk-адаптация; веса/пол�
 Финальная проверка:11 тестов прошли за8.328s вместе со сборкой baseline+6 вариантов;
 py_compile и diff-check прошли. Worktree product-core diff пуст. Временные native
 артефакты автоматически удалены; actual screen/control не запускались.
+
+Предданная оптимизация: exact_cap_count использует ту же nibble equality и
+popcount, что count_cap core, вместо16 сравнений. Это по-прежнему точный rank11,
+не маска>=11. Проверены16ranks×16cells, все counts0..16 и4096 random64-bit boards
+против простого Python count. После изменения header все11 gates прошли за8.027s
+со сборкой7 библиотек; py_compile/diff-check прошли, D4/row errors не изменились.
+Скорость на реальных партиях этим тестом не измерялась.
