@@ -26,3 +26,8 @@ ML-ветками. Rootсборка и65tests прошли6.393с, включа�
 bot/benchmarktests. 31поле×2глубины×2threshold=124сравнениявсехчетырёх
 оценок/переходов с прежнимno-MLдвижком далипобитноеравенство. Артефакты
 вverification/math-cleanup. Это проверкасохранностиматематики, неwin-rate.
+
+Независимое ревью cleanup: verification/math-cleanup/REVIEW-CLEANUP.md.
+Активных ML-экспортов в DLL нет; архивные377файлов сохранены в старом
+TD-worktree. После benchmarkfollowup2дополнительныхтеста проверяютpolicyrouting;
+его targetedgate будет записан вместе с новымrunner.
