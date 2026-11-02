@@ -296,6 +296,40 @@ class CycleTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "неявное"):
                 cycle.freeze()
 
+    def test_reserved_marker_output_rejected_before_stage_side_effects(self):
+        self.trained()
+        self.eval_patches()
+        marker = self.root / "evaluation-started.json"
+        alias = self.root / "unused" / ".." / marker.name
+        actions = (("pool", lambda: cycle.pool(out=alias)),
+                   ("train", lambda: cycle.train("matched", out=alias)),
+                   ("screen", lambda: cycle.evaluate("screen", out=alias)),
+                   ("holdout", lambda: cycle.evaluate("holdout", out=alias)),
+                   ("freeze", lambda: cycle.freeze(out=alias)))
+        marker_bytes = b'{"sources":{"read_only":"preserve exactly"}}\n'
+        protected = {path: path.read_bytes() for path in (self.producer, self.engine, self.old,
+                     self.root / "plan.json", self.root / "pool.json", self.root / "train-matched.json")}
+        for exists in (False, True):
+            for stage, action in actions:
+                with self.subTest(stage=stage, existing_marker=exists):
+                    if exists:
+                        marker.write_bytes(marker_bytes)
+                    elif marker.exists():
+                        marker.unlink()
+                    with patch.object(cycle, "new_trainer") as native, patch.object(cycle, "timed_play") as timed:
+                        native.side_effect = RuntimeError("no native episode permitted")
+                        timed.side_effect = RuntimeError("no timed game permitted")
+                        try:
+                            with self.assertRaisesRegex(ValueError, "зарезервирован"):
+                                action()
+                        finally:
+                            self.assertEqual(marker.exists(), exists)
+                            if exists:
+                                self.assertEqual(marker.read_bytes(), marker_bytes)
+                            self.assertFalse(native.called)
+                            self.assertFalse(timed.called)
+                            self.assertTrue(all(path.read_bytes() == content for path, content in protected.items()))
+
     def test_timed_goal_does_not_spawn_and_telemetry_is_actual(self):
         spawns, chosen = [], []
         start = tuple([11, 11, 10, 10] + [0] * 12)

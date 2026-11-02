@@ -105,6 +105,13 @@ def training_open():
         raise ValueError("После начала evaluation новые pool/train/build запрещены для любого --out")
 
 
+def checked_output(path):
+    path = Path(path)
+    if path.resolve() == (ROOT / "evaluation-started.json").resolve():
+        raise ValueError("Путь --out зарезервирован для глобального evaluation marker")
+    return path
+
+
 def evaluation_marker(stage, out):
     path = ROOT / "evaluation-started.json"
     sources = source_fingerprint()
@@ -203,7 +210,7 @@ def progress(kind, **fields):
 
 
 def pool(resume=False, out=None, *, validate_only=False):
-    out = Path(out or ROOT / "pool.json")
+    out = checked_output(out or ROOT / "pool.json")
     config = dict(plan()["pool"], max_moves=plan()["max_moves"])
     header = dict(version=1, kind="pool", config=config, sources=source_fingerprint(), spawn_table=spawn_table())
     if out.exists():
@@ -514,7 +521,7 @@ def check_selection(state, pool_data):
 
 
 def train(group, resume=False, out=None, *, validate_only=False):
-    out = Path(out or ROOT / ("train-" + group + ".json"))
+    out = checked_output(out or ROOT / ("train-" + group + ".json"))
     header = state_header(group)
     directory = group_directory(out)
     pool_data = load_pool()
@@ -693,7 +700,7 @@ def verify_freeze(frozen):
 
 
 def evaluate(stage, resume=False, out=None, *, validate_only=False):
-    out = Path(out or ROOT / (stage + ".json"))
+    out = checked_output(out or ROOT / (stage + ".json"))
     models = selected_models()
     config = dict(plan()[stage], max_moves=plan()["max_moves"])
     if stage == "holdout":
@@ -754,7 +761,7 @@ def summaries(games):
 
 
 def freeze(out=None):
-    out = Path(out or ROOT / "finalist.json")
+    out = checked_output(out or ROOT / "finalist.json")
     if out.exists() or (ROOT / "finalist.json").exists() or (ROOT / "holdout.json").exists():
         raise ValueError("Заморозка уже существует или контроль уже начат")
     screen = evaluate("screen", resume=True, validate_only=True)
