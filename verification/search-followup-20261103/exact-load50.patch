@@ -1,0 +1,11 @@
+--- a/vendor/engine_adapted.cpp
++++ b/vendor/engine_adapted.cpp
+@@ -68,7 +68,7 @@
+         return NULL;
+     }
+     void put(const search_cache_key &key, float value) {
+-        if (slots.empty() || (entries + 1) * 10 >= slots.size() * 7) grow();
++        if (slots.empty() || (entries + 1) * 10 >= slots.size() * 5) grow();
+         size_t i = search_cache_hash()(key) & (slots.size() - 1);
+         while (slots[i].key.remaining_depth != 0 && !(slots[i].key == key))
+             i = (i + 1) & (slots.size() - 1);

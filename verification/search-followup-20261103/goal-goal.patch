@@ -1,0 +1,25 @@
+--- a/vendor/engine_adapted.cpp
++++ b/vendor/engine_adapted.cpp
+@@ -390,13 +390,16 @@
+            table[(board >> 48) & ROW_MASK];
+ }
+ 
+-static inline int count_cap(board_t b) {
+-    // Compare all sixteen packed ranks at once; each matching nibble contributes one bit.
++static bool goal(board_t b) {
++    // Mark cap tiles in parallel. The objective only needs at least three,
++    // so clear two matches instead of counting every matching bit.
++    static_assert(GOAL_COUNT == 3, "Update the goal predicate for a different target");
+     const board_t x = b ^ (0x1111111111111111ULL * CAP_RANK);
+-    const board_t matches = ~(x | (x >> 1) | (x >> 2) | (x >> 3)) & 0x1111111111111111ULL;
+-    return __builtin_popcountll(matches);
+-}
+-static bool goal(board_t b) { return count_cap(b)>=GOAL_COUNT; }
++    board_t matches = ~(x | (x >> 1) | (x >> 2) | (x >> 3)) & 0x1111111111111111ULL;
++    matches &= matches - 1;
++    matches &= matches - 1;
++    return matches != 0;
++}
+ static float score_heur_board(board_t board) {
+     if(goal(board)) return 1e9f;
+     return score_helper(          board , heur_score_table) +

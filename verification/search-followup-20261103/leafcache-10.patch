@@ -1,0 +1,48 @@
+--- a/vendor/engine_adapted.cpp
++++ b/vendor/engine_adapted.cpp
+@@ -353,7 +353,9 @@
+ 
+ /* Optimizing the game */
+ 
++struct leaf_cache_slot { board_t board = 0; float value = 0; };
+ struct eval_state {
++    std::vector<leaf_cache_slot> leaf_cache;
+     trans_table_t trans_table; // transposition table, to cache previously-seen moves
+     int maxdepth;
+     int curdepth;
+@@ -403,6 +405,17 @@
+            score_helper(transpose(board), heur_score_table);
+ }
+ 
++static float score_cached_leaf(eval_state &state, board_t board) {
++    if (state.leaf_cache.empty()) state.leaf_cache.resize(size_t(1) << 10);
++    const board_t mixed = (board ^ (board >> 32)) * 0x9e3779b97f4a7c15ULL;
++    leaf_cache_slot &slot = state.leaf_cache[mixed >> (64 - 10)];
++    if (board != 0 && slot.board == board) return slot.value;
++    const float value = score_heur_board(board);
++    slot.board = board;
++    slot.value = value;
++    return value;
++}
++
+ static float score_board(board_t board) {
+     return score_helper(board, score_table);
+ }
+@@ -427,7 +440,7 @@
+     if (search_aborted(state)) return 0.0f; // aborted passes are discarded
+     if (cprob < state.cprob_thresh || state.curdepth >= state.depth_limit) {
+         state.maxdepth = std::max(state.curdepth, state.maxdepth);
+-        return score_heur_board(board);
++        return score_cached_leaf(state, board);
+     }
+     search_cache_key cache_key = {board, state.depth_limit - state.curdepth, 0};
+     if (state.cprob_thresh > 0.0f) {
+@@ -490,7 +503,7 @@
+             if (goal(newboard)) { best = std::max(best, 1e9f); continue; }
+             if (search_aborted(state)) continue;
+             state.maxdepth = std::max(state.curdepth, state.maxdepth);
+-            best = std::max(best, score_heur_board(newboard));
++            best = std::max(best, score_cached_leaf(state, newboard));
+         }
+         state.curdepth--;
+         return best;

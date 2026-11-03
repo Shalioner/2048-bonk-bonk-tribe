@@ -1,0 +1,82 @@
+[
+  {
+    "variant": "cache-14",
+    "median_ms": 82.697854500001,
+    "baseline_median_ms": 59.085687499997874,
+    "median_delta_percent": 39.9625831551913,
+    "p95_delta_percent": 176.22270655620125,
+    "max_delta_percent": 83.26594005686707
+  },
+  {
+    "variant": "cache-16",
+    "median_ms": 58.92868800000173,
+    "baseline_median_ms": 59.085687499997874,
+    "median_delta_percent": -0.2657149415349558,
+    "p95_delta_percent": 73.91311947284109,
+    "max_delta_percent": 14.92588825995238
+  },
+  {
+    "variant": "cache-18",
+    "median_ms": 58.61712500000138,
+    "baseline_median_ms": 59.085687499997874,
+    "median_delta_percent": -0.7930219987649534,
+    "p95_delta_percent": 21.48454621867659,
+    "max_delta_percent": -16.481230381998902
+  },
+  {
+    "variant": "exact-hash",
+    "median_ms": 73.39541650000037,
+    "baseline_median_ms": 72.78952049999887,
+    "median_delta_percent": 0.8323945477858974,
+    "p95_delta_percent": 8.727895238147854,
+    "max_delta_percent": -11.459667178107047
+  },
+  {
+    "variant": "exact-load50",
+    "median_ms": 76.4624790000008,
+    "baseline_median_ms": 72.78952049999887,
+    "median_delta_percent": 5.04599903223979,
+    "p95_delta_percent": -0.3917347597292897,
+    "max_delta_percent": 61.462022220576884
+  },
+  {
+    "variant": "exact-both",
+    "median_ms": 73.17424950000095,
+    "baseline_median_ms": 72.78952049999887,
+    "median_delta_percent": 0.5285499854365439,
+    "p95_delta_percent": 16.3184991398426,
+    "max_delta_percent": 2.7014720467068543
+  },
+  {
+    "variant": "goal-goal",
+    "median_ms": 60.56243700000075,
+    "baseline_median_ms": 59.04858350000097,
+    "median_delta_percent": 2.5637422784235753,
+    "p95_delta_percent": 0.7880944426267966,
+    "max_delta_percent": 28.13580302590344
+  },
+  {
+    "variant": "leafcache-10",
+    "median_ms": 72.75302100000403,
+    "baseline_median_ms": 59.0646874999976,
+    "median_delta_percent": 23.175156052433145,
+    "p95_delta_percent": 15.608933848858996,
+    "max_delta_percent": 13.981937886463914
+  },
+  {
+    "variant": "leafcache-14",
+    "median_ms": 70.4046040000037,
+    "baseline_median_ms": 59.0646874999976,
+    "median_delta_percent": 19.199147544811023,
+    "p95_delta_percent": 22.539287426976085,
+    "max_delta_percent": 10.327298566092068
+  },
+  {
+    "variant": "leafcache-16",
+    "median_ms": 67.8000625000017,
+    "baseline_median_ms": 59.0646874999976,
+    "median_delta_percent": 14.789505150610417,
+    "p95_delta_percent": 37.26078000367175,
+    "max_delta_percent": 18.09679089999252
+  }
+]

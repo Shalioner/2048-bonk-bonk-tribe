@@ -1,0 +1,12 @@
+{
+  "candidate_head": "a8d0441d5de1324489dbce5f90030c4b27ad5185",
+  "candidate_status": "",
+  "sha256": {
+    "candidate_dylib": "1cc30fe6f6d057747ded3044cf0582e818aa3b5435b7125a951bb4d4eec033de",
+    "candidate_cpp": "efc8cd8aa906bf5033d622295944acb160edd5436759c31abaf9aea7fd1e1b89",
+    "candidate_bot_py": "08cbe3031a7a6d3f800e0960311bff3229f92f49b53d11aaf9bcf12046f1ccde",
+    "baseline_dylib": "7f4ed00d4c78b90c0418838da086e1cd84e09ac270cef157bedffd430667cf8d",
+    "baseline_cpp": "aaca48727da2e98782b8e23933693f4341a89c4009304415369dcfe52b29ed0e",
+    "baseline_bot_py": "08cbe3031a7a6d3f800e0960311bff3229f92f49b53d11aaf9bcf12046f1ccde"
+  }
+}

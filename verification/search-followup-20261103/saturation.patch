@@ -1,0 +1,169 @@
+--- a/vendor/engine_adapted.cpp
++++ b/vendor/engine_adapted.cpp
+@@ -786,7 +786,9 @@
+  * Сначала готовится depth1, затем целиком завершаются уровни 2..depth при первом
+  * пороге. Уточнение остальных порогов начинается лишь после достижения depth.
+  * Незавершённый проход не заменяет сохранённый результат. info[0..7] имеют тот
+- * же смысл, что в solve_budget; info[8] — возвращённая глубина, info[9] — запрос. */
++ * же смысл, что в solve_budget; info[8] — подтверждённый горизонт (включая
++ * доказанно эквивалентный), info[9] — запрос. passes/positions считают только
++ * реально выполненную работу; skipped по-прежнему обозначает нехватку времени. */
+ extern "C" int solve_budget_progressive(board_t board, int allowed, int depth, const float *thresholds,
+                                         int n_thresholds, double budget_s, double growth, double *info) {
+     typedef std::chrono::steady_clock clock_t_;
+@@ -800,6 +802,7 @@
+     int best_move = -1, reached_depth = 1;
+     int completed = 0, cut = 0, skipped = 0;
+     double positions = 0, last_pass = 0, last_thresh = 0;
++    bool horizon_exhausted = false;
+ 
+     float fallback_best = -1;
+     for (int d = 0; d < 4; ++d) {
+@@ -825,6 +828,7 @@
+         float scores[4] = {0, 0, 0, 0};
+         unsigned long evaled[4] = {0, 0, 0, 0};
+         bool aborted[4] = {false, false, false, false};
++        int maxdepth[4] = {0, 0, 0, 0};
+         std::vector<std::thread> workers;
+         for (int d = 0; d < 4; ++d) {
+             if (!(allowed & (1 << d))) continue;
+@@ -838,6 +842,7 @@
+                 st.stop = &stop;
+                 scores[d] = _score_toplevel_move(st, board, d);
+                 evaled[d] = st.moves_evaled;
++                maxdepth[d] = st.maxdepth;
+                 // Последний короткий фрагмент может не попасть на periodic check.
+                 aborted[d] = st.aborted || clock_t_::now() >= deadline;
+                 if (aborted[d]) stop.store(true);
+@@ -852,6 +857,12 @@
+         for (int d = 0; d < 4; ++d)
+             if ((allowed & (1 << d)) && scores[d] > best) { best = scores[d]; move = d; }
+         best_move = move;
++        // Every evaluated leaf ended before this horizon. Since each root owns
++        // its cache, cache hits cannot hide a previously visited deeper leaf.
++        // Only a complete, non-aborted pass can certify all larger horizons.
++        horizon_exhausted = true;
++        for (int d = 0; d < 4; ++d)
++            if ((allowed & (1 << d)) && maxdepth[d] >= pass_depth) horizon_exhausted = false;
+         reached_depth = pass_depth;
+         completed++;
+         last_thresh = threshold;
+@@ -862,6 +873,11 @@
+     bool target_complete = target == 1;
+     for (int level = 2; level <= target; ++level) {
+         if (!pass(level, first_thresh)) break;
++        if (horizon_exhausted) {
++            reached_depth = target;  // proven equivalent horizon, not extra work
++            target_complete = true;
++            break;
++        }
+         target_complete = level == target;
+     }
+     if (target_complete && !cut && !skipped) {
+--- a/experiments/search_alternatives/variants.py
++++ b/experiments/search_alternatives/variants.py
+@@ -45,6 +45,7 @@
+                 st.stop = &stop;
+                 scores[d] = _score_toplevel_move(st, board, d);
+                 evaled[d] = st.moves_evaled;
++                maxdepth[d] = st.maxdepth;
+                 // Последний короткий фрагмент может не попасть на periodic check.
+                 aborted[d] = st.aborted || clock_t_::now() >= deadline;
+                 if (aborted[d]) stop.store(true);
+--- /dev/null
++++ b/test_search_saturation.py
+@@ -0,0 +1,94 @@
++"""Certified horizons: preserve exact values, all roots, refinement and cancellation."""
++import ctypes as C
++import unittest
++
++import bot
++
++
++class SaturationTests(unittest.TestCase):
++    SPARSE = (1, 1) + (0,) * 14
++    DENSE = (10,7,6,4, 4,3,1,2, 3,2,1,0, 2,1,0,1)
++
++    def setUp(self):
++        # Exactly 90/10, so the spawn probabilities of two versus one initial
++        # tiles straddle .062 (0.9/14 > .062 > 0.9/15).
++        bot.NATIVE.set_spawn_table((C.c_float * 240)(*([9., 1.] + [0.] * 13) * 16), 16, 15)
++
++    def tearDown(self):
++        bot.apply_spawn_model(bot.default_spawn_model())
++
++    def solve(self, board, depth, thresholds, allowed=None, budget=2., growth=0.):
++        if allowed is None:
++            allowed = sum(1 << bot.DIRECTIONS[d] for d, _ in bot.legal_moves(board))
++        info = (C.c_double * 10)()
++        move = bot.NATIVE.solve_budget_progressive(bot.pack(board), allowed, depth,
++               (C.c_float * len(thresholds))(*thresholds), len(thresholds), budget, growth, info)
++        return move, list(info)
++
++    def scores(self, board, depth, threshold):
++        return {bot.DIRECTIONS[d]: bot.NATIVE.score_levels_thresh(bot.pack(board), bot.DIRECTIONS[d], depth, threshold)
++                for d, _ in bot.legal_moves(board)}
++
++    def test_certified_target_skips_identical_intermediate_passes(self):
++        reference = self.scores(self.SPARSE, 2, .1)
++        for depth in (3, 5, 8, 12):
++            self.assertEqual(reference, self.scores(self.SPARSE, depth, .1))
++        move, info = self.solve(self.SPARSE, 12, [.1])
++        self.assertEqual(info[0], 1)  # only depth2 was evaluated, no virtual passes
++        self.assertEqual(info[8:10], [12, 12])
++        self.assertEqual(info[4:6], [0, 0])
++        self.assertFalse(info[7])
++        self.assertEqual(reference[move], max(reference.values()))
++
++    def test_every_allowed_root_must_finish_before_the_horizon(self):
++        horizontal = (1 << bot.DIRECTIONS[0]) | (1 << bot.DIRECTIONS[1])
++        _, horizontal_info = self.solve(self.SPARSE, 8, [.062], allowed=horizontal)
++        move, all_info = self.solve(self.SPARSE, 8, [.062])
++        self.assertEqual(horizontal_info[0], 1)
++        self.assertEqual(all_info[0], 2)  # down still reaches depth2; certify only at depth3
++        reference = self.scores(self.SPARSE, 8, .062)
++        self.assertEqual(reference[move], max(reference.values()))
++
++    def test_exact_cutoff_boundary_does_not_skip_required_depth(self):
++        # One deterministic spawn rank with probability1.0. Use 1/14 exactly
++        # as native float to exercise equality, which must not prune the branch.
++        bot.NATIVE.set_spawn_table((C.c_float * 240)(*([1.] + [0.] * 14) * 16), 16, 15)
++        threshold = C.c_float(1. / 14).value
++        _, info = self.solve(self.SPARSE, 8, [threshold])
++        self.assertEqual(info[0], 2)
++
++    def test_zero_and_nan_threshold_do_not_falsely_certify_an_unpruned_tree(self):
++        for threshold in (0., float('nan')):
++            with self.subTest(threshold=threshold):
++                move, info = self.solve(self.DENSE, 3, [threshold])
++                self.assertEqual(info[0], 2)
++                self.assertEqual(info[8], 3)
++                scores = self.scores(self.DENSE, 3, threshold)
++                self.assertEqual(scores[move], max(scores.values()))
++
++    def test_new_threshold_is_recomputed_after_a_certified_horizon(self):
++        move, info = self.solve(self.SPARSE, 8, [.1, .01])
++        self.assertEqual(info[0], 2)  # depth2 at .1, then an actual depth8 pass at .01
++        self.assertAlmostEqual(info[1], .01)
++        self.assertEqual(info[8], 8)
++        scores = self.scores(self.SPARSE, 8, .01)
++        self.assertEqual(scores[move], max(scores.values()))
++
++    def test_aborted_refinement_preserves_certified_result(self):
++        move, info = self.solve(self.SPARSE, 30, [.1, 1e-10], budget=.04)
++        self.assertTrue(info[4])
++        self.assertEqual(info[0], 1)
++        self.assertEqual(info[8], 30)
++        self.assertAlmostEqual(info[1], .1)
++        scores = self.scores(self.SPARSE, 30, .1)
++        self.assertEqual(scores[move], max(scores.values()))
++
++    def test_zero_budget_keeps_fallback_contract(self):
++        _, info = self.solve(self.SPARSE, 8, [.1], budget=0.)
++        self.assertEqual(info[0], 0)
++        self.assertEqual(info[8], 1)
++        self.assertTrue(info[7])
++
++
++if __name__ == '__main__':
++    unittest.main()

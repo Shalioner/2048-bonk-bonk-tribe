@@ -1,0 +1,8 @@
+{"observation_error": "temporary crop OCR failure", "action": "retry_full_frame"}
+{"spawn_model": "старый формат spawn-model.json без стадий проигнорирован; используется spawn-model.default.json"}
+----------------------------------------------------------------------
+Ran 195 tests in 38.226s
+
+OK
+{"native_variants": 7, "max_d4_eval_spread": 0.25, "max_row_reverse_spread": 0.125}
+{"max_baseline_value_delta": 0.625, "max_python_reference_delta": 0.19276220398023725, "max_budget_excess_s": 0.0}

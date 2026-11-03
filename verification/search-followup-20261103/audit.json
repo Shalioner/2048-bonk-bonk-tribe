@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "groups": [
+    {
+      "group": "cache",
+      "boards": 21,
+      "repeats": 2,
+      "arms": 4,
+      "summary_recomputed": true
+    },
+    {
+      "group": "exact",
+      "boards": 21,
+      "repeats": 2,
+      "arms": 4,
+      "summary_recomputed": true
+    },
+    {
+      "group": "goal",
+      "boards": 21,
+      "repeats": 2,
+      "arms": 2,
+      "summary_recomputed": true
+    },
+    {
+      "group": "leafcache",
+      "boards": 21,
+      "repeats": 2,
+      "arms": 4,
+      "summary_recomputed": true
+    }
+  ],
+  "saturation_positions": 4,
+  "patches_reconstructed": 10,
+  "primary_engine_unchanged": true,
+  "files_sha256": {
+    "CACHE-PLAN.json": "f503bbf0359c2f772e68e8820cec3b63f8e98bef0fc334fb97e58f421087b8bd",
+    "PLAN.md": "cf242fcf5670b0480e2d60490d425a8e06a20a1b393b4a7696674e9fec0d7d99",
+    "cache-14.patch": "2fa3ad8c8f29a5f5d31d6c608c35f3ebe9219a0c0b998709c3e11c1b318e296a",
+    "cache-16.patch": "7c2991e4664a7653d7549d719b79c0a3a47ccc680b4affcf1287ca1336b1cc2e",
+    "cache-18.patch": "7f04c09698e327f467ead04efd23c6a74b42c31be14d7d92a1d0bd92f3b33645",
+    "cache-screen-results.json": "ed84ed919a31754237f66c2d09484ebd63ce47727783c051f1b3265875f3d7fe",
+    "cache-screen.log": "f0a6c35a1e9fb6b5e83b22d572727a025ab89946502c13ff2790255666fbf329",
+    "cache-screen.meta": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+    "cache_screen.py": "9cef0bb3a0bfac0d65f0ae371cc5564000d489b72d9eb31a16d1ad7e62e3c1ee",
+    "exact-both.patch": "6ae28db7cc61e3924f32fa4cd4700d6bedc977553f3142fe5cd03e425346b4d0",
+    "exact-hash.patch": "7d7dc3ff5eb2973d9718de13d12918d8a38c2b6782a6f9d616cdf6b1b27a52bd",
+    "exact-load50.patch": "be5a8dc833ed27c525e60a601494840eb5129e1e1eba3e15e47989c03810c1bd",
+    "exact-screen-results.json": "238a8d6f2c54661d10e84311df7c38361798136294e93f136bf3f6ecb273b1cf",
+    "exact-screen.log": "446638a39820e39e71bb5f5fd208a3bab6228752dd63895b6bed6f1575ff81e6",
+    "exact-screen.meta": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+    "exact_screen.py": "afe661b23c99e8a874b553beece836e0cf31fe66f580d3c77377040d8ec639f3",
+    "goal-goal.patch": "2484c16f2e2dbfc79d93bd29d07d0ff4e64c2a7dcb1413ac199e757e05d50a5a",
+    "goal-screen-results.json": "5efcb928b68a471f81731f852345dbd5aac3ab9352c023125f89ecef33288ad8",
+    "goal-screen.log": "78b585f6c2c6894f311693d190c827181a5100d74cc41b81dbb995dda56d1f4a",
+    "goal-screen.meta": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+    "goal_screen.py": "c933e52e3c8e2334d03478e214777f4adb26d4a4ba6d82a9acd385a5f0b2025a",
+    "leafcache-10.patch": "d2d71a51923b6ca84ccffafff1e58bb5689b6e46f740ff97a1068d7c12431947",
+    "leafcache-14.patch": "5abb2e054e2c5ea29eff94f11bd0aa31c0722ad8c4f4e8fff2dc5b769f61f2ce",
+    "leafcache-16.patch": "3379ab4e74324f2166886dc49c4bfd7c617797778ef1b4c95be659d710cf6f31",
+    "leafcache-screen-results.json": "32ef1ae368f83c2d8a119b048899a65d8b65a05090e245fca3c0dfacae78befe",
+    "leafcache-screen.log": "cd0b9f89cec6cabb8ac4a0d0ac99d5f6f5fdbdecae1c2479bfcface1f1aafc46",
+    "leafcache-screen.meta": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+    "leafcache_screen.py": "1061a038332069fc53e07ed65b53d6ef116bc0c353f74539f9e6eb2ebf4d1c18",
+    "manifest.json": "f03194a42571fd6edd81aa3770589b8043953202598ec02c114723d692d66a09",
+    "measure.py": "b773b5045c9114f4a767bbbf0caf5b5df79ebbf9e123cb986c06b69dfff0fb1b",
+    "saturation-02-unittest.log": "34a23586aedb7ffdd25f960bf972b32efbe7174704fb603af5d3fdd590633916",
+    "saturation-02-unittest.meta": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+    "saturation-03-verify-search.log": "a4ef6076fe9d2582a0bcb44d015c79e99cb657d5436640b0425feb07b10c0fb9",
+    "saturation-03-verify-search.meta": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+    "saturation-fingerprints-after.json": "f32bfd5a179958603d771035f973412903a65056cf0f313bcf55b92cf5657f38",
+    "saturation-fingerprints-before.json": "f32bfd5a179958603d771035f973412903a65056cf0f313bcf55b92cf5657f38",
+    "saturation-screen.json": "f61a9f259e6db635a0033ae75fdbde1cf1662ff716bfcead335548ecc0fd00e6",
+    "saturation-screen.log": "9df08cfaad2541a74cbe5645fe19acbc4accd3a9c4ae0f47f2365d41679f8e75",
+    "saturation-screen.meta": "bde294368bfed77c2cddf8cec271d398aee9cdbab3b26e1059281bd33adb0120",
+    "saturation.patch": "5b47bd26a4815a8cce15ceea61b41c21b88220d45bedcae912fee6a35dcdaf9f",
+    "summary.json": "b0892fdc132b51a6c0e09162371475fb3c57712cf508b3b4ae603c095f79b62b"
+  }
+}

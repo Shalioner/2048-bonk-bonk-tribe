@@ -1,0 +1,22 @@
+--- a/vendor/engine_adapted.cpp
++++ b/vendor/engine_adapted.cpp
+@@ -35,8 +35,8 @@
+ 
+ struct search_cache_hash {
+     size_t operator()(const search_cache_key &key) const {
+-        uint64_t x = key.board ^ (static_cast<uint64_t>(key.remaining_depth) * 0x9e3779b97f4a7c15ULL) ^
+-                     (static_cast<uint64_t>(key.probability_bits) * 0xbf58476d1ce4e5b9ULL);
++        uint64_t x = key.board ^ (static_cast<uint64_t>(key.probability_bits) << 32) ^
++                     static_cast<uint32_t>(key.remaining_depth);
+         x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9ULL;
+         x = (x ^ (x >> 27)) * 0x94d049bb133111ebULL;
+         return static_cast<size_t>(x ^ (x >> 31));
+@@ -68,7 +68,7 @@
+         return NULL;
+     }
+     void put(const search_cache_key &key, float value) {
+-        if (slots.empty() || (entries + 1) * 10 >= slots.size() * 7) grow();
++        if (slots.empty() || (entries + 1) * 10 >= slots.size() * 5) grow();
+         size_t i = search_cache_hash()(key) & (slots.size() - 1);
+         while (slots[i].key.remaining_depth != 0 && !(slots[i].key == key))
+             i = (i + 1) & (slots.size() - 1);

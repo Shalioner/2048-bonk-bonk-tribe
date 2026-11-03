@@ -1,0 +1,47 @@
+{
+  "cache-14": {
+    "source_sha256": "84a2cbe7564ae87e83b43bdd90a53fb4cc162f461b45a092e1b7891d18a02eb5",
+    "binary_sha256": "74871d1d8c480b9f34006fcc274c5c26fdcfb3f31c00d42eaaa646c06bc98174"
+  },
+  "cache-16": {
+    "source_sha256": "2937487b8fd101c56399a1fd5f082b12e3a1578d758ca319648c7ac603569448",
+    "binary_sha256": "7fe977d51f7fd41c2572505d697c4b7b404313e6ff229be7d60e465926a5dc11"
+  },
+  "cache-18": {
+    "source_sha256": "b2cb48d09213f780bcf4ebf8db8007ac8c39a6d0fc953454f4fe9e129c94a3ba",
+    "binary_sha256": "b02fb0a6b29a4b90b3a3d5908ea03ff57fd09267a0db9f265ae2687902a7866f"
+  },
+  "exact-hash": {
+    "source_sha256": "aa37b67fed2bd33f6cfee7c4b0eca1a87ad365471095cb04b8605ad33bb22495",
+    "binary_sha256": "d1c30107a22ded755f9cc69ffeee770ffe495fa73a48a8dd3b49d55b2c1cd5ef"
+  },
+  "exact-load50": {
+    "source_sha256": "b13acf2720f5f05f40a12dcbb174b550593af353614ad7c37bd209782f637061",
+    "binary_sha256": "106adb88b61f51593ba8d1f1986b30f3bf5df1eff9b611cb646d12096e5c93f6"
+  },
+  "exact-both": {
+    "source_sha256": "4b2da7dae54e83182049a3b35d73d0b9e989e75d676494759b072f4b3890dfd9",
+    "binary_sha256": "0ab9e5603ad85b896491f6d24a7cc36083dbba910711f25f9206d5a648a920b4"
+  },
+  "goal-goal": {
+    "source_sha256": "876dd8d36d54966fa763e37bd79ceb04b8b4de75ad3ea0a56003a60082c0d770",
+    "binary_sha256": "4a08180af044073dbef6e0a35db6093d8ceee1c44a5d98e607f022cf92c40dcf"
+  },
+  "leafcache-10": {
+    "source_sha256": "4f084d719f2c6dff9ded712f31ca239c524b3648190ab8d0e5e65b3bcd43cde9",
+    "binary_sha256": "c2360808825f2988be1588567b7e570d3f65b094a72502bbdfae4a422a2b2708"
+  },
+  "leafcache-14": {
+    "source_sha256": "91427114fd54194f8fe092022c09a98b942b7e09e55305629efa6be45e4de6f8",
+    "binary_sha256": "d969fbaab2f07c850bf42da31134668a748477a318226a28ab5d7c92c85cb343"
+  },
+  "leafcache-16": {
+    "source_sha256": "45ed5c4f1f4795400275a612ac56edf30d1a685093b040c6023715a8c9d91fdc",
+    "binary_sha256": "9826e3020018437383c0728a2b4254182b41802b9afdce75e6891e9cb8e08339"
+  },
+  "baseline": {
+    "commit": "08992d5",
+    "source_sha256": "aaca48727da2e98782b8e23933693f4341a89c4009304415369dcfe52b29ed0e",
+    "binary_sha256": "7f4ed00d4c78b90c0418838da086e1cd84e09ac270cef157bedffd430667cf8d"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "baseline": "08992d5",
+  "variants": [
+    14,
+    16,
+    18
+  ],
+  "kind": "bounded occupancy exact key cache with occupied-home eviction",
+  "screen": "seed2048 corpus21 depth8 threshold1e-4 two balanced repeats, exact scores required",
+  "control": "fresh corpus seed810115 and progressive10s, 20paired games at10ms seeds2026110340..59",
+  "acceptance": "fixed median/p95 >=5% better with no maximum regression, all exact/reference/physical-cache tests; actual policy and full games reported separately"
+}

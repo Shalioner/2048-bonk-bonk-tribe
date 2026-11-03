@@ -1,0 +1,41 @@
+--- a/vendor/engine_adapted.cpp
++++ b/vendor/engine_adapted.cpp
+@@ -44,7 +44,7 @@
+ };
+ 
+ #include "config.h"
+-// Per-root exact cache with open addressing: no node allocations or eviction.
++// Per-root exact cache with bounded open addressing and occupied-home eviction.
+ // remaining_depth == 0 marks an empty slot; only positive horizons are cached.
+ class trans_table_t {
+     struct slot { search_cache_key key = {0, 0, 0}; float value = 0; };
+@@ -68,12 +68,26 @@
+         return NULL;
+     }
+     void put(const search_cache_key &key, float value) {
+-        if (slots.empty() || (entries + 1) * 10 >= slots.size() * 7) grow();
+-        size_t i = search_cache_hash()(key) & (slots.size() - 1);
++        const size_t slot_limit = size_t(1) << 14;
++        const bool full = !slots.empty() && (entries + 1) * 10 >= slots.size() * 7;
++        if (slots.empty() || (full && slots.size() < slot_limit)) grow();
++        const size_t home = search_cache_hash()(key) & (slots.size() - 1);
++        size_t i = home;
+         while (slots[i].key.remaining_depth != 0 && !(slots[i].key == key))
+             i = (i + 1) & (slots.size() - 1);
+-        if (slots[i].key.remaining_depth == 0) { slots[i].key = key; ++entries; }
++        if (slots[i].key.remaining_depth != 0) { slots[i].value = value; return; }
++        if (slots.size() >= slot_limit && (entries + 1) * 10 >= slots.size() * 7) {
++            // Evict only an occupied home slot: no new holes or longer chains.
++            // An empty home rejects admission rather than raising occupancy.
++            if (slots[home].key.remaining_depth != 0) {
++                slots[home].key = key;
++                slots[home].value = value;
++            }
++            return;
++        }
++        slots[i].key = key;
+         slots[i].value = value;
++        ++entries;
+     }
+     size_t size() const { return entries; }
+ };
