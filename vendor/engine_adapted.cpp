@@ -412,15 +412,19 @@ static float score_board(board_t board) {
 // don't recurse into a node with a cprob less than state.cprob_thresh (default 1e-4)
 static const int CACHE_DEPTH_LIMIT  = 15;
 
-static float score_tilechoose_node(eval_state &state, board_t board, float cprob) {
-    if(goal(board)) return 1e9f;
+static inline bool search_aborted(eval_state &state) {
     if (state.has_deadline && !state.aborted && (++state.checks & 0xfff) == 0) {
         if ((state.stop && state.stop->load()) || std::chrono::steady_clock::now() >= state.deadline) {
             state.aborted = true;
             if (state.stop) state.stop->store(true);
         }
     }
-    if (state.aborted) return 0.0f; // result of an aborted pass is discarded
+    return state.aborted;
+}
+
+static float score_tilechoose_node(eval_state &state, board_t board, float cprob) {
+    if(goal(board)) return 1e9f;
+    if (search_aborted(state)) return 0.0f; // aborted passes are discarded
     if (cprob < state.cprob_thresh || state.curdepth >= state.depth_limit) {
         state.maxdepth = std::max(state.curdepth, state.maxdepth);
         return score_heur_board(board);
@@ -473,6 +477,24 @@ static float score_tilechoose_node(eval_state &state, board_t board, float cprob
 static float score_move_node(eval_state &state, board_t board, float cprob) {
     float best = 0.0f;
     state.curdepth++;
+    // All successors share this probability and depth. Avoid recursive cache-node
+    // dispatch for leaves, while retaining per-successor deadline checks.
+    if (cprob < state.cprob_thresh || state.curdepth >= state.depth_limit) {
+        board_t t = transpose(board);
+        board_t next[4] = {execute_move_0_transposed(board, t), execute_move_1_transposed(board, t),
+                           execute_move_2(board), execute_move_3(board)};
+        for (int move = 0; move < 4; ++move) {
+            state.moves_evaled++;
+            const board_t newboard = next[move];
+            if (newboard == board) continue;
+            if (goal(newboard)) { best = std::max(best, 1e9f); continue; }
+            if (search_aborted(state)) continue;
+            state.maxdepth = std::max(state.curdepth, state.maxdepth);
+            best = std::max(best, score_heur_board(newboard));
+        }
+        state.curdepth--;
+        return best;
+    }
     board_t t = transpose(board);
     board_t next[4] = {execute_move_0_transposed(board, t), execute_move_1_transposed(board, t),
                        execute_move_2(board), execute_move_3(board)};
