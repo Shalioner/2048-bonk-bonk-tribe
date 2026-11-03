@@ -1,0 +1,32 @@
+{
+  "ok": true,
+  "games": 60,
+  "replayed_moves": 92121,
+  "outcome_counts": {
+    "old_main": {
+      "games": 20,
+      "goal": 0,
+      "loss": 20,
+      "limit": 0
+    },
+    "main": {
+      "games": 20,
+      "goal": 7,
+      "loss": 13,
+      "limit": 0
+    },
+    "candidate": {
+      "games": 20,
+      "goal": 8,
+      "loss": 12,
+      "limit": 0
+    }
+  },
+  "unchanged_dependencies": true,
+  "fixed_score_parity": true,
+  "files_sha256": {
+    "fixed": "6012889bee845b5643b8bed8382d0809fd6409764aae79861bcf8bbb1eeb890a",
+    "policy": "85054e88c22b9c6042c9cbc3db6aea84787288e319cb01c981e0fdcf1ce856cb",
+    "games": "fa26007dd90c62b3e5b87dba7a566a61b444d1578f265f23febfc8abe911d0dd"
+  }
+}

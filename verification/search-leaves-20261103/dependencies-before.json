@@ -1,0 +1,14 @@
+{
+  "baseline/bot.py": "08cbe3031a7a6d3f800e0960311bff3229f92f49b53d11aaf9bcf12046f1ccde",
+  "baseline/benchmark.py": "f1a00e91928ed6e41964747d205e669d9fbb1b55c8ddc2199e1a7731e5ae60f3",
+  "baseline/search_benchmark.py": "522705bd2769b9e1d5c525641aa54c3502a3bb6b6d92732c6084cf9753a2d483",
+  "baseline/vendor/engine_adapted.cpp": "ad73fd7b64fff70abb7e6b9094623a67829af19e15fb27d221279858046a1888",
+  "baseline/spawn-model.default.json": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+  "worktree/bot.py": "08cbe3031a7a6d3f800e0960311bff3229f92f49b53d11aaf9bcf12046f1ccde",
+  "worktree/benchmark.py": "f1a00e91928ed6e41964747d205e669d9fbb1b55c8ddc2199e1a7731e5ae60f3",
+  "worktree/search_benchmark.py": "522705bd2769b9e1d5c525641aa54c3502a3bb6b6d92732c6084cf9753a2d483",
+  "worktree/vendor/engine_adapted.cpp": "aaca48727da2e98782b8e23933693f4341a89c4009304415369dcfe52b29ed0e",
+  "worktree/spawn-model.default.json": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+  "measure.py": "a45e40e7c98183f8001159f86f12e72686899bd4901fc881420eaeab77aa8b99",
+  "screen-plan.json": "43291cf955f64b1d80f013805a302eeb4e55a45f29389559afd39c2c83465703"
+}

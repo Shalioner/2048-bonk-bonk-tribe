@@ -1,0 +1,933 @@
+{
+  "stage": "policy",
+  "fingerprints": {
+    "script": "a45e40e7c98183f8001159f86f12e72686899bd4901fc881420eaeab77aa8b99",
+    "model": "ade22ade7d19f04951723c99cda9523e045d58defc46da18a4f2d0816e675719",
+    "binaries": {
+      "old_main": "df5aee6fcde497dd0681f403e12135f8373bf2368aa9babf538a5bfba755d2a4",
+      "main": "d32527e3a6c3bb6ebb30d8928093e6e8908a1098af0e1c971095343d9dd7e6f6",
+      "candidate": "7f4ed00d4c78b90c0418838da086e1cd84e09ac270cef157bedffd430667cf8d"
+    },
+    "commits": {
+      "old_main": "8af8780",
+      "main": "9b8e6dd",
+      "candidate": "6fedfa2"
+    }
+  },
+  "complete": true,
+  "rows": [
+    {
+      "index": 0,
+      "repeat": 0,
+      "board": "0122001310010000",
+      "engines": {
+        "old_main": {
+          "direction": 3,
+          "seconds": 0.34281316699999986,
+          "cpu_seconds": 0.8181430000000001,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 3,
+          "positions": 33990688,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "main": {
+          "direction": 3,
+          "seconds": 1.320627667,
+          "cpu_seconds": 2.8551840000000004,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 9,
+          "positions": 149932208,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "candidate": {
+          "direction": 3,
+          "seconds": 1.1619963749999997,
+          "cpu_seconds": 2.5334589999999997,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 9,
+          "positions": 149932208,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 0,
+      "repeat": 1,
+      "board": "0122001310010000",
+      "engines": {
+        "main": {
+          "direction": 3,
+          "seconds": 1.4914152089999995,
+          "cpu_seconds": 3.210445,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 9,
+          "positions": 149932208,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "candidate": {
+          "direction": 3,
+          "seconds": 1.3763544999999997,
+          "cpu_seconds": 3.104940000000001,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 9,
+          "positions": 149932208,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "old_main": {
+          "direction": 3,
+          "seconds": 0.5648659580000004,
+          "cpu_seconds": 1.429938,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 3,
+          "positions": 33990688,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 1,
+      "repeat": 0,
+      "board": "0245001300011001",
+      "engines": {
+        "main": {
+          "direction": 3,
+          "seconds": 4.004325792,
+          "cpu_seconds": 12.101555,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 9,
+          "positions": 375959440,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "candidate": {
+          "direction": 3,
+          "seconds": 3.002422459,
+          "cpu_seconds": 9.581256,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 9,
+          "positions": 375959440,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "old_main": {
+          "direction": 3,
+          "seconds": 2.040893917,
+          "cpu_seconds": 6.1895880000000005,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 3,
+          "positions": 113567344,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 1,
+      "repeat": 1,
+      "board": "0245001300011001",
+      "engines": {
+        "candidate": {
+          "direction": 3,
+          "seconds": 3.001642166,
+          "cpu_seconds": 9.153047,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 9,
+          "positions": 375959440,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "old_main": {
+          "direction": 3,
+          "seconds": 1.420030582999999,
+          "cpu_seconds": 5.107008999999998,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 3,
+          "positions": 113567344,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "main": {
+          "direction": 3,
+          "seconds": 3.2967642090000027,
+          "cpu_seconds": 11.044018000000008,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 9,
+          "positions": 375959440,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 2,
+      "repeat": 0,
+      "board": "2346124012301000",
+      "engines": {
+        "candidate": {
+          "direction": 0,
+          "seconds": 9.004856457999999,
+          "cpu_seconds": 12.361896999999999,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 624657712,
+          "cut": true,
+          "skipped": false,
+          "fallback": false
+        },
+        "old_main": {
+          "direction": 0,
+          "seconds": 6.527674916999999,
+          "cpu_seconds": 9.421001999999987,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 3,
+          "positions": 233352320,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "main": {
+          "direction": 0,
+          "seconds": 9.005781417000001,
+          "cpu_seconds": 14.021332999999998,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 569764616,
+          "cut": true,
+          "skipped": false,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 2,
+      "repeat": 1,
+      "board": "2346124012301000",
+      "engines": {
+        "old_main": {
+          "direction": 0,
+          "seconds": 5.781885791999997,
+          "cpu_seconds": 8.353082999999998,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 3,
+          "positions": 233352320,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "main": {
+          "direction": 0,
+          "seconds": 9.004942292000003,
+          "cpu_seconds": 13.584315000000004,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 642646392,
+          "cut": true,
+          "skipped": false,
+          "fallback": false
+        },
+        "candidate": {
+          "direction": 0,
+          "seconds": 9.024640166000005,
+          "cpu_seconds": 11.996745999999987,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 661403192,
+          "cut": true,
+          "skipped": false,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 3,
+      "repeat": 0,
+      "board": "0247014501230022",
+      "engines": {
+        "old_main": {
+          "direction": 3,
+          "seconds": 8.122265374999998,
+          "cpu_seconds": 17.932278999999994,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 3,
+          "positions": 343412768,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "main": {
+          "direction": 3,
+          "seconds": 9.005918791,
+          "cpu_seconds": 24.232762000000008,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 860306112,
+          "cut": true,
+          "skipped": false,
+          "fallback": false
+        },
+        "candidate": {
+          "direction": 3,
+          "seconds": 9.004614500000002,
+          "cpu_seconds": 21.367063,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 845340960,
+          "cut": true,
+          "skipped": false,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 3,
+      "repeat": 1,
+      "board": "0247014501230022",
+      "engines": {
+        "main": {
+          "direction": 3,
+          "seconds": 9.005694290999998,
+          "cpu_seconds": 22.781454999999994,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 676517728,
+          "cut": true,
+          "skipped": false,
+          "fallback": false
+        },
+        "candidate": {
+          "direction": 3,
+          "seconds": 9.006888000000004,
+          "cpu_seconds": 19.077449,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 672525592,
+          "cut": true,
+          "skipped": false,
+          "fallback": false
+        },
+        "old_main": {
+          "direction": 3,
+          "seconds": 9.60435425,
+          "cpu_seconds": 20.783476999999976,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 2,
+          "positions": 328120176,
+          "cut": true,
+          "skipped": false,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 4,
+      "repeat": 0,
+      "board": "3567214612141001",
+      "engines": {
+        "main": {
+          "direction": 2,
+          "seconds": 6.3109674580000075,
+          "cpu_seconds": 17.795412999999996,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 551214628,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        },
+        "candidate": {
+          "direction": 2,
+          "seconds": 4.89668120799999,
+          "cpu_seconds": 14.505341999999985,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 551214628,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        },
+        "old_main": {
+          "direction": 2,
+          "seconds": 3.157227207999995,
+          "cpu_seconds": 10.219002999999987,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 2,
+          "positions": 191684200,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 4,
+      "repeat": 1,
+      "board": "3567214612141001",
+      "engines": {
+        "candidate": {
+          "direction": 2,
+          "seconds": 4.383941333999985,
+          "cpu_seconds": 14.035280999999998,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 551214628,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        },
+        "old_main": {
+          "direction": 2,
+          "seconds": 2.8716632910000044,
+          "cpu_seconds": 9.664333,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 2,
+          "positions": 191684200,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        },
+        "main": {
+          "direction": 2,
+          "seconds": 5.247990625,
+          "cpu_seconds": 16.733732999999972,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 551214628,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 5,
+      "repeat": 0,
+      "board": "0148022700060101",
+      "engines": {
+        "candidate": {
+          "direction": 3,
+          "seconds": 7.967428082999987,
+          "cpu_seconds": 16.055372999999975,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 9,
+          "positions": 897524268,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "old_main": {
+          "direction": 3,
+          "seconds": 3.772275707999995,
+          "cpu_seconds": 8.303784000000007,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 3,
+          "positions": 246087468,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "main": {
+          "direction": 3,
+          "seconds": 9.002785791000008,
+          "cpu_seconds": 18.332572999999968,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 793368096,
+          "cut": true,
+          "skipped": false,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 5,
+      "repeat": 1,
+      "board": "0148022700060101",
+      "engines": {
+        "old_main": {
+          "direction": 3,
+          "seconds": 3.7401401660000033,
+          "cpu_seconds": 8.462197000000003,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 3,
+          "positions": 246087468,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "main": {
+          "direction": 3,
+          "seconds": 8.583172708000006,
+          "cpu_seconds": 17.254261999999983,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 9,
+          "positions": 897524268,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "candidate": {
+          "direction": 3,
+          "seconds": 7.2410954579999895,
+          "cpu_seconds": 14.541928000000041,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 9,
+          "positions": 897524268,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 6,
+      "repeat": 0,
+      "board": "0249124602151002",
+      "engines": {
+        "old_main": {
+          "direction": 0,
+          "seconds": 3.0066167079999957,
+          "cpu_seconds": 5.502902000000006,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 2,
+          "positions": 205149200,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        },
+        "main": {
+          "direction": 0,
+          "seconds": 3.833525457999997,
+          "cpu_seconds": 7.78653700000001,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 465042032,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        },
+        "candidate": {
+          "direction": 0,
+          "seconds": 3.31342329200001,
+          "cpu_seconds": 6.643647999999985,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 465042032,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 6,
+      "repeat": 1,
+      "board": "0249124602151002",
+      "engines": {
+        "main": {
+          "direction": 0,
+          "seconds": 4.142489584000003,
+          "cpu_seconds": 8.624976000000004,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 465042032,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        },
+        "candidate": {
+          "direction": 0,
+          "seconds": 3.2389822499999923,
+          "cpu_seconds": 6.617214999999987,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 465042032,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        },
+        "old_main": {
+          "direction": 0,
+          "seconds": 3.1619617500000174,
+          "cpu_seconds": 5.819763999999964,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 2,
+          "positions": 205149200,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 7,
+      "repeat": 0,
+      "board": "3479234701460103",
+      "engines": {
+        "main": {
+          "direction": 0,
+          "seconds": 5.931473167000007,
+          "cpu_seconds": 15.779839999999979,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 720513088,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        },
+        "candidate": {
+          "direction": 0,
+          "seconds": 4.636398208000003,
+          "cpu_seconds": 12.222655000000032,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 720513088,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        },
+        "old_main": {
+          "direction": 0,
+          "seconds": 3.837053792000006,
+          "cpu_seconds": 9.481350999999961,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 2,
+          "positions": 279609472,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 7,
+      "repeat": 1,
+      "board": "3479234701460103",
+      "engines": {
+        "candidate": {
+          "direction": 0,
+          "seconds": 4.523368207999994,
+          "cpu_seconds": 11.762951999999984,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 720513088,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        },
+        "old_main": {
+          "direction": 0,
+          "seconds": 3.8325485000000015,
+          "cpu_seconds": 9.485420999999974,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 2,
+          "positions": 279609472,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        },
+        "main": {
+          "direction": 0,
+          "seconds": 5.5045047090000025,
+          "cpu_seconds": 14.3690509999999,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 720513088,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 8,
+      "repeat": 0,
+      "board": "347a101000000010",
+      "engines": {
+        "candidate": {
+          "direction": 1,
+          "seconds": 1.725198750000004,
+          "cpu_seconds": 5.954198000000019,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 9,
+          "positions": 387088740,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "old_main": {
+          "direction": 1,
+          "seconds": 1.8192869579999922,
+          "cpu_seconds": 6.781068000000005,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 3,
+          "positions": 188563440,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "main": {
+          "direction": 1,
+          "seconds": 2.4204806250000104,
+          "cpu_seconds": 8.909428000000048,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 9,
+          "positions": 387088740,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 8,
+      "repeat": 1,
+      "board": "347a101000000010",
+      "engines": {
+        "old_main": {
+          "direction": 1,
+          "seconds": 2.0672246669999765,
+          "cpu_seconds": 7.427589000000012,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 3,
+          "positions": 188563440,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "main": {
+          "direction": 1,
+          "seconds": 2.500259583000002,
+          "cpu_seconds": 9.170873000000029,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 9,
+          "positions": 387088740,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        },
+        "candidate": {
+          "direction": 1,
+          "seconds": 1.8771664579999765,
+          "cpu_seconds": 6.823717999999985,
+          "depth": 8,
+          "threshold": 9.999999974752427e-07,
+          "passes": 9,
+          "positions": 387088740,
+          "cut": false,
+          "skipped": false,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 9,
+      "repeat": 0,
+      "board": "419a124331125010",
+      "engines": {
+        "old_main": {
+          "direction": 0,
+          "seconds": 6.774269958000019,
+          "cpu_seconds": 23.71132,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 2,
+          "positions": 544536300,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        },
+        "main": {
+          "direction": 0,
+          "seconds": 9.002698957999996,
+          "cpu_seconds": 31.754909999999995,
+          "depth": 8,
+          "threshold": 9.999999747378752e-05,
+          "passes": 7,
+          "positions": 1249815200,
+          "cut": true,
+          "skipped": false,
+          "fallback": false
+        },
+        "candidate": {
+          "direction": 0,
+          "seconds": 7.593480875000012,
+          "cpu_seconds": 25.76843199999996,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 1285540700,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        }
+      }
+    },
+    {
+      "index": 9,
+      "repeat": 1,
+      "board": "419a124331125010",
+      "engines": {
+        "main": {
+          "direction": 0,
+          "seconds": 9.002726041000017,
+          "cpu_seconds": 31.793712000000028,
+          "depth": 8,
+          "threshold": 9.999999747378752e-05,
+          "passes": 7,
+          "positions": 1248549680,
+          "cut": true,
+          "skipped": false,
+          "fallback": false
+        },
+        "candidate": {
+          "direction": 0,
+          "seconds": 7.774531500000023,
+          "cpu_seconds": 26.124443999999926,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 8,
+          "positions": 1285540700,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        },
+        "old_main": {
+          "direction": 0,
+          "seconds": 6.3044784580000055,
+          "cpu_seconds": 22.088278999999943,
+          "depth": 8,
+          "threshold": 9.999999747378752e-06,
+          "passes": 2,
+          "positions": 544536300,
+          "cut": false,
+          "skipped": true,
+          "fallback": false
+        }
+      }
+    }
+  ],
+  "platform": "macOS-15.7.9-arm64-arm-64bit",
+  "load_average": [
+    5.2763671875,
+    4.970703125,
+    4.6220703125
+  ],
+  "plan": {
+    "depth": 8,
+    "fixed_threshold": 0.0001,
+    "corpus_seed": 810113,
+    "fixed_repeats": 3,
+    "policy_budget": 10.0,
+    "policy_repeats": 2,
+    "game_budget": 0.01,
+    "game_seeds": [
+      2026110300,
+      2026110319
+    ],
+    "max_moves": 6000,
+    "win_scope": "20-seed exploratory simulation at 10ms, not default 10s or phone win rate"
+  },
+  "summary": {
+    "old_main": {
+      "median": 3.4510509580000104,
+      "p95": 8.122265374999998,
+      "maximum": 9.60435425
+    },
+    "main": {
+      "median": 5.717988938000005,
+      "p95": 9.005781417000001,
+      "maximum": 9.005918791
+    },
+    "candidate": {
+      "median": 4.579883207999998,
+      "p95": 9.006888000000004,
+      "maximum": 9.024640166000005
+    }
+  },
+  "same_completed_work": {
+    "count": 17,
+    "summary": {
+      "main": {
+        "median": 5.247990625,
+        "p95": 9.005918791,
+        "maximum": 9.005918791
+      },
+      "candidate": {
+        "median": 4.383941333999985,
+        "p95": 9.024640166000005,
+        "maximum": 9.024640166000005
+      }
+    }
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "candidate_commit": "6fedfa2",
+  "baseline_commit": "9b8e6dd",
+  "selected": "leaf_dispatch",
+  "screen": {
+    "baseline": {
+      "median": 0.08547539599999965,
+      "p95": 1.082065583000002,
+      "maximum": 1.3317884169999985
+    },
+    "skip_leaf_cache": {
+      "median": 0.08419781300000295,
+      "p95": 1.1526867500000009,
+      "maximum": 1.2344515419999986
+    },
+    "normalized_probability": {
+      "median": 0.08601422850000162,
+      "p95": 1.1552656249999949,
+      "maximum": 1.4290590420000058
+    },
+    "leaf_dispatch": {
+      "median": 0.07556879150000029,
+      "p95": 0.9163518330000002,
+      "maximum": 1.1805137499999958
+    },
+    "leaf_normalized": {
+      "median": 0.075958770499998,
+      "p95": 0.9185490829999985,
+      "maximum": 0.9632421250000007
+    }
+  },
+  "fixed_holdout": {
+    "old_main": {
+      "median": 0.06981245800000124,
+      "p95": 0.8614197499999996,
+      "maximum": 1.5506410829999986
+    },
+    "main": {
+      "median": 0.06925229199999983,
+      "p95": 1.3150674999999996,
+      "maximum": 1.759349333000003
+    },
+    "candidate": {
+      "median": 0.05558633300000082,
+      "p95": 0.9528771660000004,
+      "maximum": 1.416621082999999
+    }
+  },
+  "screen_parity": true,
+  "holdout_parity": true,
+  "holdout_fresh_positions": 15,
+  "holdout_reused_edges": 6,
+  "selection_reason": "leaf-only satisfies screen median/p95/max gates with smaller semantic diff; normalized probability and skip cache not accepted",
+  "status": "accepted exact computational optimization; win improvement over main unconfirmed",
+  "policy_summary": {
+    "old_main": {
+      "median": 3.4510509580000104,
+      "p95": 8.122265374999998,
+      "maximum": 9.60435425
+    },
+    "main": {
+      "median": 5.717988938000005,
+      "p95": 9.005781417000001,
+      "maximum": 9.005918791
+    },
+    "candidate": {
+      "median": 4.579883207999998,
+      "p95": 9.006888000000004,
+      "maximum": 9.024640166000005
+    }
+  },
+  "game_summary": {
+    "old_main": {
+      "games": 20,
+      "goals": 0,
+      "losses": 20,
+      "limits": 0,
+      "moves": 15727,
+      "latency": {
+        "median": 0.009719541999999137,
+        "p95": 0.010904374999999078,
+        "maximum": 0.048638334000088435
+      },
+      "total_choose_seconds": 153.09275041699783,
+      "total_cpu_seconds": 527.2942850000206
+    },
+    "main": {
+      "games": 20,
+      "goals": 7,
+      "losses": 13,
+      "limits": 0,
+      "moves": 38526,
+      "latency": {
+        "median": 0.0029920620000041254,
+        "p95": 0.007606667000004563,
+        "maximum": 0.47116633399997454
+      },
+      "total_choose_seconds": 150.85786760800067,
+      "total_cpu_seconds": 392.43369099999575
+    },
+    "candidate": {
+      "games": 20,
+      "goals": 8,
+      "losses": 12,
+      "limits": 0,
+      "moves": 37868,
+      "latency": {
+        "median": 0.003185375000006374,
+        "p95": 0.007595833000038965,
+        "maximum": 0.03866570899998578
+      },
+      "total_choose_seconds": 152.9218013709983,
+      "total_cpu_seconds": 415.0238770000242
+    }
+  },
+  "paired": {
+    "old_main": {
+      "gained": 8,
+      "lost": 0,
+      "one_sided_p": 0.00390625
+    },
+    "main": {
+      "gained": 6,
+      "lost": 5,
+      "one_sided_p": 0.5
+    }
+  },
+  "audit_ok": true
+}

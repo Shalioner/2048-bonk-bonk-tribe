@@ -1,0 +1,16 @@
+{
+  "candidate_head": "6fedfa22f29bfbce7d7d6cf6117d5916ffcefca4",
+  "candidate_status": "",
+  "sha256": {
+    "baseline_dylib": "d32527e3a6c3bb6ebb30d8928093e6e8908a1098af0e1c971095343d9dd7e6f6",
+    "candidate_dylib": "7f4ed00d4c78b90c0418838da086e1cd84e09ac270cef157bedffd430667cf8d",
+    "baseline_bot_py": "08cbe3031a7a6d3f800e0960311bff3229f92f49b53d11aaf9bcf12046f1ccde",
+    "candidate_bot_py": "08cbe3031a7a6d3f800e0960311bff3229f92f49b53d11aaf9bcf12046f1ccde",
+    "baseline_benchmark_py": "f1a00e91928ed6e41964747d205e669d9fbb1b55c8ddc2199e1a7731e5ae60f3",
+    "candidate_benchmark_py": "f1a00e91928ed6e41964747d205e669d9fbb1b55c8ddc2199e1a7731e5ae60f3",
+    "baseline_engine_source": "ad73fd7b64fff70abb7e6b9094623a67829af19e15fb27d221279858046a1888",
+    "candidate_engine_source": "aaca48727da2e98782b8e23933693f4341a89c4009304415369dcfe52b29ed0e",
+    "search_benchmark_py": "522705bd2769b9e1d5c525641aa54c3502a3bb6b6d92732c6084cf9753a2d483",
+    "measure_py": "a45e40e7c98183f8001159f86f12e72686899bd4901fc881420eaeab77aa8b99"
+  }
+}
