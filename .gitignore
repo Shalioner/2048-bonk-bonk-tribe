@@ -1,6 +1,7 @@
 __pycache__/
 *.py[cod]
 *.dylib
+*.dll
 *.log
 .DS_Store
 .venv/

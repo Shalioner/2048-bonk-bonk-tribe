@@ -1,0 +1,15 @@
+EXPORTS
+    engine_api_version
+    get_cap_rank
+    get_goal_count
+    goal_levels
+    solve_levels
+    score_levels
+    score_levels_thresh
+    score_levels_reference
+    solve_budget
+    solve_budget_progressive
+    set_spawn_table
+    get_spawn_prob
+    set_spawn_vector
+    set_spawn_probs

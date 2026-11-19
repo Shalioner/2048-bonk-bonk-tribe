@@ -1,7 +1,7 @@
 #define HAVE_UNORDERED_MAP 1
 #if defined(__APPLE__)
 #define HAVE_ARC4RANDOM_UNIFORM 1
-#else
+#elif !defined(_WIN32)
 #define HAVE_DRAND48 1
 #endif
 #define HAVE_GETTIMEOFDAY 1

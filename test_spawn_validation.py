@@ -2,8 +2,8 @@
 import ctypes as C
 import json
 from pathlib import Path
-import sys
 import unittest
+from bot import ENGINE
 
 
 ROOT = Path(__file__).resolve().parent
@@ -12,8 +12,7 @@ ROOT = Path(__file__).resolve().parent
 class SpawnValidationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        path = ROOT / 'vendor' / ('engine.dylib' if sys.platform == 'darwin' else 'engine.so')
-        cls.lib = C.CDLL(str(path))
+        cls.lib = C.CDLL(str(ENGINE))
         cls.lib.init_tables()
         cls.lib.set_spawn_table.argtypes = [C.POINTER(C.c_float), C.c_int, C.c_int]
         cls.lib.set_spawn_table.restype = C.c_int
@@ -21,7 +20,7 @@ class SpawnValidationTests(unittest.TestCase):
         cls.lib.get_spawn_prob.restype = C.c_float
         cls.lib.score_levels_thresh.argtypes = [C.c_uint64, C.c_int, C.c_int, C.c_float]
         cls.lib.score_levels_thresh.restype = C.c_float
-        stages = json.loads((ROOT / 'spawn-model.default.json').read_text())['stages']
+        stages = json.loads((ROOT / 'spawn-model.default.json').read_text(encoding='utf-8'))['stages']
         cls.default = [stages[str(max(int(k) for k in stages if int(k) <= s))]
                        for s in range(16)]
 

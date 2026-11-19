@@ -83,16 +83,13 @@ class CycleTests(unittest.TestCase):
                 info.update(search_s=.07, passes=1, positions=4)
                 if stop_in_choose: (root / 'STOP').write_text('stop')
                 return 0
-            lock = Mock()
-            lock.fileno.return_value = 123
             with contextlib.ExitStack() as stack:
-                for name, value in [('ROOT', root), ('open', Mock(return_value=lock)),
+                for name, value in [('ROOT', root),
                                     ('load_spawn_model', Mock(return_value=model)),
                                     ('apply_spawn_model', Mock()), ('save_spawn_model', Mock()),
                                     ('read_board', Mock(side_effect=read)), ('choose', Mock(side_effect=choose)),
                                     ('decode_screen', Mock(side_effect=decode))]:
                     stack.enter_context(patch.object(bot, name, value, create=True))
-                stack.enter_context(patch.object(bot.fcntl, 'flock'))
                 stack.enter_context(patch.object(bot.subprocess, 'run', side_effect=run))
                 stack.enter_context(patch.object(bot.time, 'monotonic', side_effect=clock.monotonic))
                 stack.enter_context(patch.object(bot.time, 'sleep', side_effect=clock.advance))

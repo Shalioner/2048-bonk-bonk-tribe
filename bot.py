@@ -1,8 +1,16 @@
 #!/usr/bin/env python3
 """Звёздное провидение: локальный ADB-бот. Ctrl+C останавливает."""
-import argparse, subprocess, time, json, io, tempfile, struct, fcntl, ctypes, sys
+import argparse, subprocess, time, json, io, struct, ctypes, sys
+from contextlib import contextmanager
 from pathlib import Path
 from functools import lru_cache
+
+if sys.platform == "win32":
+    import msvcrt
+    from ctypes import wintypes
+else:
+    import fcntl
+
 import cv2
 import numpy as np
 from PIL import Image
@@ -55,18 +63,19 @@ def _save_failed_observation(data,metrics=None):
                           "action":"continue_observation"},ensure_ascii=False),flush=True)
 
 def _ocr(canvas,psm,metrics=None):
-    with tempfile.NamedTemporaryFile(suffix=".png",dir=ROOT) as f:
-        canvas.save(f.name)
-        command=["tesseract",f.name,"stdout","--psm",str(psm),"-l","eng"]
-        if psm==13:command.extend(["-c","tessedit_char_whitelist=0123456789"])
-        if metrics is not None:metrics.counts["ocr_calls"]+=1
-        try:
-            return _timed(metrics,"ocr",subprocess.run,command,capture_output=True,
-                          text=True,check=True,timeout=OCR_TIMEOUT).stdout.strip()
-        except subprocess.TimeoutExpired as exc:
-            raise RuntimeError(f"OCR превысил лимит {OCR_TIMEOUT:g} с") from exc
-        except (subprocess.CalledProcessError,OSError) as exc:
-            raise RuntimeError(f"Ошибка OCR: {exc}") from exc
+    png=io.BytesIO()
+    canvas.save(png,format="PNG")
+    command=["tesseract","stdin","stdout","--psm",str(psm),"-l","eng"]
+    if psm==13:command.extend(["-c","tessedit_char_whitelist=0123456789"])
+    if metrics is not None:metrics.counts["ocr_calls"]+=1
+    try:
+        result=_timed(metrics,"ocr",subprocess.run,command,input=png.getvalue(),
+                      capture_output=True,check=True,timeout=OCR_TIMEOUT)
+        return result.stdout.decode("utf-8",errors="replace").strip()
+    except subprocess.TimeoutExpired as exc:
+        raise RuntimeError(f"OCR превысил лимит {OCR_TIMEOUT:g} с") from exc
+    except (subprocess.CalledProcessError,OSError) as exc:
+        raise RuntimeError(f"Ошибка OCR: {exc}") from exc
 
 def mask(im,r,c,raw=False):
     # Геометрия при 1440x3040; координаты нормализованы в read_board.
@@ -302,7 +311,8 @@ def choose_legacy(b):
     depth=3 if b.count(0)>=6 else 5
     return max(legal,key=lambda item:search(item[1],depth,True))[0] if legal else None
 
-ENGINE=ROOT/"vendor"/("engine.dylib" if sys.platform=="darwin" else "engine.so")
+ENGINE=ROOT/"vendor"/{"darwin":"engine.dylib","win32":"engine.dll"}.get(sys.platform,"engine.so")
+ENGINE_BUILD=r"vendor\build-windows.cmd" if sys.platform=="win32" else "sh vendor/build.sh"
 ENGINE_API=2
 REQUIRED_SYMBOLS=("engine_api_version","get_cap_rank","get_goal_count","solve_budget","set_spawn_table",
                   "get_spawn_prob","score_levels_thresh","init_tables","execute_move","goal_levels")
@@ -311,13 +321,14 @@ def check_engine(lib,name=ENGINE.name):
     # До настройки argtypes: у старого движка нет новых функций, и ctypes упал бы с AttributeError.
     missing=[n for n in REQUIRED_SYMBOLS if not hasattr(lib,n)]
     if missing:
-        raise RuntimeError(f"Движок {name} собран из старой версии (нет {', '.join(missing)}): пересоберите sh vendor/build.sh")
+        raise RuntimeError(f"Движок {name} собран из старой версии (нет {', '.join(missing)}): пересоберите {ENGINE_BUILD}")
     if lib.engine_api_version()!=ENGINE_API or (lib.get_cap_rank(),lib.get_goal_count())!=(CAP,GOAL_COUNT):
-        raise RuntimeError(f"Движок {name} собран из другой версии: пересоберите sh vendor/build.sh")
+        raise RuntimeError(f"Движок {name} собран из другой версии: пересоберите {ENGINE_BUILD}")
 
 def load_engine(path=ENGINE):
-    if not path.exists():raise RuntimeError(f"Движок не собран: выполните sh vendor/build.sh ({path.name})")
-    lib=ctypes.CDLL(str(path))
+    if not path.exists():raise RuntimeError(f"Движок не собран: выполните {ENGINE_BUILD} ({path.name})")
+    try:lib=ctypes.CDLL(str(path))
+    except OSError as exc:raise RuntimeError(f"Не удалось загрузить {path.name}: {exc}") from exc
     check_engine(lib,path.name)
     lib.solve_levels.argtypes=[ctypes.c_uint64,ctypes.c_int,ctypes.c_int]
     lib.solve_levels.restype=ctypes.c_int
@@ -367,11 +378,11 @@ SPAWN_DEFAULT=ROOT/"spawn-model.default.json"
 SPAWN_LEARNED=ROOT/"spawn-model.json"
 
 def default_spawn_model():
-    return json.loads(SPAWN_DEFAULT.read_text())
+    return json.loads(SPAWN_DEFAULT.read_text(encoding="utf-8"))
 
 def load_spawn_model():
     if SPAWN_LEARNED.exists():
-        data=json.loads(SPAWN_LEARNED.read_text())
+        data=json.loads(SPAWN_LEARNED.read_text(encoding="utf-8"))
         if data.get("version")==2:return data
         print(json.dumps({"spawn_model":"старый формат spawn-model.json без стадий проигнорирован; используется spawn-model.default.json"},ensure_ascii=False),flush=True)
     return default_spawn_model()
@@ -402,7 +413,7 @@ def format_spawn_model(model):
     return "{\n"+head+' "stages": {\n'+rows+"\n }\n}\n"
 
 def save_spawn_model(model):
-    SPAWN_LEARNED.write_text(format_spawn_model(model))
+    SPAWN_LEARNED.write_text(format_spawn_model(model),encoding="utf-8")
 
 def pack(b):
     if any(not 0<=v<=15 for v in b):raise RuntimeError("Уровень вне диапазона движка")
@@ -416,7 +427,7 @@ def choose(b,depth=DEFAULT_DEPTH,think=DEFAULT_THINK,info=None,policy="legacy"):
     allowed=sum(1<<DIRECTIONS[d] for d,_ in legal)
     progressive=policy=="progressive"
     if progressive and not hasattr(NATIVE,"solve_budget_progressive"):
-        raise RuntimeError("Движок не поддерживает progressive: пересоберите sh vendor/build.sh")
+        raise RuntimeError(f"Движок не поддерживает progressive: пересоберите {ENGINE_BUILD}")
     out=(ctypes.c_double*(10 if progressive else 8))()
     thresholds=(ctypes.c_float*len(THRESHOLDS))(*THRESHOLDS)
     solver=NATIVE.solve_budget_progressive if progressive else NATIVE.solve_budget
@@ -431,22 +442,46 @@ def choose(b,depth=DEFAULT_DEPTH,think=DEFAULT_THINK,info=None,policy="legacy"):
 
 apply_spawn_model(default_spawn_model())
 
+@contextmanager
+def lock_bot(lock):
+    if sys.platform != "win32":
+        try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        except BlockingIOError as exc:raise RuntimeError("Бот уже запущен") from exc
+        yield
+        return
+
+    kernel=ctypes.WinDLL("kernel32",use_last_error=True)
+    for operation in (kernel.LockFile,kernel.UnlockFile):
+        operation.argtypes=[wintypes.HANDLE]+[wintypes.DWORD]*4
+        operation.restype=wintypes.BOOL
+    region=(msvcrt.get_osfhandle(lock.fileno()),0,0,1,0)
+    if not kernel.LockFile(*region):
+        error=ctypes.get_last_error()
+        if error==33:  # ERROR_LOCK_VIOLATION
+            raise RuntimeError("Бот уже запущен")
+        raise ctypes.WinError(error)
+    try:yield
+    finally:kernel.UnlockFile(*region)
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--serial",default=None)
     ap.add_argument("--steps",type=int,default=10000)
     ap.add_argument("--delay",type=float,default=.4)
     ap.add_argument("--dry-run",action="store_true")
+    ap.add_argument("--clear-stop",action="store_true",help="снять STOP при запуске после получения блокировки")
     ap.add_argument("--depth",type=int,default=DEFAULT_DEPTH,help="предел глубины поиска (ходов вперёд)")
     ap.add_argument("--think",type=float,default=DEFAULT_THINK,help="бюджет расчёта хода, с")
     ap.add_argument("--search-policy",choices=("legacy","progressive"),default="progressive",help="планировщик поиска; progressive последовательно углубляет завершённые проходы")
     args=ap.parse_args()
     if args.search_policy=="progressive":
         if args.depth<1:ap.error("Глубина progressive должна быть положительной")
-        if not hasattr(NATIVE,"solve_budget_progressive"):ap.error("Движок не поддерживает progressive: пересоберите sh vendor/build.sh")
-    lock=open(ROOT/"bot.lock","w")
-    try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
-    except BlockingIOError:raise RuntimeError("Бот уже запущен")
+        if not hasattr(NATIVE,"solve_budget_progressive"):ap.error(f"Движок не поддерживает progressive: пересоберите {ENGINE_BUILD}")
+    with open(ROOT/"bot.lock","a+b") as lock, lock_bot(lock):
+        if args.clear_stop:(ROOT/"STOP").unlink(missing_ok=True)
+        play(args)
+
+def play(args):
     def adb(*cmd):
         return subprocess.run(["adb",*(["-s",args.serial] if args.serial else []),*cmd],capture_output=True,check=True,timeout=20).stdout
     size=adb("shell","wm","size").decode().strip()
@@ -556,3 +591,6 @@ def main():
 if __name__=="__main__":
     try:main()
     except KeyboardInterrupt:print("Остановлено")
+    except subprocess.CalledProcessError as exc:
+        sys.exit((exc.stderr or b"").decode(errors="replace").strip() or str(exc))
+    except (OSError,RuntimeError,subprocess.TimeoutExpired) as exc:sys.exit(str(exc))
