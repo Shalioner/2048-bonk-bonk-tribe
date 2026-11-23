@@ -91,11 +91,15 @@ class BotTests(unittest.TestCase):
             data=io.BytesIO();im.save(data,format='PNG')
             self.assertEqual(bot.read_board(data.getvalue())[0],level)
     def test_full_frame_fallback(self):
+        import tempfile
         from unittest.mock import patch
         data=(bot.ROOT/'fixtures/level-ten.png').read_bytes()
-        with patch.object(bot,'read_board',side_effect=[RuntimeError('temporary crop OCR failure'),(10,)+(0,)*15]):
+        with tempfile.TemporaryDirectory() as tmp, \
+             patch.object(bot,'ROOT',Path(tmp)), \
+             patch.object(bot,'read_board',side_effect=[RuntimeError('temporary crop OCR failure'),(10,)+(0,)*15]):
             calls=[]
             board,frame,used=bot.read_with_fallback(b'failed frame',lambda:calls.append(1) or data)
+            self.assertEqual((Path(tmp)/'failed-observation.bin').read_bytes(),b'failed frame')
         self.assertTrue(used)
         self.assertEqual(calls,[1])
         self.assertEqual(board,(10,)+(0,)*15)
@@ -169,14 +173,26 @@ class BotTests(unittest.TestCase):
         self.assertEqual(before[0],after[0])    # стадия 7 не затронута
         self.assertNotEqual(before[1],after[1]) # стадия 10 берёт свою строку
     def test_record_spawn_per_stage(self):
-        import json
+        import json,tempfile
+        from unittest.mock import patch
         model=bot.default_spawn_model()
         ten=list(model["stages"]["10"])
         bot.record_spawn(model,11,6)
         self.assertEqual(model["stages"]["10"],ten)
         self.assertEqual(model["stages"]["11"][5],1)
-        self.assertEqual(model["stages"]["11"][:5],ten[:5])
+        self.assertLessEqual(sum(model["stages"]["11"]),bot.SPAWN_PRIOR_WEIGHT+1.01)
+        bot.record_spawn(model,4,3)
+        bot.record_spawn(model,5,1)
+        self.assertEqual(model["stages"]["5"][2],0)
+        self.assertEqual(model["version"],bot.SPAWN_MODEL_VERSION)
         self.assertEqual(json.loads(bot.format_spawn_model(model)),model)
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'spawn-model.json'
+            with patch.object(bot,'SPAWN_LEARNED',path):
+                bot.save_spawn_model(model)
+                self.assertEqual(bot.load_spawn_model(),model)
+                path.write_text(json.dumps({"version":2,"stages":{"0":[35,3]}}))
+                self.assertEqual(bot.load_spawn_model(),bot.default_spawn_model())
     def test_old_spawn_model_ignored(self):
         import tempfile,json
         from unittest.mock import patch
@@ -238,5 +254,45 @@ class BotTests(unittest.TestCase):
         im=bot.decode_screen(data)
         raw=struct.pack('<IIII',*im.size,1,0)+im.convert('RGBA').tobytes()
         self.assertEqual(bot.read_board(raw),bot.read_board(data))
+    def test_recognition_templates_cover_1_to_9_without_ocr(self):
+        from unittest.mock import patch
+        self.assertTrue(set(range(1,10)).issubset(bot.TEMPLATES))
+        fixtures=[
+            ('calibration.png',(1,0,0,0,2,0,0,0,1,4,1,0,3,5,3,0)),
+            ('fixtures/saved-board.png',(0,0,0,0,1,0,0,0,5,1,0,1,7,3,3,2)),
+            ('fixtures/seven-variation.png',(7,3,1,1,7,1,0,0,2,0,0,0,0,0,1,0)),
+            ('fixtures/spawn-three.png',(8,4,1,1,7,3,2,3,3,2,3,1,2,1,1,3)),
+            ('fixtures/spawn-four.png',(9,4,0,0,8,4,2,0,5,5,3,3,2,1,1,1)),
+            ('fixtures/level-ten.png',(10,3,2,1,2,1,1,0,0,2,0,0,0,0,0,0)),
+            ('fixtures/icon-three-vs-four.png',(10,7,2,1,9,3,4,2,8,3,3,1,6,2,0,0)),
+        ]
+        with patch.object(bot,'_ocr',side_effect=AssertionError('OCR must not run')):
+            for rel,expected in fixtures:
+                with self.subTest(fixture=rel):
+                    raw=(bot.ROOT/rel).read_bytes()
+                    self.assertEqual(bot.read_board(raw),expected)
+                    im=bot.decode_screen(raw)
+                    strips=b'STRP'+struct.pack('<IIII',1440,3040,80,4)
+                    for y in (1150,1460,1770,2080):
+                        strips+=struct.pack('<I',y)+im.crop((0,y,1440,y+80)).convert('RGBA').tobytes()
+                    self.assertEqual(bot.read_board(strips),expected)
+    def test_ocr_does_not_overwrite_base_templates(self):
+        import numpy as np
+        from PIL import Image
+        from unittest.mock import patch
+        original=bot.TEMPLATES[3].copy()
+        with patch.object(bot,'decode_screen',return_value=Image.new('RGB',(1440,3040))), \
+             patch.object(bot,'icon_level',return_value=None), \
+             patch.object(bot,'two_digit_level',return_value=None), \
+             patch.object(bot,'mask',side_effect=lambda im,r,c,raw=False: np.full((40,32),255,dtype=np.uint8) if (r,c)==(0,0) else None), \
+             patch.object(bot,'_ocr',return_value='3'):
+            board=bot.read_board(b'frame')
+        self.assertEqual(board,(3,)+(0,)*15)
+        self.assertTrue(np.array_equal(bot.TEMPLATES[3],original))
+    def test_read_energy_on_fixtures(self):
+        self.assertEqual(bot.read_energy((bot.ROOT/'calibration.png').read_bytes()),(193,200))
+        self.assertEqual(bot.read_energy((bot.ROOT/'fixtures/spawn-three.png').read_bytes()),(55,200))
+        self.assertEqual(bot.read_energy((bot.ROOT/'fixtures/icon-three-vs-four.png').read_bytes()),(31,200))
+        self.assertIsNone(bot.read_energy((bot.ROOT/'fixtures/saved-board.png').read_bytes()))
 
 if __name__=='__main__':unittest.main()

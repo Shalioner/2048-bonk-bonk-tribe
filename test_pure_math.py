@@ -42,9 +42,11 @@ class PureMathTests(unittest.TestCase):
     def test_depth_think_and_spawn_frequency_learning_preserved(self):
         self.assertEqual((bot.DEFAULT_DEPTH, bot.DEFAULT_THINK), (8, 10))
         model = bot.default_spawn_model()
-        before = bot.stage_row(model, 11)[0]
+        before_10 = bot.stage_row(model, 10)[0]
+        bot.record_spawn(model, 10, 1)
+        self.assertEqual(bot.stage_row(model, 10)[0], before_10 + 1)
         bot.record_spawn(model, 11, 1)
-        self.assertEqual(bot.stage_row(model, 11)[0], before + 1)
+        self.assertLessEqual(sum(bot.stage_row(model, 11)), bot.SPAWN_PRIOR_WEIGHT + 1.01)
 
 
 if __name__ == "__main__":

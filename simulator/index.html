@@ -707,12 +707,14 @@ const badgeClass = l => l <= 2 ? "b-grey" : l <= 5 ? "b-jade" : l <= 7 ? "b-blue
    Порт C++-движка бота на JS. Строка поля — 16-битное число (4 клетки × 4 бита); для всех
    65 536 строк заранее считаются результат сдвига влево/вправо (LEFT/RIGHT) и эвристика (HEUR).
    Expectimax: узел хода — максимум по направлениям, узел случая — среднее по пустым клеткам
-   и уровням новой плитки с вероятностями текущей стадии. Ветви с вероятностью < 1e-4 не
-   раскрываются; повторяющиеся позиции берутся из кеша. Глубина растёт 1, 2, 3 … пока хватает
-   времени; прерванная глубина отбрасывается. Функция целиком передаётся в Web Worker
-   (engineFactory.toString()), чтобы расчёт не подвешивал страницу; без Worker — в основном потоке. */
+   и уровням новой плитки с вероятностями текущей стадии. Кеш позиций использует точный ключ
+   (поле, оставшаяся глубина, float32-биты вероятности ветви). После достижения целевой глубины
+   на пороге 1e-4 при наличии времени проход уточняется на порогах 1e-5 и 1e-6. Функция
+   целиком передаётся в Web Worker (engineFactory.toString()); без Worker — в основном потоке. */
 function engineFactory() {
-  const CAP = 11, GOAL = 3, THRESH = 1e-4;
+  const CAP = 11, GOAL = 3, THRESHOLDS = [1e-4, 1e-5, 1e-6];
+  const F32 = new Float32Array(1), U32 = new Uint32Array(F32.buffer);
+  const probBits = p => { F32[0] = p; return U32[0]; };
   const LEFT = new Uint16Array(65536), RIGHT = new Uint16Array(65536), HEUR = new Float64Array(65536);
   const rev = r => ((r & 15) << 12) | (((r >> 4) & 15) << 8) | (((r >> 8) & 15) << 4) | ((r >> 12) & 15);
   for (let row = 0; row < 65536; row++) {
@@ -769,17 +771,22 @@ function engineFactory() {
     return s;
   }
 
-  // Состояние одного расчёта: таблица появлений, предел глубины, дедлайн, счётчик узлов,
-  // кеш позиций (ключ — две половины поля по 32 бита; значение — [глубина узла, оценка]).
-  let table, depthLimit, deadline, nodes, cache;
+  // Состояние одного расчёта: таблица появлений, предел глубины, порог отсечения, дедлайн,
+  // счётчик узлов и точный кеш позиций (ключ: k1, k2*16+rem и float32-биты вероятности ветви).
+  let table, depthLimit, cprobThresh = THRESHOLDS[0], deadline, nodes, cache;
   const ABORT = {};
   function chance(R, cprob, cur) {
     if (caps(R) >= GOAL) return 1e9;
     if ((++nodes & 1023) === 0 && performance.now() > deadline) throw ABORT;
-    if (cprob < THRESH || cur >= depthLimit) return heur(R);
-    const k1 = R[0] + R[1] * 65536, k2 = R[2] + R[3] * 65536;
+    const rem = depthLimit - cur;
+    if (cprob < cprobThresh || rem <= 0) return heur(R);
+    const k1 = R[0] + R[1] * 65536, k2 = (R[2] + R[3] * 65536) * 16 + rem, pb = probBits(cprob);
     let m = cache.get(k1);
-    if (m) { const e = m.get(k2); if (e && e[0] <= cur) return e[1]; }
+    if (m) {
+      const e = m.get(k2);
+      if (e instanceof Map) { const hit = e.get(pb); if (hit !== undefined) return hit; }
+      else if (e && e[0] === pb) return e[1];
+    }
     const empties = [];
     for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) if (((R[r] >> (4 * c)) & 15) === 0) empties.push(r * 4 + c);
     const n = empties.length, probs = table[maxRank(R)];
@@ -796,7 +803,11 @@ function engineFactory() {
     }
     res /= n;
     if (!m) { m = new Map(); cache.set(k1, m); }
-    m.set(k2, [cur, res]);
+    const prev = m.get(k2);
+    if (!prev) m.set(k2, [pb, res]);
+    else if (prev instanceof Map) prev.set(pb, res);
+    else if (prev[0] === pb) prev[1] = res;
+    else { const sub = new Map([[prev[0], prev[1]], [pb, res]]); m.set(k2, sub); }
     return res;
   }
   function moveNode(R, cprob, cur) {
@@ -814,28 +825,38 @@ function engineFactory() {
     const legal = [];
     for (let d = 0; d < 4; d++) if (!same(R, move(d, R))) legal.push(d);
     const t0 = performance.now();
-    let result = { id: msg.id, dir: legal.length ? legal[0] : null, depth: 0, scores: null, nodes: 0, ms: 0 };
+    let result = { id: msg.id, dir: legal.length ? legal[0] : null, depth: 0, threshold: THRESHOLDS[0], scores: null, nodes: 0, ms: 0 };
     if (!legal.length) return result;
     let total = 0;
-    for (let depth = 1; depth <= msg.maxDepth; depth++) {
-      depthLimit = depth; nodes = 0; cache = new Map();
-      deadline = depth === 1 ? Infinity : t0 + msg.timeMs;
-      try {
-        const scores = [null, null, null, null];
-        let best = -1, bestDir = legal[0];
-        for (const d of legal) {
-          const s = chance(move(d, R), 1, 0);
-          scores[d] = s;
-          if (s > best) { best = s; bestDir = d; }
-        }
-        total += nodes;
-        result = { id: msg.id, dir: bestDir, depth, scores, nodes: total, ms: 0 };
-      } catch (e) {
-        if (e !== ABORT) throw e;
-        total += nodes;
-        break;
+    const runPass = (depth, thresh, allowAbort) => {
+      depthLimit = depth; cprobThresh = thresh; nodes = 0; cache = new Map();
+      deadline = allowAbort ? t0 + msg.timeMs : Infinity;
+      const scores = [null, null, null, null];
+      let best = -1, bestDir = legal[0];
+      for (const d of legal) {
+        const s = chance(move(d, R), 1, 0);
+        scores[d] = s;
+        if (s > best) { best = s; bestDir = d; }
       }
-      if (performance.now() - t0 > msg.timeMs * 0.35) break; // the next depth would not fit
+      total += nodes;
+      result = { id: msg.id, dir: bestDir, depth, threshold: thresh, scores, nodes: total, ms: 0 };
+    };
+    let reachedTarget = false;
+    try {
+      for (let depth = 1; depth <= msg.maxDepth; depth++) {
+        runPass(depth, THRESHOLDS[0], depth > 1);
+        if (depth === msg.maxDepth) reachedTarget = true;
+        if (depth < msg.maxDepth && performance.now() - t0 > msg.timeMs * 0.35) break; // the next depth would not fit
+      }
+      if (reachedTarget) {
+        for (let k = 1; k < THRESHOLDS.length; k++) {
+          if (performance.now() - t0 > msg.timeMs * 0.35) break;
+          runPass(msg.maxDepth, THRESHOLDS[k], true);
+        }
+      }
+    } catch (e) {
+      if (e !== ABORT) throw e;
+      total += nodes;
     }
     result.nodes = total;
     result.ms = performance.now() - t0;
@@ -1193,7 +1214,8 @@ async function requestHint(show = true) {
     els.hintArrow.classList.add("on");
     const sc = r.scores ? r.scores.map((s, d) => s == null ? null : [d, s]).filter(Boolean).sort((a, b) => b[1] - a[1]) : [];
     const gap = sc.length > 1 ? Math.round(sc[0][1] - sc[1][1]).toLocaleString("ru-RU") : null;
-    setStatus(`Совет: <strong>${ARROWS[r.dir]} ${DIRS[r.dir]}</strong> · глубина ${r.depth} · ${(r.ms / 1000).toFixed(2).replace(".", ",")} с · ${r.nodes.toLocaleString("ru-RU")} позиций${gap ? ` · отрыв от второго хода ${gap}` : ""}.`);
+    const th = r.threshold && r.threshold < 1e-4 ? ` · порог ${r.threshold.toExponential(0)}` : "";
+    setStatus(`Совет: <strong>${ARROWS[r.dir]} ${DIRS[r.dir]}</strong> · глубина ${r.depth}${th} · ${(r.ms / 1000).toFixed(2).replace(".", ",")} с · ${r.nodes.toLocaleString("ru-RU")} позиций${gap ? ` · отрыв от второго хода ${gap}` : ""}.`);
   }
   return r;
 }

@@ -17,17 +17,17 @@ if errorlevel 1 (
     echo Tesseract with English recognition data is required. See WINDOWS.md.
     goto failed
 )
-set "BONK_PYTHON_CHECK=import platform, sys; raise SystemExit(sys.version_info[:2] != (3, 13) or platform.machine() != 'AMD64')"
+set "BONK_PYTHON_CHECK=import platform, sys; raise SystemExit(sys.version_info < (3, 10) or platform.machine() != 'AMD64')"
 if exist ".venv\Scripts\python.exe" goto install_packages
-set "BONK_PYTHON=py -3.13"
-%BONK_PYTHON% -c "%BONK_PYTHON_CHECK%" >nul 2>&1
-if not errorlevel 1 goto create_venv
-set "BONK_PYTHON=python"
-%BONK_PYTHON% -c "%BONK_PYTHON_CHECK%" >nul 2>&1
-if errorlevel 1 (
-    echo Install Python 3.13 for Windows x64 with py or python on PATH. See WINDOWS.md.
-    goto failed
+for %%P in ("py -3.13" "py -3" "python") do (
+    %%~P -c "%BONK_PYTHON_CHECK%" >nul 2>&1
+    if not errorlevel 1 (
+        set "BONK_PYTHON=%%~P"
+        goto create_venv
+    )
 )
+echo Install Python 3.10+ for Windows x64 with py or python on PATH. See WINDOWS.md.
+goto failed
 
 :create_venv
 %BONK_PYTHON% -m venv .venv || goto failed

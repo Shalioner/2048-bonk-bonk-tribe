@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Звёздное провидение: локальный ADB-бот. Ctrl+C останавливает."""
-import argparse, subprocess, time, json, io, struct, ctypes, sys
+import argparse, subprocess, time, json, io, math, os, re, struct, ctypes, sys, tempfile
 from contextlib import contextmanager
 from pathlib import Path
 from functools import lru_cache
@@ -20,6 +20,7 @@ PACKAGE="com.global.sgdbzseaeu"
 CAP=11
 GOAL_COUNT=3
 OCR_TIMEOUT=3.0
+STALE_READ_LIMIT=6
 OBSERVATION_ERRORS=(RuntimeError, OSError, ValueError, struct.error,
                     subprocess.TimeoutExpired, subprocess.CalledProcessError)
 
@@ -62,11 +63,12 @@ def _save_failed_observation(data,metrics=None):
         print(json.dumps({"diagnostic_error":str(exc),"artifact":"failed-observation.bin",
                           "action":"continue_observation"},ensure_ascii=False),flush=True)
 
-def _ocr(canvas,psm,metrics=None):
+def _ocr(canvas,psm,metrics=None,whitelist=None):
     png=io.BytesIO()
     canvas.save(png,format="PNG")
     command=["tesseract","stdin","stdout","--psm",str(psm),"-l","eng"]
-    if psm==13:command.extend(["-c","tessedit_char_whitelist=0123456789"])
+    if whitelist is None and psm==13:whitelist="0123456789"
+    if whitelist:command.extend(["-c",f"tessedit_char_whitelist={whitelist}"])
     if metrics is not None:metrics.counts["ocr_calls"]+=1
     try:
         result=_timed(metrics,"ocr",subprocess.run,command,input=png.getvalue(),
@@ -85,7 +87,8 @@ def mask(im,r,c,raw=False):
     a=cv2.morphologyEx(a,cv2.MORPH_CLOSE,np.ones((3,3),np.uint8))
     count,labels,stats,centers=cv2.connectedComponentsWithStats(a)
     if count<2:return None
-    candidates=[i for i in range(1,count) if 8<centers[i,0]<61 and 3<centers[i,1]<48 and stats[i,cv2.CC_STAT_AREA]>=12]
+    # x<53 отсекает правую дугу светлой рамки кружка значка (на 7/8 она попадает в x≈59..60).
+    candidates=[i for i in range(1,count) if 8<centers[i,0]<53 and 3<centers[i,1]<48 and stats[i,cv2.CC_STAT_AREA]>=12]
     if not candidates:return None
     largest=max(candidates,key=lambda i:stats[i,cv2.CC_STAT_AREA])
     areas=stats[:,cv2.CC_STAT_AREA]
@@ -97,9 +100,13 @@ def mask(im,r,c,raw=False):
     return crop if raw else cv2.resize(crop,(32,40))
 
 def templates():
-    a=Image.open(ROOT/"calibration.png"); b=Image.open(ROOT/"calibration2.png")
-    return {1:mask(a,0,0),2:mask(a,1,0),3:mask(a,3,0),4:mask(a,2,1),5:mask(a,3,1),7:mask(Image.open(ROOT/"fixtures/saved-board.png"),3,0)}
+    a=Image.open(ROOT/"calibration.png")
+    s=Image.open(ROOT/"fixtures/saved-board.png")
+    f=Image.open(ROOT/"fixtures/icon-three-vs-four.png")
+    return {1:mask(a,0,0),2:mask(a,1,0),3:mask(a,3,0),4:mask(a,2,1),5:mask(a,3,1),
+            6:mask(f,3,0),7:mask(s,3,0),8:mask(f,2,0),9:mask(f,1,0)}
 TEMPLATES=templates()
+BASE_TEMPLATES=frozenset(TEMPLATES)
 
 def glyphs(im,r,c):
     a=mask(im,r,c,raw=True)
@@ -116,7 +123,7 @@ def glyphs(im,r,c):
 
 # The two glyphs from an actual level-10 screen calibrate the smaller font.
 TEN_GLYPHS=glyphs(Image.open(ROOT/"fixtures/level-ten.png"),0,0)
-DIGITS={i:TEMPLATES[i] for i in (1,2,3,4,5)}
+DIGITS={i:TEMPLATES[i] for i in range(1,10)}
 DIGITS[1],DIGITS[0]=TEN_GLYPHS
 
 def two_digit_level(im,r,c):
@@ -157,8 +164,14 @@ def icon_patch(im,r,c,half):
     x,y=255+310*c,1285+310*r
     return np.array(im.crop((x-half,y-half,x+half,y+half)).convert("L").resize((half,half)))
 
-ICON_REFS={level:icon_patch(Image.open(ROOT/"calibration.png"),r,c,64)
-           for level,r,c in ((3,3,0),(4,2,1),(5,3,1))}
+def _icon_refs():
+    cal=Image.open(ROOT/"calibration.png")
+    ic34=Image.open(ROOT/"fixtures/icon-three-vs-four.png")
+    refs={level:icon_patch(cal,r,c,64) for level,r,c in ((1,0,0),(2,1,0),(3,3,0),(4,2,1),(5,3,1))}
+    refs.update({level:icon_patch(ic34,r,c,64) for level,r,c in ((6,3,0),(7,0,1),(8,2,0),(9,1,0))})
+    return refs
+
+ICON_REFS=_icon_refs()
 
 def icon_level(im,r,c):
     patch=icon_patch(im,r,c,90)
@@ -193,10 +206,28 @@ def read_board(data,metrics=None):
                 if not result.isdigit():
                     result=_ocr(canvas,13,metrics)
                 if not result.isdigit() or not 1<=int(result)<=20:raise RuntimeError(f"Не распознан уровень ({r},{c}): {result!r}, ошибка {errors[v]:.2f}")
-                v=int(result);TEMPLATES[v]=m
+                v=int(result)
+                if v not in TEMPLATES:TEMPLATES[v]=m
             board.append(v)
     if not any(board):raise RuntimeError("Поле не найдено")
     return tuple(board)
+
+def read_energy(data,metrics=None):
+    try:
+        im=data if isinstance(data,Image.Image) else decode_screen(data)
+        if not hasattr(im,"resize") or not hasattr(im,"crop"):return None
+        crop=im.resize((1440,3040)).crop((630,1035,815,1105))
+        arr=np.array(crop.convert("RGB"))
+        if float(arr.std())<5:return None
+        bw=(arr.max(axis=2)>140).astype(np.uint8)*255
+        inv=Image.fromarray(255-bw).resize((370,140))
+        text=_ocr(inv,7,metrics,whitelist="0123456789/")
+    except OBSERVATION_ERRORS:
+        return None
+    m=re.match(r"^(\d+)/(\d+)$",text)
+    if not m:return None
+    cur,cap=int(m.group(1)),int(m.group(2))
+    return (cur,cap) if 0<=cur<=cap<=9999 and cap>0 else None
 
 def read_observation(capture,full_capture,full_mode=False,metrics=None):
     """One acquisition+decode attempt, with at most one full-frame fallback."""
@@ -376,6 +407,8 @@ GROWTH=5.0
 # Модель появлений по стадиям (стадия = максимальный уровень после хода).
 SPAWN_DEFAULT=ROOT/"spawn-model.default.json"
 SPAWN_LEARNED=ROOT/"spawn-model.json"
+SPAWN_MODEL_VERSION=3
+SPAWN_PRIOR_WEIGHT=20.0
 
 def default_spawn_model():
     return json.loads(SPAWN_DEFAULT.read_text(encoding="utf-8"))
@@ -383,14 +416,22 @@ def default_spawn_model():
 def load_spawn_model():
     if SPAWN_LEARNED.exists():
         data=json.loads(SPAWN_LEARNED.read_text(encoding="utf-8"))
-        if data.get("version")==2:return data
-        print(json.dumps({"spawn_model":"старый формат spawn-model.json без стадий проигнорирован; используется spawn-model.default.json"},ensure_ascii=False),flush=True)
+        if data.get("version")==SPAWN_MODEL_VERSION:return data
+        print(json.dumps({"spawn_model":"устаревший формат spawn-model.json проигнорирован; используется spawn-model.default.json"},ensure_ascii=False),flush=True)
     return default_spawn_model()
 
 def stage_row(model,stage):
     keys=sorted(int(k) for k in model["stages"])
     key=max([k for k in keys if k<=stage],default=keys[0])
     return (list(model["stages"][str(key)])+[0]*15)[:15]
+
+def _bounded_stage_prior(stage,base_model=None):
+    base=default_spawn_model() if base_model is None else base_model
+    row=stage_row(base,stage)
+    total=sum(row)
+    if total>SPAWN_PRIOR_WEIGHT:
+        return [round(v*SPAWN_PRIOR_WEIGHT/total,4) if v else 0 for v in row]
+    return list(row)
 
 def spawn_table(model):
     return [stage_row(model,s) for s in range(16)]
@@ -402,10 +443,13 @@ def apply_spawn_model(model):
 
 def record_spawn(model,stage,level):
     key=str(stage)
-    if key not in model["stages"]:model["stages"][key]=stage_row(model,stage)
+    if key not in model["stages"]:
+        model["stages"][key]=_bounded_stage_prior(stage)
     row=model["stages"][key]
-    row+= [0]*(15-len(row))
-    row[level-1]+=1
+    row+=[0]*(15-len(row))
+    cur=row[level-1]
+    row[level-1]=round(cur+1,4) if isinstance(cur,float) else cur+1
+    model["version"]=SPAWN_MODEL_VERSION
 
 def format_spawn_model(model):
     head="".join(f" {json.dumps(k)}: {json.dumps(v,ensure_ascii=False)},\n" for k,v in model.items() if k!="stages")
@@ -413,7 +457,21 @@ def format_spawn_model(model):
     return "{\n"+head+' "stages": {\n'+rows+"\n }\n}\n"
 
 def save_spawn_model(model):
-    SPAWN_LEARNED.write_text(format_spawn_model(model),encoding="utf-8")
+    model["version"]=SPAWN_MODEL_VERSION
+    text=format_spawn_model(model)
+    SPAWN_LEARNED.parent.mkdir(parents=True,exist_ok=True)
+    temporary=None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w",encoding="utf-8",dir=SPAWN_LEARNED.parent,
+                                         prefix=SPAWN_LEARNED.name+".",suffix=".tmp",delete=False) as f:
+            temporary=Path(f.name)
+            f.write(text)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(temporary,SPAWN_LEARNED)
+    finally:
+        if temporary is not None and temporary.exists():
+            temporary.unlink()
 
 def pack(b):
     if any(not 0<=v<=15 for v in b):raise RuntimeError("Уровень вне диапазона движка")
@@ -463,6 +521,42 @@ def lock_bot(lock):
     try:yield
     finally:kernel.UnlockFile(*region)
 
+def _sleep_with_stop(seconds,metrics=None,stage_name="sleep"):
+    remaining=max(0.0,float(seconds))
+    def wait():
+        nonlocal remaining
+        while remaining>0:
+            if (ROOT/"STOP").exists():return True
+            chunk=min(1.0,remaining)
+            time.sleep(chunk)
+            remaining-=chunk
+        return (ROOT/"STOP").exists()
+    return _timed(metrics,stage_name,wait) if metrics is not None else wait()
+
+@contextmanager
+def _tee_stdout(log_path):
+    if not log_path:
+        yield
+        return
+    path=Path(log_path)
+    path.parent.mkdir(parents=True,exist_ok=True)
+    original=sys.stdout
+    with path.open("a",encoding="utf-8") as log_file:
+        class _Tee:
+            def write(self,s):
+                original.write(s)
+                return log_file.write(s)
+            def flush(self):
+                original.flush()
+                log_file.flush()
+        sys.stdout=_Tee()
+        try:yield
+        except Exception as exc:
+            log_file.write(f"{exc}\n")
+            log_file.flush()
+            raise
+        finally:sys.stdout=original
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--serial",default=None)
@@ -472,14 +566,23 @@ def main():
     ap.add_argument("--clear-stop",action="store_true",help="снять STOP при запуске после получения блокировки")
     ap.add_argument("--depth",type=int,default=DEFAULT_DEPTH,help="предел глубины поиска (ходов вперёд)")
     ap.add_argument("--think",type=float,default=DEFAULT_THINK,help="бюджет расчёта хода, с")
+    ap.add_argument("--early-think",type=float,default=None,help="бюджет расчёта хода, с, пока на поле меньше двух плиток 11 (0 — отключить)")
+    ap.add_argument("--wait-energy",action="store_true",help="ждать восстановления энергии при 0/200 вместо остановки")
+    ap.add_argument("--energy-poll",type=float,default=30.0,help="интервал проверки энергии при --wait-energy, с")
+    ap.add_argument("--log",default=None,help="дописывать журнал вывода в файл (UTF-8)")
     ap.add_argument("--search-policy",choices=("legacy","progressive"),default="progressive",help="планировщик поиска; progressive последовательно углубляет завершённые проходы")
     args=ap.parse_args()
     if args.search_policy=="progressive":
         if args.depth<1:ap.error("Глубина progressive должна быть положительной")
         if not hasattr(NATIVE,"solve_budget_progressive"):ap.error(f"Движок не поддерживает progressive: пересоберите {ENGINE_BUILD}")
+    if not math.isfinite(args.energy_poll) or args.energy_poll<=0:
+        ap.error("--energy-poll должен быть положительным")
+    if args.early_think is not None and (not math.isfinite(args.early_think) or args.early_think<0):
+        ap.error("--early-think должен быть неотрицательным")
     with open(ROOT/"bot.lock","a+b") as lock, lock_bot(lock):
         if args.clear_stop:(ROOT/"STOP").unlink(missing_ok=True)
-        play(args)
+        with _tee_stdout(args.log):
+            play(args)
 
 def play(args):
     def adb(*cmd):
@@ -500,7 +603,7 @@ def play(args):
     # Начальная модель — счётчики из play.log по стадиям; дальше уточняется по наблюдениям.
     model=load_spawn_model()
     apply_spawn_model(model)
-    last=None;expected=None;stuck=0
+    last=None;expected=None
     for step in range(args.steps):
         if (ROOT/"STOP").exists():print("Остановлено файлом STOP",flush=True);break
         metrics=CycleMetrics()
@@ -509,11 +612,14 @@ def play(args):
         previous_started=started
         outcome="error"
         data=None
+        waited_energy=False
         try:
             metrics.call("focus",ensure_game_focus,adb)
             previous_observation=None
             full_mode=False
             last_observation_error=None
+            unchanged_streak=0
+            adb_capture_errors=0
             for attempt in range(15):
                 if (ROOT/"STOP").exists():
                     outcome="stopped"
@@ -521,28 +627,81 @@ def play(args):
                 metrics.counts["observations"]+=1
                 try:
                     b,data,used_full,_=read_observation(capture,lambda:adb("exec-out","screencap"),full_mode,metrics)
+                except RuntimeError as exc:
+                    unchanged_streak=0
+                    if isinstance(exc.__cause__,(subprocess.CalledProcessError,subprocess.TimeoutExpired)):
+                        adb_capture_errors+=1
+                        if adb_capture_errors>=3:
+                            metrics.call("focus",ensure_game_focus,adb)
+                            raise RuntimeError(f"Повторяющаяся ошибка захвата экрана ADB: {exc}") from exc.__cause__
+                    else:
+                        adb_capture_errors=0
+                    previous_observation=None
+                    full_mode=True
+                    last_observation_error=str(exc)
+                    metrics.counts["failed_observations"]=metrics.counts.get("failed_observations",0)+1
+                    print(json.dumps({"observation_error":str(exc),"attempt":attempt},ensure_ascii=False),flush=True)
+                else:
+                    adb_capture_errors=0
                     full_mode=full_mode or used_full
                     if observation_ready(b,previous_observation,expected,last):
                         if expected is not None:
                             rank=next(b[i] for i in range(16) if b[i]!=expected[i])
                             if NATIVE.get_spawn_prob(max(expected),rank)==0:print(json.dumps({"confirmed_new_spawn":rank,"stage":max(expected)}),flush=True)
                         break
+                    if expected is not None and b==last:
+                        unchanged_streak+=1
+                        if unchanged_streak>=STALE_READ_LIMIT:
+                            full_data=data if used_full else None
+                            if full_data is None:
+                                try:
+                                    metrics.counts["captures"]+=1
+                                    full_data=_timed(metrics,"capture",lambda:adb("exec-out","screencap"))
+                                except OBSERVATION_ERRORS:
+                                    full_data=None
+                            energy=read_energy(full_data,metrics) if full_data is not None else None
+                            print(json.dumps({"stale_board":True,"unchanged_reads":unchanged_streak,"energy":list(energy) if energy else None},ensure_ascii=False),flush=True)
+                            if energy is not None and energy[0]==0:
+                                if getattr(args,"wait_energy",False):
+                                    print(json.dumps({"waiting_for_energy":True,"energy":list(energy),"poll_s":args.energy_poll},ensure_ascii=False),flush=True)
+                                    while True:
+                                        if _sleep_with_stop(args.energy_poll,metrics,"energy_wait"):
+                                            outcome="stopped"
+                                            print("Остановлено при ожидании энергии",flush=True);return
+                                        metrics.call("focus",ensure_game_focus,adb)
+                                        metrics.counts["captures"]+=1
+                                        poll_data=_timed(metrics,"capture",lambda:adb("exec-out","screencap"))
+                                        energy=read_energy(poll_data,metrics)
+                                        print(json.dumps({"energy_poll":list(energy) if energy else None},ensure_ascii=False),flush=True)
+                                        if energy is not None and energy[0]>=1:
+                                            expected=None;last=None;waited_energy=True;break
+                                    break
+                                if full_data is not None:
+                                    try:metrics.call("diagnostic_write",lambda:decode_screen(full_data).save(ROOT/"latest.png"))
+                                    except OBSERVATION_ERRORS:pass
+                                outcome="no_energy"
+                                print(f"Энергия закончилась ({energy[0]}/{energy[1]}). Остановка. Для автоожидания используйте --wait-energy.",flush=True)
+                                return
+                            save_frame=full_data if full_data is not None else data
+                            if save_frame is not None:
+                                try:metrics.call("diagnostic_write",lambda:decode_screen(save_frame).save(ROOT/"latest.png"))
+                                except OBSERVATION_ERRORS:pass
+                            raise RuntimeError("Поле не изменилось после свайпа: возможно, закончилась энергия или появился диалог. Повторный жест не отправлялся.")
+                    else:
+                        unchanged_streak=0
                     if expected is not None and b!=last and not valid_successor(expected,b):
                         if not full_mode:print(json.dumps({"action":"retry_full_frame","reason":"transition_mismatch"}),flush=True)
                         full_mode=True
                     previous_observation=b
-                except RuntimeError as exc:
-                    previous_observation=None
-                    full_mode=True
-                    last_observation_error=str(exc)
-                    metrics.counts["failed_observations"]=metrics.counts.get("failed_observations",0)+1
-                    print(json.dumps({"observation_error":str(exc),"attempt":attempt},ensure_ascii=False),flush=True)
                 if attempt==14:
                     if data is not None:
                         try:metrics.call("diagnostic_write",lambda:decode_screen(data).save(ROOT/"recognition-error.png"))
                         except OBSERVATION_ERRORS:pass
                     raise RuntimeError("Не дождался стабильного результата хода; повторный жест не отправлялся. "+json.dumps({"expected":expected,"actual":previous_observation,"recognition_error":last_observation_error}))
                 metrics.call("confirm_wait",time.sleep,.15)
+            if waited_energy:
+                outcome="waited_energy"
+                continue
             if expected is not None and b!=last:
                 index=next(i for i in range(16) if b[i]!=expected[i])
                 rank=b[index];stage=max(expected)
@@ -557,17 +716,17 @@ def play(args):
                 outcome="goal"
                 print(f"ЦЕЛЬ ДОСТИГНУТА: {GOAL_COUNT} плитки уровня {CAP} одновременно. "+str(b),flush=True);break
             search={}
-            d=metrics.call("choose",choose,b,args.depth,args.think,search,policy=args.search_policy)
+            early=getattr(args,"early_think",None)
+            think_budget=min(args.think,early) if (early is not None and early>0 and b.count(CAP)<2) else args.think
+            d=metrics.call("choose",choose,b,args.depth,think_budget,search,policy=args.search_policy)
             captured=metrics.first_capture_at if metrics.first_capture_at is not None else started
-            print(json.dumps({"step":step,"board":b,"direction":None if d is None else ["left","right","up","down"][d],"capture_s":round(captured-started,3),"think_s":round(time.monotonic()-captured,3),"search":search},ensure_ascii=False),flush=True)
+            step_log={"step":step,"board":b,"direction":None if d is None else ["left","right","up","down"][d],"capture_s":round(captured-started,3),"think_s":round(time.monotonic()-captured,3),"search":search}
+            if think_budget!=args.think:step_log["budget_s"]=round(think_budget,3)
+            print(json.dumps(step_log,ensure_ascii=False),flush=True)
             if args.dry_run or d is None:
                 metrics.call("diagnostic_write",lambda:decode_screen(data).save(ROOT/"latest.png"))
                 outcome="dry_run" if args.dry_run else "no_move"
                 break
-            stuck=stuck+1 if b==last else 0
-            if stuck>=2:
-                metrics.call("diagnostic_write",lambda:decode_screen(data).save(ROOT/"latest.png"))
-                raise RuntimeError("Поле не меняется: энергия закончилась или появился диалог. Остановка.")
             last=b
             expected=move(b,d)
             w,h=metrics.frame_size if metrics.frame_size is not None else metrics.call("frame_geometry",lambda:decode_screen(data).size)
@@ -582,7 +741,7 @@ def play(args):
                 print("Остановлено перед жестом",flush=True);break
             metrics.call("gesture",send_move,adb,xy)
             outcome="moved"
-            metrics.call("post_move_wait",time.sleep,max(.15,args.delay))
+            _sleep_with_stop(max(.15,args.delay),metrics,"post_move_wait")
         finally:
             print(json.dumps({"step":step,"cycle_metrics":metrics.snapshot(outcome)},ensure_ascii=False),flush=True)
     else:

@@ -8,7 +8,7 @@ if not exist ".venv\Scripts\python.exe" (
     echo Run setup.cmd first.
     goto done
 )
-.venv\Scripts\python.exe -u bot.py --clear-stop %*
+.venv\Scripts\python.exe -u bot.py --clear-stop --log play.log --early-think 3 --wait-energy %*
 set "RESULT=%ERRORLEVEL%"
 
 :done
